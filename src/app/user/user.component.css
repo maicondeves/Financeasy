@@ -1,0 +1,13 @@
+.posicaoLogin{
+  top: 10rem;
+  position: relative;
+}
+
+#background{
+  height: 20rem;
+  width: 100%;
+  background-image: url("../images/login.jpg");
+  z-index: -9999;
+  position: absolute;
+}
+

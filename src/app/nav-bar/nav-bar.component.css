@@ -1,0 +1,30 @@
+.perfil-menu {
+  height: 25.5%;
+  background-image: url("../images/perfil.png")
+}
+
+.conteudo{
+  position: relative;
+  top: 1rem;
+  right: 10%;
+}
+
+#nome-perfil{
+  position: relative;
+  top:55%;
+  left: 8%;
+  float: left;
+}
+
+#foto-perfil{
+  position: relative;
+  right: 40%;
+  top: 20%;
+}
+
+#editar-perfil{
+  position: relative;
+  top:25%;
+  left: 8%;
+  float: left;
+}

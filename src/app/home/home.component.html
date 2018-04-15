@@ -1,0 +1,123 @@
+<app-nav-bar></app-nav-bar>
+<div class="row">
+  <div class="container">
+    <div class="card col s12" style="padding: 0">
+      <div class="col s12 teal darken-2" id="imagem-titulo">
+      </div>
+      <div class="col s12">
+        <span class="card-title">Início</span>
+        <p>Com o Financeasy, você pode controlar e planejar o seu negócio!
+          <br> Caso queira visualizar suas rendas ou receitas, basta clicar nas respectivas palavras.
+      </div>
+    </div>
+    <div class="row" style="padding: 0">
+      <div class="col s6 z-depth-1" style="padding-left: 0">
+        <div id="receitas">
+          <span class="numeros">
+            <a class="modal-trigger" (click)="openModal()">Receitas R$3.679,00</a>
+          </span>
+        </div>
+      </div>
+      <div class="col s6 z-depth-1" style="padding: 0">
+        <div id="despesas">
+          <span class="numeros">
+            <a class="modal-trigger" (click)="openModal2()">Despesas R$3.679,00</a>
+          </span>
+        </div>
+      </div>
+      <div class="col s6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Despesas -->
+<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="verDespesas">
+  <div class="row modal-content">
+    <h4>Despesas</h4>
+    <p>Os valores abaixos, são referente as despesas dos seus projetos.</p>
+    <div class="row">
+      <table class="striped">
+        <thead>
+          <tr>
+            <th class="espaco-esquerdo">Projeto</th>
+            <th class="espaco-esquerdo">Vencimento</th>
+            <th class="espaco-direito">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="espaco-esquerdo editar">
+              <span>Pizza em Portugal</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span>10/04/2019</span>
+            </td>
+            <td class="espaco-direito">
+              <span>2.567,00</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="espaco-esquerdo editar">
+              <span>Focus Bebedor de Gas</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span>10/04/2019</span>
+            </td>
+            <td class="espaco-direito">
+              <span>1.267,00</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Fechar</a>
+  </div>
+</div>
+
+<!-- Receitas -->
+<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="verReceita">
+  <div class="row modal-content">
+    <h4>Receitas</h4>
+    <p>Os valores abaixos são referente as receitas dos seus projetos.</p>
+    <div class="row">
+      <table class="striped">
+        <thead>
+          <tr>
+            <th class="espaco-esquerdo">Projeto</th>
+            <th class="espaco-esquerdo">Vencimento</th>
+            <th class="espaco-direito">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="espaco-esquerdo editar">
+              <span>Pizza em Portugal</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span>10/04/2019</span>
+            </td>
+            <td class="espaco-direito">
+              <span>2.567,00</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="espaco-esquerdo editar">
+              <span>Focus Bebedor de Gas</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span>10/04/2019</span>
+            </td>
+            <td class="espaco-direito">
+              <span>1.267,00</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Fechar</a>
+  </div>
+</div>

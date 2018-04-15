@@ -1,2 +1,3 @@
 # Financeasy
-# Financeasy
+
+Projeto de Graduação Integrado
