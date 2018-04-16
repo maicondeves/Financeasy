@@ -1,3 +1,4 @@
+import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -10,7 +11,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { CustomersComponent } from './customers/customers.component';
 
 export const APP_ROUTES: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: LandingPageComponent },
   {
     path: 'signup', component: UserComponent,
     children: [{ path: '', component: SignUpComponent}]
@@ -19,7 +20,7 @@ export const APP_ROUTES: Routes = [
     path: 'signin', component: UserComponent,
     children: [{ path: '', component: SignInComponent}]
   },
-  { path: '', redirectTo: '/signin', pathMatch: 'full'},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'categories', component: CategoriesComponent, canActivate: [AuthGuard] },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard] },
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }

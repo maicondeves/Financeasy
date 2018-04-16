@@ -21,6 +21,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { RevenuesComponent } from './revenues/revenues.component';
 import { ExpensesComponent } from './expenses/expenses.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ExpensesComponent } from './expenses/expenses.component';
     CategoriesComponent,
     ProjectsComponent,
     RevenuesComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
