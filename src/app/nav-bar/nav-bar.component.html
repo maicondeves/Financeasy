@@ -20,74 +20,61 @@
     </ul>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li>
+        <a class="nome-perfil" (click)="openModal()">
+          {{ userProfile.Name }}
+        </a>
+      </li>
+      <li>
         <a routerLink="" class="white-text" (click)="logout()" >
-          <i class="material-icons">exit_to_app</i></a>
+          <i class="material-icons">exit_to_app</i>
+        </a>
       </li>
     </ul>
   </div>
 </nav>
-<!-- <div>
-  <ul id="slide-out" class="side-nav fixed teal lighten-2">
-    <li class="perfil-menu teal">
-      <span class="white-text bold" id="foto-perfil">
-        <i class="medium material-icons white-text">face</i>
-      </span>
-      <span class="white-text bold" id="nome-perfil">Jimmy Anderson dos Santos Junior</span>
-      <span class="white-text bold modal-trigger left" (click)="openModal()" id="editar-perfil">Editar Perfil</span>
-    </li>
-    <li>
-      <a routerLink="/home" class="white-text">
-        <i class="material-icons prefix white-text">home</i>Home</a>
-    </li>
-    <li>
-      <a routerLink="/customers" class="white-text">
-        <i class="material-icons prefix white-text">folder_shared</i>Clientes</a>
-    </li>
-    <li>
-      <a routerLink="/categories" class="white-text">
-        <i class="material-icons prefix white-text">assignment</i>Categorias</a>
-    </li>
-    <li>
-      <a routerLink="/projects" class="white-text">
-        <i class="material-icons prefix white-text">import_contacts</i>Projetos</a>
-    </li>
-    <li>
-      <a routerLink="" class="white-text" (click)="logout()" >
-        <i class="material-icons prefix white-text">exit_to_app</i>Sair</a>
-    </li>
-  </ul>
-</div>
 
-Editar Perfil -->
-<!-- <div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarPerfil">
-  <div class="row modal-content">
+<!-- Editar Perfil -->
+<div id="modal3" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarPerfil">
+  <div class="modal-content">
     <h4>Editar Perfil</h4>
     <p>Altere os campos e depois clique em salvar.</p>
-    <div class="row">
-      <div class="input-field col s6">
-        <i class="material-icons prefix">account_circle</i>
-        <input placeholder="Digite seu nome Completo" id="nomeCompleto" type="text" class="validate">
-        <label for="nomeCompleto">Nome Completo</label>
+    <form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="nomeCompleto" type="text" class="validate" name="Name" [value]="userProfile.Name" required #Name ngModel>
+          <label for="nomeCompleto">Nome Completo</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">mail_outline</i>
+          <input id="email" type="text" class="validate" name="Email" [value]="userProfile.Email" required #Email ngModel>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">lock</i>
+          <input id="senha" type="password" class="validate" name="Password" required #Password ngModel>
+          <label for="senha">Senha</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">lock</i>
+          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" required #ConfirmPassword ngModel>
+          <label for="confirmarSenha">Confirmar Senha</label>
+        </div>
       </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">mail_outline</i>
-        <input placeholder="Digite seu e-mail" id="email" type="text" class="validate">
-        <label for="email">Email</label>
+      <div class="modal-footer">
+        <ul>
+          <li>
+            <button class="right btn red waves-effect waves-light" type="button" (click)="closeModal()">Cancelar
+              <i class="material-icons right">cancel</i>
+            </button>
+          </li>
+          <li>
+            <button class="right btn teal waves-effect waves-light" type="submit" name="action">Alterar
+              <i class="material-icons right">done</i>
+            </button>
+          </li>
+        </ul>
       </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">lock</i>
-        <input placeholder="Digite sua senha:" id="senha" type="text" class="validate">
-        <label for="senha">Senha</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">lock</i>
-        <input placeholder="Confirme sua senha:" id="confirmarSenha" type="text" class="validate">
-        <label for="confirmarSenha">Confirmar Senha</label>
-      </div>
-    </div>
+    </form>
   </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-  </div>
-</div> -->
+</div>

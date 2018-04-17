@@ -1,7 +1,4 @@
 <div class="row">
-  <div *ngIf="isAuthenticationError" class="red-text center error-message">
-    <i class="material-icons">error</i> {{ message }}
-  </div>
   <form #loginForm="ngForm" class="col s12 white" (ngSubmit)="onSubmit(Email.value, Password.value)" >
     <div class="row">
       <div class="input-field col s12">

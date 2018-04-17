@@ -1,0 +1,28 @@
+.espaco-esquerdo{
+  padding-left: 1rem;
+}
+
+.espaco-direito{
+  padding-right: 15px;
+  float: right;
+}
+
+a{
+  color: grey;
+}
+
+#imagem-titulo{
+  background-image: url("../images/categoria.jpg");
+  height: 10rem;
+  width: 100%;
+}
+
+.imagem-modal-titulo{
+  background-image: url("../images/categoria.png");
+  height: 10rem;
+  width: 100%;
+}
+
+.editar {
+  cursor:pointer;
+}

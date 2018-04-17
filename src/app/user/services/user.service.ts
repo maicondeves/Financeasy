@@ -1,3 +1,5 @@
+import { UserEditProfile } from './../models/user-edit-profile';
+import { ResponseModel } from './../../utils/response-model';
 import { HttpClient } from '@angular/common/http';
 import { UserAuthenticate } from './../models/user-authenticate';
 import { UserRegister } from './../models/user-register';
@@ -19,20 +21,31 @@ export class UserService {
   }
 
   userRegister(user: UserRegister) {
-    const body: UserRegister = user;
-
     const reqHeaders = new HttpHeaders({ 'Content-Type' : 'application/json' });
-    return this.http.post(this.rootUrl + '/accounts/register', body, {headers : reqHeaders});
+    return this.http.post(this.rootUrl + '/accounts/register', user, {headers : reqHeaders});
   }
 
-  userAuthentication(email, password) {
-    const body: UserAuthenticate = {
-      email: email,
-      password: password
-    };
-
+  userAuthentication(user: UserAuthenticate) {
     const reqHeaders = new HttpHeaders({ 'Content-Type' : 'application/json' });
-    return this.http.post(this.rootUrl + '/accounts/authenticate', body, { headers : reqHeaders});
+    return this.http.post(this.rootUrl + '/accounts/authenticate', user, { headers : reqHeaders});
+  }
+
+  userEditProfile(user: UserEditProfile) {
+    const token = sessionStorage.getItem('token');
+    const reqHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Authorization' : 'Basic ' + token
+    });
+    return this.http.put(this.rootUrl + '/accounts/profile', user, { headers : reqHeaders});
+  }
+
+  getProfile() {
+    const token = sessionStorage.getItem('token');
+    const reqHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Authorization' : 'Basic ' + token
+    });
+    return this.http.get(this.rootUrl + '/accounts/profile', { headers : reqHeaders});
   }
 
 }

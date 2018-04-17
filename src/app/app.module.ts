@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule} from 'ngx-toastr';
+
 import { MaterializeModule } from 'angular2-materialize';
 import { APP_ROUTES } from './app.routing';
 
@@ -40,6 +42,10 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
   ],
   imports: [
     BrowserModule,
+    ToastNoAnimationModule,
+    ToastrModule.forRoot({
+      toastComponent: ToastNoAnimation,
+    }),
     MaterializeModule,
     FormsModule,
     HttpClientModule,

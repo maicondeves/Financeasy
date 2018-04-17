@@ -1,3 +1,124 @@
-<p>
-  categories works!
-</p>
+<app-nav-bar></app-nav-bar>
+
+<div class="row">
+  <div class="container">
+    <div class="card col s12" style="padding: 0">
+      <div class="col s12 teal darken-2" id="imagem-titulo">
+      </div>
+      <div class="col s12">
+        <span class="card-title">Categorias</span>
+        <p>Crie categorias para serem usadas em projetos futuros, ex: Compra, Venda, Negociação.
+          <br> Caso queira visualizar, basta clicar em cima do nome do categoria.
+          <br> Clique no botão "+" para adicionar uma nova categoria</p>
+      </div>
+    </div>
+    <div class="card col s12" style="padding: 0">
+      <table class="striped">
+        <thead>
+          <tr>
+            <th class="espaco-esquerdo">Nome</th>
+            <th class="espaco-direito">Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="espaco-esquerdo modal-trigger editar">
+              <span (click)="openModal2()">Linha Rodoviária conexão itajaí / Brusque</span>
+            </td>
+            <td class="espaco-direito">
+              <a class="modal-trigger editar" (click)="openModal2()">
+                <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
+              </a>
+              <a class="modal-trigger editar" (click)="openModal3()">
+                <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col s12">
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red right modal-trigger" (click)="openModal()">
+          <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Nova Categoria -->
+  <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novaCategoria">
+    <div class="row modal-content">
+      <h4>Nova Categoria</h4>
+      <p>Preencha todos os campos para poder cadastrar uma nova categoria.</p>
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">assignment</i>
+          <input id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">Categoria</label>
+        </div>
+        <div class="input-field col s6">
+          <div class="col s2">
+            <i class="material-icons">insert_chart</i>
+          </div>
+          <div class="col s10">
+            <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+              <option id="select" value="" disabled selected>Escolha o Tipo</option>
+              <option value="1">Projeto</option>
+              <option value="2">Receita</option>
+              <option value="3">Despesa</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
+    </div>
+  </div>
+
+  <!-- Deletar Categoria -->
+  <div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCategoria">
+    <div class="modal-content">
+      <h4>Deletar Categoria</h4>
+      <p>Você realmente deseja deletar essa categoria? As catergorias deletadas não poderão ser recuperadas.</p>
+    </div>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat" (click)="closeModal3()">Cancelar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Sim</a>
+    </div>
+  </div>
+
+  <!-- Editar Categoria -->
+  <div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarCategoria">
+    <div class="row modal-content">
+      <h4>Editar Categoria</h4>
+      <p>Preencha os campos que você deseja alterar e clique em salvar.</p>
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">assignment</i>
+          <input id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">Categoria</label>
+        </div>
+        <div class="input-field col s6">
+          <div class="col s2">
+            <i class="material-icons">insert_chart</i>
+          </div>
+          <div class="col s10">
+            <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+              <option id="select" value="" disabled selected>Escolha o Tipo</option>
+              <option value="1">Projeto</option>
+              <option value="2">Receita</option>
+              <option value="3">Despesa</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Cancelar</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
+    </div>
+  </div>

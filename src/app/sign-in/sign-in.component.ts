@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from '../utils/response-model';
+import { ToastrService } from 'ngx-toastr';
+import { UserAuthenticate } from './../user/models/user-authenticate';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,31 +14,29 @@ import { ResponseModel } from '../utils/response-model';
 
 export class SignInComponent implements OnInit {
   isAuthenticationError: Boolean = false;
-  message: string;
   constructor(
     private userService: UserService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private toaster: ToastrService
+  ) {}
 
   ngOnInit() {
   }
 
   onSubmit(email, password) {
-    this.userService.userAuthentication(email, password).subscribe((data: ResponseModel) => {
+    const userAuthenticate: UserAuthenticate = {
+      Email: email,
+      Password: password
+    };
+
+    this.userService.userAuthentication(userAuthenticate).subscribe((data: ResponseModel) => {
       if (data.StatusCode === 200) {
         const userToken = btoa(email + ':' + password);
         sessionStorage.setItem('token', userToken);
+        this.toaster.success(data.Content);
         this.router.navigate(['/home']);
       } else {
-        if (data.StatusCode === 401) {
-          // Mostra mensagem de erro de authenticação.
-          this.isAuthenticationError = true;
-          this.message = data.Content;
-        } else {
-          // Ocorreu algum outro erro durante o processo.
-          this.isAuthenticationError = true;
-          this.message = data.Content;
-        }
+        this.toaster.error(data.Content);
       }
     },
     (err: HttpErrorResponse) => {

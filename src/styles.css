@@ -4,3 +4,7 @@ body{
   height: 100%;
   width: 100%;
 }
+
+.toast-message {
+  word-wrap: inherit !important;
+}
