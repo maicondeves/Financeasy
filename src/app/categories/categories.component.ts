@@ -7,14 +7,15 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
   styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent implements OnInit {
-
+  novaCategoria = new EventEmitter<string|MaterializeAction>();
+  editarCategoria = new EventEmitter<string|MaterializeAction>();
+  deletarCategoria = new EventEmitter<string|MaterializeAction>();
   constructor() { }
 
   ngOnInit() {
   }
 
   /* Modal Adicionar Categoria */
-  novaCategoria = new EventEmitter<string|MaterializeAction>();
   openModal() {
     this.novaCategoria.emit({action: 'modal', params: ['open']});
   }
@@ -24,7 +25,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   /* Modal Editar Categoria */
-  editarCategoria = new EventEmitter<string|MaterializeAction>();
   openModal2() {
     this.editarCategoria.emit({action: 'modal', params: ['open']});
   }
@@ -34,7 +34,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   /* Modal Remover Categoria */
-  deletarCategoria = new EventEmitter<string|MaterializeAction>();
   openModal3() {
     this.deletarCategoria.emit({action: 'modal', params: ['open']});
   }

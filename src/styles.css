@@ -5,6 +5,6 @@ body{
   width: 100%;
 }
 
-.toast-message {
-  word-wrap: inherit !important;
+.indicator-item.active {
+  background-color: teal !important;
 }

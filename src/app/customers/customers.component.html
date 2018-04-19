@@ -1,1 +1,235 @@
 <app-nav-bar></app-nav-bar>
+
+<div class="row">
+  <div class="container">
+    <div class="card col s12" style="padding: 0">
+      <div class="col s12 teal darken-2" id="imagem-titulo">
+      </div>
+      <div class="col s12">
+        <span class="card-title">Clientes</span>
+        <p>Cadastre clientes para serem usadas em projetos futuros.
+          <br> Caso queira visualizar ou editar, basta clicar em cima do nome do cliente ou no ícone do lapis.
+          <br> Clique no botão "+" para adicionar um novo cliente
+          <br> Clique no icone da lixeira para deletar o cliente</p>
+      </div>
+    </div>
+    <div class="card col s12" style="padding: 0">
+      <table class="striped">
+        <thead>
+          <tr>
+            <th class="espaco-esquerdo">Nome</th>
+            <th class="espaco-direito">Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="espaco-esquerdo modal-trigger editar">
+              <span (click)="openModal2()">Marcelo Maganani</span>
+            </td>
+            <td class="espaco-direito">
+              <a class="modal-trigger editar" (click)="openModal2()">
+                <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
+              </a>
+              <a class="modal-trigger editar" (click)="openModal3()">
+                <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col s12">
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red right modal-trigger" (click)="openModal()">
+          <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Novo Cliente -->
+<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novaCliente">
+  <div class="row modal-content">
+    <h4>Novo Cliente</h4>
+    <p>Preencha todos os campos para poder cadastrar um novo cliente.</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">assignment_ind</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Nome Completo</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">RG</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CPF</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CNPJ</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Comercial</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Celular</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Residencial</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Endereço</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CEP</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Complemento</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Bairro</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+          <option id="select" value="" disabled selected>Estado</option>
+          <option value="1">BA</option>
+          <option value="2">SC</option>
+          <option value="3">SP</option>
+        </select>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+          <option id="select" value="" disabled selected>Cidade</option>
+          <option value="1">Itajai</option>
+          <option value="2">Joinville</option>
+          <option value="3">Brusque</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
+  </div>
+</div>
+
+<!-- Deletar Cliente -->
+<div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCliente">
+  <div class="modal-content">
+    <h4>Deletar Cliente</h4>
+    <p>Você realmente deseja deletar esse Cliente? Os clientes deletadas não poderão ser recuperadas.</p>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal3()">Cancelar</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat">Sim</a>
+  </div>
+</div>
+
+<!-- Editar Cliente -->
+<div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarCliente">
+  <div class="row modal-content">
+    <h4>Editar Cliente</h4>
+    <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">assignment_ind</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Nome Completo</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">RG</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CPF</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">content_paste</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CNPJ</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Comercial</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Celular</label>
+      </div>
+      <div class="input-field col s4">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Tel. Residencial</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Endereço</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">CEP</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Complemento</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <input id="icon_prefix" type="text" class="validate">
+        <label for="icon_prefix">Bairro</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+          <option id="select" value="" disabled selected>Estado</option>
+          <option value="1">BA</option>
+          <option value="2">SC</option>
+          <option value="3">SP</option>
+        </select>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">place</i>
+        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+          <option id="select" value="" disabled selected>Cidade</option>
+          <option value="1">Itajai</option>
+          <option value="2">Joinville</option>
+          <option value="3">Brusque</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Cancelar</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
+  </div>
+</div>

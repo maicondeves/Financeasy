@@ -1,3 +1,49 @@
-.brand-logo {
-  margin-left: 1%;
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+.nav-wrapper .brand-logo img {
+  height: 64px;
+}
+
+.indicator-item.active {
+  background-color: teal !important;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+.conteudo {
+  min-height: 400px;
+}
+
+.material-icons {
+  color: teal;
+}
+
+.conteudo-acoes {
+  padding-top: 13%;
+  position: relative;
+}
+
+.cor-link a:link {
+  color: white;
 }

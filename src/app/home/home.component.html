@@ -10,23 +10,44 @@
           <br> Caso queira visualizar suas rendas ou receitas, basta clicar nas respectivas palavras.
       </div>
     </div>
-    <div class="row" style="padding: 0">
-      <div class="col s6 z-depth-1" style="padding-left: 0">
-        <div id="receitas">
-          <span class="numeros">
-            <a class="modal-trigger" (click)="openModal()">Receitas R$3.679,00</a>
-          </span>
+    <div class="row">
+      <div class="col s6 m4">
+        <div class="card green pointer-hover" (click)="openModal()">
+          <div class="card-content white-text">
+            <span class="card-title">
+              Receitas
+            </span>
+            <span class="numero">
+                <b>RS4.500,00</b>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="col s6 z-depth-1" style="padding: 0">
-        <div id="despesas">
-          <span class="numeros">
-            <a class="modal-trigger" (click)="openModal2()">Despesas R$3.679,00</a>
-          </span>
+      <div class="col s6 m4">
+        <div class="card red pointer-hover" (click)="openModal2()">
+          <div class="card-content white-text">
+            <span class="card-title">
+              Despesas
+            </span>
+            <span class="numero">
+                <b>RS3.500,00</b>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="col s6"></div>
-    </div>
+      <div class="col s6 m4">
+          <div class="card blue">
+            <div class="card-content white-text">
+              <span class="card-title">
+                Saldo
+              </span>
+              <span class="numero">
+                  <b>RS1.000,00</b>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
 

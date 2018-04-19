@@ -8,28 +8,27 @@ import { MaterializeAction } from 'angular2-materialize';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  /* Modal Adicionar Receita */
   verReceita = new EventEmitter<string|MaterializeAction>();
+  verDespesas = new EventEmitter<string|MaterializeAction>();
+  constructor() { }
+
+  ngOnInit() {
+  }
+  /* Modal Adicionar Receita */
   openModal() {
     this.verReceita.emit({action: 'modal', params: ['open']});
   }
 
   closeModal() {
-    this.verReceita.emit({action: 'modal', params:['close']});
+    this.verReceita.emit({action: 'modal', params: ['close']});
   }
 
   /* Modal ver Despesas */
-  verDespesas = new EventEmitter<string|MaterializeAction>();
   openModal2() {
     this.verDespesas.emit({action: 'modal', params: ['open']});
   }
 
   closeModal2() {
     this.verDespesas.emit({action: 'modal', params: ['close']});
-  }
-  constructor() { }
-
-  ngOnInit() {
   }
 }

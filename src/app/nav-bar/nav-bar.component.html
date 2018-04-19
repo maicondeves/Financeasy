@@ -1,9 +1,10 @@
 <nav class="teal">
   <div class="nav-wrapper">
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
+    <div class="container">
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
         <li>
           <a routerLink="/home" class="white-text">
-            <i class="material-icons left white-text">home</i>Home</a>
+            <i class="material-icons left white-text">dashboard</i>Dashboard</a>
         </li>
         <li>
           <a routerLink="/customers" class="white-text">
@@ -17,19 +18,24 @@
           <a routerLink="/projects" class="white-text">
             <i class="material-icons left white-text">import_contacts</i>Projetos</a>
         </li>
-    </ul>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li>
-        <a class="nome-perfil" (click)="openModal()">
-          {{ userProfile.Name }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="" class="white-text" (click)="logout()" >
-          <i class="material-icons">exit_to_app</i>
-        </a>
-      </li>
-    </ul>
+        <li>
+            <a routerLink="/reports" class="white-text">
+              <i class="material-icons left white-text">filter_list</i>Relatórios</a>
+          </li>
+      </ul>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li>
+          <a class="nome-perfil" (click)="openModal()">
+            {{ userProfile.Name }}
+          </a>
+        </li>
+        <li>
+          <a routerLink="" class="white-text" (click)="logout()">
+            <i class="material-icons">exit_to_app</i>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -42,22 +48,22 @@
       <div class="row">
         <div class="input-field col s6">
           <i class="material-icons prefix">account_circle</i>
-          <input id="nomeCompleto" type="text" class="validate" name="Name" [value]="userProfile.Name" required #Name ngModel>
+          <input id="nomeCompleto" type="text" class="validate" name="Name" [value]="formName" required #Name ngModel>
           <label for="nomeCompleto">Nome Completo</label>
         </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">mail_outline</i>
-          <input id="email" type="text" class="validate" name="Email" [value]="userProfile.Email" required #Email ngModel>
+          <input id="email" type="text" class="validate" name="Email" [value]="formEmail" required #Email ngModel>
           <label for="email">Email</label>
         </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">lock</i>
-          <input id="senha" type="password" class="validate" name="Password" required #Password ngModel>
+          <input id="senha" type="password" class="validate" name="Password" [value]="formPassword" required #Password ngModel>
           <label for="senha">Senha</label>
         </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">lock</i>
-          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" required #ConfirmPassword ngModel>
+          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" [value]="formPasswordConfirm" required #ConfirmPassword ngModel>
           <label for="confirmarSenha">Confirmar Senha</label>
         </div>
       </div>

@@ -1,12 +1,121 @@
-<nav class="teal">
-  <div class="nav-wrapper">
-    <a href="#!" class="brand-logo">Financ<b>easy</b></a>
+<nav class="white">
+  <div class="container nav-wrapper">
+    <a class="brand-logo">
+      <img src="assets/logo-sem-fundo.png" id="logo">
+    </a>
     <ul class="right hide-on-med-and-down">
-      <li><a>Sobre</a></li>
-      <li><a>Serviços</a></li>
-      <li><a>Preços</a></li>
-      <li><a routerLink="/signup">Cadastrar-se</a></li>
-      <li><a routerLink="/signin" class="waves-effect waves-light btn grey lighten-3 teal-text">Entrar<i class="material-icons right">perm_identity</i></a></li>
+      <li>
+        <a class="teal-text" (click)="openModal()">Contato</a>
+      </li>
+      <li>
+        <a routerLink="/signup" class="teal-text">Cadastre-se</a>
+      </li>
+      <li>
+        <a routerLink="/signin" class="teal-text">
+          <b>Entrar</b>
+          <i class="material-icons left">perm_identity</i>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
+<div class="slider" materialize="slider">
+  <ul class="slides">
+    <li>
+      <img src="assets/background1.jpg">
+      <div class="caption center-align">
+        <h3>Organize-se!</h3>
+        <h5 class="light grey-text text-lighten-3">Com o Financeasy, o seu tempo rende mais.</h5>
+      </div>
+    </li>
+    <li>
+      <img src="assets/background2.jpg">
+      <div class="caption center-align">
+        <h3>Velocidade</h3>
+        <h5 class="light grey-text text-lighten-3">O sistema de gestão que acompanha a sua agilidade.</h5>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="section white conteudo">
+  <div class="row container">
+    <div class="col s12 m12 l4">
+      <div class="center conteudo-acoes">
+        <i class="material-icons large">flash_on</i>
+        <p class="promo-caption">Velocidade</p>
+        <p class="light center">O Financeasy foi desenvolvido para ser rápido e centralizar todas as ferramentas para gestão de projetos de um engenheiro
+          autônomo. O objetivo é agilizar o seu trabalho.</p>
+      </div>
+    </div>
+    <div class="col s12 m12 l4">
+      <div class="center conteudo-acoes">
+        <i class="material-icons large">group</i>
+        <p class="promo-caption">Organização</p>
+        <p class="light center">Nós aprendemos e evoluimos juntos com você! Deseja alguma funcionalidade? Nos contate.</p>
+      </div>
+    </div>
+    <div class="col s12 m12 l4">
+      <div class="center conteudo-acoes">
+        <i class="material-icons large">settings</i>
+        <p class="promo-caption">Gestão</p>
+        <p class="light center">Centralizar todas as suas ações em um só ambiente é quesito essencial para um controle de gestão. Insira receitas,
+          despesas, emita relatórios e deixe a papelada de lado.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="page-footer teal">
+  <div class="container">
+    <div class="row center">
+      <div class="col s12">
+        <h5 class="white-text">Sobre nós</h5>
+        <p class="grey-text text-lighten-4">Financeasy é um projeto de conclusão do curso superior em Sistemas para Internet da Universidade do Vale do Itajaí
+          dos estudantes:
+        </p>
+        <p>
+          <b>Maicon Alex e Jimmy Anderson</b>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      Desenvolvido por Financeasy @{{ anoAtual}}.
+    </div>
+  </div>
+</footer>
+
+<!-- Modal Contato -->
+<div id="modal" class="modal" materialize="modal" [materializeActions]="modalContato">
+  <div class="modal-content">
+    <h4>Contato</h4>
+    <p>Preencha todos os campos e nos envie uma mensagem!.</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">assignment_ind</i>
+        <input id="nome" type="text" class="validate">
+        <label for="nome">Nome Completo</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">email</i>
+        <input id="email" type="text" class="validate">
+        <label for="email">Email</label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">phone</i>
+        <input id="phone" type="text" class="validate">
+        <label for="phone">Telefone</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="material-icons prefix">content_paste</i>
+        <textarea id="mensagem" class="materialize-textarea"></textarea>
+        <label for="mensagem">Mensagem</label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat red white-text">Cancelar</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat teal white-text" onclick="M.toast({html: 'Mensagem Enviada!'})">Enviar</a>
+  </div>
+</div>

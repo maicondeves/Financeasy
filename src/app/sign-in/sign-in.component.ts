@@ -11,36 +11,68 @@ import { UserAuthenticate } from './../user/models/user-authenticate';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-
 export class SignInComponent implements OnInit {
   isAuthenticationError: Boolean = false;
+  formEmail: String;
+  formPassword: String;
   constructor(
     private userService: UserService,
     private router: Router,
     private toaster: ToastrService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  IsNullOrWhiteSpace(str) {
+    return str === null || str.match(/^ *$/) !== null;
   }
 
   onSubmit(email, password) {
-    const userAuthenticate: UserAuthenticate = {
-      Email: email,
-      Password: password
-    };
+    // Validações do front-end
+    let formIsValid: Boolean = true;
 
-    this.userService.userAuthentication(userAuthenticate).subscribe((data: ResponseModel) => {
-      if (data.StatusCode === 200) {
-        const userToken = btoa(email + ':' + password);
-        sessionStorage.setItem('token', userToken);
-        this.toaster.success(data.Content);
-        this.router.navigate(['/home']);
-      } else {
-        this.toaster.error(data.Content);
-      }
-    },
-    (err: HttpErrorResponse) => {
-      this.isAuthenticationError = true;
-    });
+    if (
+      this.IsNullOrWhiteSpace(email) ||
+      email.length < 2 ||
+      email.length > 100
+    ) {
+      this.toaster.error('Email ou senha inválidos.');
+      this.formEmail = '';
+      formIsValid = false;
+      return;
+    }
+
+    if (
+      this.IsNullOrWhiteSpace(password) ||
+      password.length < 2 ||
+      password.length > 20
+    ) {
+      this.toaster.error('Email ou senha inválidos.');
+      this.formPassword = '';
+      formIsValid = false;
+      return;
+    }
+
+    if (formIsValid) {
+      const userAuthenticate: UserAuthenticate = {
+        Email: email,
+        Password: password
+      };
+
+      this.userService.userAuthentication(userAuthenticate).subscribe(
+        (data: ResponseModel) => {
+          if (data.StatusCode === 200) {
+            this.userService.createToken(userAuthenticate);
+            this.toaster.success(data.Content);
+            this.router.navigate(['/home']);
+          } else {
+            this.toaster.error(data.Content);
+          }
+        },
+        (err: HttpErrorResponse) => {
+          this.isAuthenticationError = true;
+        }
+      );
+    }
   }
 }

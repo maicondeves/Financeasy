@@ -13,35 +13,81 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignUpComponent implements OnInit {
   isRegisterError: Boolean = false;
+  formName: String;
+  formEmail: String;
+  formPassword: String;
+  formPasswordConfirm: String;
   constructor(
     private userService: UserService,
     private router: Router,
     private toaster: ToastrService
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSubmit(name, email, password, confirmPassword) {
-   const userRegister: UserRegister = {
-      Name: name,
-      Email: email,
-      Password: password,
-      PasswordConfirm: confirmPassword
-    };
+    let formIsValid: Boolean = true;
 
-    this.userService.userRegister(userRegister).subscribe(
-      (data: ResponseModel) => {
-        if (data.StatusCode === 200) {
-          this.toaster.success(data.Content);
-          this.router.navigate(['/signin']);
-        } else {
-          this.toaster.error(data.Content);
+    if (this.IsNullOrWhiteSpace(name)) {
+      this.toaster.error('Nome inválido.');
+      this.formName = '';
+      formIsValid = false;
+      return;
+    }
+
+    if (name.length < 2 || name.length > 30) {
+      this.toaster.error('Nome deve conter no mínimo 2 caracteres e no máximo 30.');
+      this.formName = '';
+      formIsValid = false;
+      return;
+    }
+
+    if (this.IsNullOrWhiteSpace(email)) {
+      this.toaster.error('Email inválido.');
+      this.formEmail = '';
+      formIsValid = false;
+      return;
+    }
+
+    if (
+      !this.IsNullOrWhiteSpace(password) ||
+      !this.IsNullOrWhiteSpace(confirmPassword)
+    ) {
+      if (password !== confirmPassword) {
+        this.toaster.error('As senhas informadas não são iguais.');
+        this.formPassword = '';
+        this.formPasswordConfirm = '';
+        formIsValid = false;
+        return;
+      }
+    }
+
+    if (formIsValid) {
+      const userRegister: UserRegister = {
+        Name: name,
+        Email: email,
+        Password: password,
+        PasswordConfirm: confirmPassword
+      };
+
+      this.userService.userRegister(userRegister).subscribe(
+        (data: ResponseModel) => {
+          if (data.StatusCode === 200) {
+            this.toaster.success(data.Content);
+            this.router.navigate(['/signin']);
+          } else {
+            this.toaster.error(data.Content);
+            this.isRegisterError = true;
+          }
+        },
+        (err: HttpErrorResponse) => {
           this.isRegisterError = true;
         }
-      },
-      (err: HttpErrorResponse) => {
-        this.isRegisterError = true;
-      });
+      );
+    }
+  }
+
+  IsNullOrWhiteSpace(str) {
+    return str === null || str.match(/^ *$/) !== null;
   }
 }
