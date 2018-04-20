@@ -3,40 +3,42 @@
 <div class="row">
   <div class="container">
     <div class="card col s12" style="padding: 0">
-      <div class="col s12 teal darken-2" id="imagem-titulo">
-      </div>
+      <div class="col s12 teal darken-2" id="imagem-titulo"></div>
       <div class="col s12">
         <span class="card-title">Clientes</span>
-        <p>Cadastre clientes para serem usadas em projetos futuros.
-          <br> Caso queira visualizar ou editar, basta clicar em cima do nome do cliente ou no ícone do lapis.
-          <br> Clique no botão "+" para adicionar um novo cliente
-          <br> Clique no icone da lixeira para deletar o cliente</p>
+        <p>Cadastre clientes para vinculá-los aos seus projetos.
+          <br> Caso queira visualizar ou editar, basta clicar em cima do nome do cliente ou no ícone do lápis.
+          <br> Clique no botão "+" para adicionar um novo cliente.
+          <br> Clique no icone da lixeira para deletar o cliente.</p>
       </div>
     </div>
     <div class="card col s12" style="padding: 0">
       <table class="striped">
         <thead>
           <tr>
-            <th class="espaco-esquerdo">Nome</th>
-            <th class="espaco-direito">Opções</th>
+            <th class="espaco-esquerdo teal-text">Nome</th>
+            <th class="espaco-direito teal-text">Opções</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let c of customers">
             <td class="espaco-esquerdo modal-trigger editar">
-              <span (click)="openModal2()">Marcelo Maganani</span>
+              <span (click)="editCustomer(c.Id)">{{ c.Name }}</span>
             </td>
             <td class="espaco-direito">
-              <a class="modal-trigger editar" (click)="openModal2()">
+              <a class="modal-trigger editar" (click)="editCustomer(c.Id)">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
               </a>
-              <a class="modal-trigger editar" (click)="openModal3()">
+              <a class="modal-trigger editar" (click)="deleteCustomer(c.Id)">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
+      <p class="espaco-esquerdo" *ngIf="customers.length==0">
+        <b>Nenhum cliente foi encontrado.</b>
+      </p>
     </div>
     <div class="col s12">
       <div class="fixed-action-btn">
@@ -50,186 +52,202 @@
 
 <!-- Novo Cliente -->
 <div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novaCliente">
-  <div class="row modal-content">
-    <h4>Novo Cliente</h4>
-    <p>Preencha todos os campos para poder cadastrar um novo cliente.</p>
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">assignment_ind</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Nome Completo</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">RG</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CPF</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CNPJ</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Comercial</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Celular</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Residencial</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Endereço</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CEP</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Complemento</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Bairro</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
-          <option id="select" value="" disabled selected>Estado</option>
-          <option value="1">BA</option>
-          <option value="2">SC</option>
-          <option value="3">SP</option>
-        </select>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
-          <option id="select" value="" disabled selected>Cidade</option>
-          <option value="1">Itajai</option>
-          <option value="2">Joinville</option>
-          <option value="3">Brusque</option>
-        </select>
+  <form #addCustomerForm="ngForm" (ngSubmit)="onSubmitAddForm(addName.value, addRG.value, addCPF.value, addCNPJ.value, addEmail.value, addHomePhone.value, addCommercialPhone.value, addCellPhone.value, addCEP.value, addStreetAddress.value, addComplement.value, addDistrict.value, addCity.value, addState.value)">
+    <div class="row modal-content">
+      <h4>Novo Cliente</h4>
+      <p>Preencha todos os campos para poder cadastrar um novo cliente.</p>
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">assignment_ind</i>
+          <input type="text" class="validate" name="addName" required #addName ngModel>
+          <label for="icon_prefix">Nome Completo</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="addRG" required #addRG ngModel>
+          <label for="icon_prefix">RG</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="addCPF" required #addCPF ngModel>
+          <label for="icon_prefix">CPF</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="addCNPJ" required #addCNPJ ngModel>
+          <label for="icon_prefix">CNPJ</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">email</i>
+          <input type="email" class="validate" name="addEmail" required #addEmail ngModel>
+          <label for="icon_prefix">Email</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="addCommercialPhone" required #addCommercialPhone ngModel>
+          <label for="icon_prefix">Tel. Comercial</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="addCellPhone" required #addCellPhone ngModel>
+          <label for="icon_prefix">Tel. Celular</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="addHomePhone" required #addHomePhone ngModel>
+          <label for="icon_prefix">Tel. Residencial</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addStreetAddress" required #addStreetAddress ngModel>
+          <label for="icon_prefix">Endereço</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addCEP" required #addCEP ngModel>
+          <label for="icon_prefix">CEP</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addComplement" required #addComplement ngModel>
+          <label for="icon_prefix">Complemento</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addDistrict" required #addDistrict ngModel>
+          <label for="icon_prefix">Bairro</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addCity" required #addCity ngModel>
+          <label for="icon_prefix">Cidade</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="addState" required #addState ngModel>
+          <label for="icon_prefix">Estado</label>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-  </div>
+    <div class="modal-footer">
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action">Salvar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="closeModal2()">Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </div>
+  </form>
 </div>
 
 <!-- Deletar Cliente -->
-<div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCliente">
+<div id="modal2" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCliente">
   <div class="modal-content">
     <h4>Deletar Cliente</h4>
-    <p>Você realmente deseja deletar esse Cliente? Os clientes deletadas não poderão ser recuperadas.</p>
+    <p>Os clientes deletados não poderão ser recuperados. Você realmente deseja deletar esse cliente?</p>
   </div>
   <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal3()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Sim</a>
+    <a class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()">Deletar
+      <i class="material-icons right">done</i>
+    </a>
+    <a class="btn red white-text waves-effect waves-light" type="button" (click)="closeModal3()">Cancelar
+      <i class="material-icons right">cancel</i>
+    </a>
   </div>
 </div>
 
 <!-- Editar Cliente -->
 <div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarCliente">
-  <div class="row modal-content">
-    <h4>Editar Cliente</h4>
-    <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">assignment_ind</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Nome Completo</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">RG</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CPF</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CNPJ</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Comercial</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Celular</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Residencial</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Endereço</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CEP</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Complemento</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Bairro</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
-          <option id="select" value="" disabled selected>Estado</option>
-          <option value="1">BA</option>
-          <option value="2">SC</option>
-          <option value="3">SP</option>
-        </select>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select" [materializeSelectOptions]="selectOptions">
-          <option id="select" value="" disabled selected>Cidade</option>
-          <option value="1">Itajai</option>
-          <option value="2">Joinville</option>
-          <option value="3">Brusque</option>
-        </select>
+  <form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editRG.value, editCPF.value, editCNPJ.value, editEmail.value, editHomePhone.value, editCommercialPhone.value, editCellPhone.value, editCEP.value, editStreetAddress.value, editComplement.value, editDistrict.value, editCity.value, editState.value)">
+    <div class="row modal-content">
+      <h4>Editar Cliente</h4>
+      <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
+      <div class="row">
+        <input type="hidden" name="editId" [value]="this.customerDetail.Id" #editId ngModel>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">assignment_ind</i>
+          <input type="text" class="validate" name="editName" [value]="this.customerDetail.Name" required #editName ngModel>
+          <label for="icon_prefix">Nome Completo</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="editRG" [value]="this.customerDetail.RG" required #editRG ngModel>
+          <label for="icon_prefix">RG</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="editCPF" [value]="this.customerDetail.CPF" required #editCPF ngModel>
+          <label for="icon_prefix">CPF</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">content_paste</i>
+          <input type="text" class="validate" name="editCNPJ" [value]="this.customerDetail.CNPJ" required #editCNPJ ngModel>
+          <label for="icon_prefix">CNPJ</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">email</i>
+          <input type="text" class="validate" name="editEmail" [value]="this.customerDetail.Email" required #editEmail ngModel>
+          <label for="icon_prefix">Email</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="editCommercialPhone" [value]="this.customerDetail.CommercialPhone" required #editCommercialPhone
+            ngModel>
+          <label for="icon_prefix">Tel. Comercial</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="editCellPhone" [value]="this.customerDetail.CellPhone" required #editCellPhone
+            ngModel>
+          <label for="icon_prefix">Tel. Celular</label>
+        </div>
+        <div class="input-field col s4">
+          <i class="material-icons prefix">phone</i>
+          <input type="text" class="validate" name="editHomePhone" [value]="this.customerDetail.HomePhone" required #editHomePhone
+            ngModel>
+          <label for="icon_prefix">Tel. Residencial</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editStreetAddress" [value]="this.customerDetail.StreetAddress" required #editStreetAddress
+            ngModel>
+          <label for="icon_prefix">Endereço</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editCEP" [value]="this.customerDetail.CEP" required #editCEP ngModel>
+          <label for="icon_prefix">CEP</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editComplement" [value]="this.customerDetail.Complement" required #editComplement
+            ngModel>
+          <label for="icon_prefix">Complemento</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editDistrict" [value]="this.customerDetail.District" required #editDistrict ngModel>
+          <label for="icon_prefix">Bairro</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editCity" [value]="this.customerDetail.City" required #editCity ngModel>
+          <label for="icon_prefix">Cidade</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">place</i>
+          <input type="text" class="validate" name="editState" [value]="this.customerDetail.State" required #editState ngModel>
+          <label for="icon_prefix">Estado</label>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-  </div>
+    <div class="modal-footer">
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action">Alterar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="closeModal2()">Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </div>
+  </form>
 </div>

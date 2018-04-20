@@ -24,6 +24,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { RevenuesComponent } from './revenues/revenues.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { CustomersService } from './customers/services/customers.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     NgForm
   ],
   providers: [
+    CustomersService,
     UserService,
     AuthGuard
   ],

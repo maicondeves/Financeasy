@@ -19,9 +19,9 @@
             <i class="material-icons left white-text">import_contacts</i>Projetos</a>
         </li>
         <li>
-            <a routerLink="/reports" class="white-text">
-              <i class="material-icons left white-text">filter_list</i>Relatórios</a>
-          </li>
+          <a routerLink="/reports" class="white-text">
+            <i class="material-icons left white-text">filter_list</i>Relatórios</a>
+        </li>
       </ul>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li>
@@ -68,18 +68,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <ul>
-          <li>
-            <button class="right btn red waves-effect waves-light" type="button" (click)="closeModal()">Cancelar
-              <i class="material-icons right">cancel</i>
-            </button>
-          </li>
-          <li>
-            <button class="right btn teal waves-effect waves-light" type="submit" name="action">Alterar
-              <i class="material-icons right">done</i>
-            </button>
-          </li>
-        </ul>
+        <a class="btn teal waves-effect waves-light" type="submit" name="action">Alterar
+          <i class="material-icons right">done</i>
+        </a>
+        <a class="btn red waves-effect waves-light" type="button" (click)="closeModal()">Cancelar
+          <i class="material-icons right">cancel</i>
+        </a>
       </div>
     </form>
   </div>
