@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from '../utils/response-model';
 import { ToastrService } from 'ngx-toastr';
 import { UserAuthenticate } from './../user/models/user-authenticate';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-sign-in',
@@ -18,7 +19,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {}
@@ -28,6 +30,8 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit(email, password) {
+    this.spinner.show();
+
     // Validações do front-end
     let formIsValid: Boolean = true;
 
@@ -38,6 +42,7 @@ export class SignInComponent implements OnInit {
     ) {
       this.toaster.error('Email ou senha inválidos.');
       this.formEmail = '';
+      this.spinner.hide();
       formIsValid = false;
       return;
     }
@@ -50,6 +55,7 @@ export class SignInComponent implements OnInit {
       this.toaster.error('Email ou senha inválidos.');
       this.formPassword = '';
       formIsValid = false;
+      this.spinner.hide();
       return;
     }
 
@@ -64,12 +70,15 @@ export class SignInComponent implements OnInit {
           if (data.StatusCode === 200) {
             this.userService.createToken(userAuthenticate);
             this.toaster.success(data.Content);
+            this.spinner.hide();
             this.router.navigate(['/home']);
           } else {
+            this.spinner.hide();
             this.toaster.error(data.Content);
           }
         },
         (err: HttpErrorResponse) => {
+          this.spinner.hide();
           this.isAuthenticationError = true;
         }
       );

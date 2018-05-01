@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from './../user/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-sign-up',
@@ -20,18 +21,22 @@ export class SignUpComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {}
 
   onSubmit(name, email, password, confirmPassword) {
+    this.spinner.show();
+
     let formIsValid: Boolean = true;
 
     if (this.IsNullOrWhiteSpace(name)) {
       this.toaster.error('Nome inválido.');
       this.formName = '';
       formIsValid = false;
+      this.spinner.hide();
       return;
     }
 
@@ -39,6 +44,7 @@ export class SignUpComponent implements OnInit {
       this.toaster.error('Nome deve conter no mínimo 2 caracteres e no máximo 30.');
       this.formName = '';
       formIsValid = false;
+      this.spinner.hide();
       return;
     }
 
@@ -46,6 +52,7 @@ export class SignUpComponent implements OnInit {
       this.toaster.error('Email inválido.');
       this.formEmail = '';
       formIsValid = false;
+      this.spinner.hide();
       return;
     }
 
@@ -58,6 +65,7 @@ export class SignUpComponent implements OnInit {
         this.formPassword = '';
         this.formPasswordConfirm = '';
         formIsValid = false;
+        this.spinner.hide();
         return;
       }
     }
@@ -74,13 +82,16 @@ export class SignUpComponent implements OnInit {
         (data: ResponseModel) => {
           if (data.StatusCode === 200) {
             this.toaster.success(data.Content);
+            this.spinner.hide();
             this.router.navigate(['/signin']);
           } else {
             this.toaster.error(data.Content);
+            this.spinner.hide();
             this.isRegisterError = true;
           }
         },
         (err: HttpErrorResponse) => {
+          this.spinner.hide();
           this.isRegisterError = true;
         }
       );

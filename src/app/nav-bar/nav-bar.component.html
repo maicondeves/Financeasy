@@ -1,50 +1,49 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
 <nav class="teal">
-  <div class="nav-wrapper">
-    <div class="container">
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li>
-          <a routerLink="/home" class="white-text">
-            <i class="material-icons left white-text">dashboard</i>Dashboard</a>
-        </li>
-        <li>
-          <a routerLink="/customers" class="white-text">
-            <i class="material-icons left white-text">folder_shared</i>Clientes</a>
-        </li>
-        <li>
-          <a routerLink="/categories" class="white-text">
-            <i class="material-icons left white-text">assignment</i>Categorias</a>
-        </li>
-        <li>
-          <a routerLink="/projects" class="white-text">
-            <i class="material-icons left white-text">import_contacts</i>Projetos</a>
-        </li>
-        <li>
+  <div class="nav-wrapper container">
+    <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <li>
+        <a routerLink="/home" class="white-text">
+          <i class="material-icons left white-text">dashboard</i>Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/customers" class="white-text">
+          <i class="material-icons left white-text">folder_shared</i>Clientes</a>
+      </li>
+      <li>
+        <a routerLink="/categories" class="white-text">
+          <i class="material-icons left white-text">assignment</i>Categorias</a>
+      </li>
+      <li>
+        <a routerLink="/projects" class="white-text">
+          <i class="material-icons left white-text">import_contacts</i>Projetos</a>
+      </li>
+      <!-- <li>
           <a routerLink="/reports" class="white-text">
             <i class="material-icons left white-text">filter_list</i>Relatórios</a>
-        </li>
-      </ul>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li>
-          <a class="nome-perfil" (click)="openModal()">
-            {{ userProfile.Name }}
-          </a>
-        </li>
-        <li>
-          <a routerLink="" class="white-text" (click)="logout()">
-            <i class="material-icons">exit_to_app</i>
-          </a>
-        </li>
-      </ul>
-    </div>
+        </li> -->
+    </ul>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li>
+        <a class="nome-perfil" (click)="editProfile()">
+          {{ userProfileName }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="" class="white-text" (click)="logout()">
+          <i class="material-icons">exit_to_app</i>
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>
 
 <!-- Editar Perfil -->
-<div id="modal3" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarPerfil">
-  <div class="modal-content">
-    <h4>Editar Perfil</h4>
-    <p>Altere os campos e depois clique em salvar.</p>
-    <form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
+<div id="modalPerfil" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarPerfil">
+  <form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
+    <div class="row modal-content">
+      <h4>Editar Perfil</h4>
+      <p>Altere os campos e depois clique em salvar.</p>
       <div class="row">
         <div class="input-field col s6">
           <i class="material-icons prefix">account_circle</i>
@@ -63,18 +62,19 @@
         </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">lock</i>
-          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" [value]="formPasswordConfirm" required #ConfirmPassword ngModel>
+          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" [value]="formPasswordConfirm" required
+            #ConfirmPassword ngModel>
           <label for="confirmarSenha">Confirmar Senha</label>
         </div>
       </div>
-      <div class="modal-footer">
-        <a class="btn teal waves-effect waves-light" type="submit" name="action">Alterar
-          <i class="material-icons right">done</i>
-        </a>
-        <a class="btn red waves-effect waves-light" type="button" (click)="closeModal()">Cancelar
-          <i class="material-icons right">cancel</i>
-        </a>
-      </div>
-    </form>
-  </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn teal waves-effect waves-light" type="submit" name="action">Alterar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red waves-effect waves-light" type="button" (click)="closeModalPerfil()">Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </div>
+  </form>
 </div>

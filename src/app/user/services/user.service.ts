@@ -75,6 +75,15 @@ export class UserService {
     return this.http.put(this.rootUrl + '/accounts/profile', user, { headers : reqHeaders});
   }
 
+  getName() {
+    const token = sessionStorage.getItem('token');
+    const reqHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Authorization' : 'Basic ' + token
+    });
+    return this.http.get(this.rootUrl + '/accounts/profile/name', { headers : reqHeaders});
+  }
+
   getProfile() {
     const token = sessionStorage.getItem('token');
     const reqHeaders = new HttpHeaders({

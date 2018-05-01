@@ -1,6 +1,6 @@
 import { UserService } from './user/services/user.service';
 
-import { FormsModule, NgForm } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, NgForm } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule} from 'ngx-toastr';
 
 import { MaterializeModule } from 'angular2-materialize';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { APP_ROUTES } from './app.routing';
 
 import { AppComponent } from './app.component';
@@ -49,7 +50,9 @@ import { CustomersService } from './customers/services/customers.service';
     }),
     MaterializeModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
+    NgxSpinnerModule,
     RouterModule.forRoot(APP_ROUTES)
   ],
   exports: [

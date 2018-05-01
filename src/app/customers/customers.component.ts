@@ -10,6 +10,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { MaterializeAction } from 'angular2-materialize';
 import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
 import { debug } from 'util';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 declare var jQuery: any;
@@ -48,7 +49,8 @@ export class CustomersComponent implements OnInit {
 
   constructor(
     private customersService: CustomersService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
@@ -56,17 +58,19 @@ export class CustomersComponent implements OnInit {
   }
 
   getAll(): CustomerList[] {
+    this.spinner.show();
     this.customers = new Array<CustomerList>();
     this.customersService.getAll().subscribe((data: ResponseModel) => {
       if (data.StatusCode === 200) {
         Object.assign(this.customers, data.Content);
       }
     });
-
+    this.spinner.hide();
     return this.customers;
   }
 
   getById(customerId: Number): Customer {
+    this.spinner.show();
     const customer = new Customer();
     this.customersService
       .getById(customerId)
@@ -76,12 +80,13 @@ export class CustomersComponent implements OnInit {
         }
       });
     this.customer = this.customerDetail;
+    this.spinner.hide();
     return customer;
   }
 
   editCustomer(customerId: Number) {
-    this.openModal2();
     this.customerDetail = this.getById(customerId);
+    this.openModal2();
   }
 
   onSubmitEditForm(
@@ -101,6 +106,7 @@ export class CustomersComponent implements OnInit {
     city: String,
     state: String
   ) {
+
     // Validações do front-end
     let formIsValid: Boolean = true;
 
@@ -142,6 +148,7 @@ export class CustomersComponent implements OnInit {
   }
 
   edit(customerPut: CustomerPut) {
+    this.spinner.show();
     this.customersService.update(customerPut).subscribe(
       (data: ResponseModel) => {
         if (data.StatusCode === 200) {
@@ -159,7 +166,7 @@ export class CustomersComponent implements OnInit {
         this.toaster.error('Houve um erro ao conectar com o servidor.');
       }
     );
-
+    this.spinner.hide();
     this.closeModal2();
   }
 
@@ -169,6 +176,7 @@ export class CustomersComponent implements OnInit {
   }
 
   delete() {
+    this.spinner.show();
     if (this.deleteId > 0) {
       this.customersService.delete(this.deleteId).subscribe(
         (data: ResponseModel) => {
@@ -184,7 +192,7 @@ export class CustomersComponent implements OnInit {
         }
       );
     }
-
+    this.spinner.hide();
     this.closeModal3();
   }
 
@@ -244,6 +252,7 @@ export class CustomersComponent implements OnInit {
   }
 
    insert(customerPost: CustomerPost) {
+    this.spinner.show();
     this.customersService.insert(customerPost).subscribe(
       (data: ResponseModel) => {
         if (data.StatusCode === 200) {
@@ -261,7 +270,7 @@ export class CustomersComponent implements OnInit {
         this.toaster.error('Houve um erro ao conectar com o servidor.');
       }
     );
-
+    this.spinner.hide();
     this.closeModal();
    }
 
