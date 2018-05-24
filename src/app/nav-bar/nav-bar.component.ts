@@ -1,3 +1,4 @@
+import { MzToastService } from 'ng2-materialize';
 import { UserAuthenticate } from './../user/models/user-authenticate';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserEditProfile } from './../user/models/user-edit-profile';
@@ -7,10 +8,7 @@ import { ResponseModel } from './../utils/response-model';
 import { UserService } from './../user/services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { MaterializeAction } from 'angular2-materialize';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-nav-bar',
@@ -18,12 +16,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  isLoggedIn$: Boolean;
+  mostrarMenu = false;
 
-  formName: String;
-  formEmail: String;
-  formPassword: String;
-  formPasswordConfirm: String;
+  formName: String = ' ';
+  formEmail: String = ' ';
+  formPassword: String = '';
+  formPasswordConfirm: String = '';
 
   userProfileName: String = '';
 
@@ -34,87 +32,72 @@ export class NavBarComponent implements OnInit {
     UpdateDate: new Date()
   };
 
-  editarPerfil = new EventEmitter<string | MaterializeAction>();
   constructor(
     private router: Router,
     private userService: UserService,
-    private toaster: ToastrService,
-    private spinner: NgxSpinnerService
-  ) {}
+    private toaster: MzToastService
+  ) {  }
 
   ngOnInit() {
-    this.getName();
+    this.userService.mostrarMenuEmitter.subscribe(
+      mostrar => {
+        this.mostrarMenu = mostrar;
+        if (this.mostrarMenu) {
+          this.getName();
+        }
+      }
+    );
   }
 
   getName() {
-    this.spinner.show();
     this.userService.getName().subscribe((data: ResponseModel) => {
       this.userProfileName = data.Content.substr(0, 20);
-      this.spinner.hide();
     });
   }
 
   editProfile() {
     this.getProfile();
-    this.openModalPerfil();
   }
 
   getProfile() {
-    this.spinner.show();
     this.userService.getProfile().subscribe((data: ResponseModel) => {
       Object.assign(this.userProfile, data.Content);
       this.formName = this.userProfile.Name;
       this.formEmail = this.userProfile.Email;
-      this.spinner.hide();
     });
   }
 
-  /* Editar Perfil */
-  openModalPerfil() {
-    this.editarPerfil.emit({ action: 'modal', params: ['open'] });
-  }
-
-  closeModalPerfil() {
-    this.editarPerfil.emit({ action: 'modal', params: ['close'] });
-  }
-
   onSubmit(name, email, password, confirmPassword) {
-    this.spinner.show();
-
     // Validações do front-end
     let formIsValid: Boolean = true;
 
     if (this.IsNullOrWhiteSpace(email)) {
-      this.toaster.error('Email inválido.');
+      this.toaster.show('Email inválido.', 4000, 'toast-danger');
       this.formEmail = this.userProfile.Email;
       formIsValid = false;
-      this.spinner.hide();
       return;
     }
 
     if (this.IsNullOrWhiteSpace(name)) {
-      this.toaster.error('Nome inválido.');
+      this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       this.formName = this.userProfile.Name;
       formIsValid = false;
-      this.spinner.hide();
       return;
     }
 
     if (name.Length < 2 || name.Length > 30) {
-      this.toaster.error('Nome deve conter no mínimo 2 caracteres e no máximo 30.');
+      this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
       this.formName = this.userProfile.Name;
       formIsValid = false;
-      this.spinner.hide();
       return;
     }
 
     if (!this.IsNullOrWhiteSpace(password) || !this.IsNullOrWhiteSpace(confirmPassword)) {
       if (password !== confirmPassword) {
-        this.toaster.error('As senhas informadas não são iguais.');
+        this.toaster.show('As senhas informadas não são iguais.', 4000, 'toast-danger');
         this.formPassword = '';
         this.formPasswordConfirm = '';
         formIsValid = false;
-        this.spinner.hide();
         return;
       }
     }
@@ -147,24 +130,18 @@ export class NavBarComponent implements OnInit {
             if (updateCredential) {
               this.userService.updateToken(userAuthenticate);
             }
-            this.toaster.success(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-success');
             this.userProfileName = userEditProfile.Name.substr(0, 20);
-            this.spinner.hide();
-            this.closeModalPerfil();
           } else {
             if (data.StatusCode === 401) {
-              this.closeModalPerfil();
-              this.spinner.hide();
               this.logout();
             } else {
-              this.toaster.error(data.Content);
-              this.spinner.hide();
+              this.toaster.show(data.Content, 4000, 'toast-danger');
             }
           }
         },
         (err: HttpErrorResponse) => {
-          this.spinner.hide();
-          this.toaster.error(err.statusText);
+          this.toaster.show(err.statusText, 4000, 'toast-danger');
         }
       );
     }
@@ -172,10 +149,10 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.userService.logout();
+    this.toaster.show('Logout efetuado com sucesso.', 4000, 'toast-success');
   }
 
   IsNullOrWhiteSpace(str) {
     return str === null || str.match(/^ *$/) !== null;
   }
 }
-

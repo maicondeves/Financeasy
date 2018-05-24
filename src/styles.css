@@ -1,10 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
-body{
-  background-color: grey lighten;
-  height: 100%;
-  width: 100%;
-}
 
 .indicator-item.active {
   background-color: teal !important;
 }
+
+.toast-success {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+.toast-info {
+  background-color: #17a2b8 !important;
+  color: white !important;
+}
+
+.toast-warning {
+  background-color: #ffc107 !important;
+  color: white !important;
+}
+
+.toast-danger {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.excluir {
+  cursor: pointer;
+  color: teal !important;
+}
+
+.editar {
+  cursor: pointer;
+  color: teal !important;
+}
+
+.espaco-esquerdo{
+  padding-left: 1rem;
+}
+
+.espaco-direito{
+  padding-right: 15px;
+  float: right;
+}
+

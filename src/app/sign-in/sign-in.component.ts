@@ -1,11 +1,10 @@
 import { UserService } from './../user/services/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from '../utils/response-model';
-import { ToastrService } from 'ngx-toastr';
 import { UserAuthenticate } from './../user/models/user-authenticate';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { MzToastService } from 'ng2-materialize';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,13 +13,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class SignInComponent implements OnInit {
   isAuthenticationError: Boolean = false;
-  formEmail: String;
-  formPassword: String;
+  formEmail: String = '';
+  formPassword: String = '';
+
   constructor(
     private userService: UserService,
     private router: Router,
-    private toaster: ToastrService,
-    private spinner: NgxSpinnerService
+    private toaster: MzToastService
   ) {}
 
   ngOnInit() {}
@@ -30,7 +29,6 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit(email, password) {
-    this.spinner.show();
 
     // Validações do front-end
     let formIsValid: Boolean = true;
@@ -40,9 +38,8 @@ export class SignInComponent implements OnInit {
       email.length < 2 ||
       email.length > 100
     ) {
-      this.toaster.error('Email ou senha inválidos.');
+      this.toaster.show('Email ou senha inválidos.', 4000, 'toast-danger');
       this.formEmail = '';
-      this.spinner.hide();
       formIsValid = false;
       return;
     }
@@ -52,10 +49,9 @@ export class SignInComponent implements OnInit {
       password.length < 2 ||
       password.length > 20
     ) {
-      this.toaster.error('Email ou senha inválidos.');
+      this.toaster.show('Email ou senha inválidos.', 4000, 'toast-danger');
       this.formPassword = '';
       formIsValid = false;
-      this.spinner.hide();
       return;
     }
 
@@ -69,16 +65,12 @@ export class SignInComponent implements OnInit {
         (data: ResponseModel) => {
           if (data.StatusCode === 200) {
             this.userService.createToken(userAuthenticate);
-            this.toaster.success(data.Content);
-            this.spinner.hide();
-            this.router.navigate(['/home']);
+            this.toaster.show(data.Content, 4000, 'toast-success');
           } else {
-            this.spinner.hide();
-            this.toaster.error(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         },
         (err: HttpErrorResponse) => {
-          this.spinner.hide();
           this.isAuthenticationError = true;
         }
       );

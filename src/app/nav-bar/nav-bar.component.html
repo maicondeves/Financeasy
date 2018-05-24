@@ -1,80 +1,84 @@
 <ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
-<nav class="teal">
-  <div class="nav-wrapper container">
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li>
-        <a routerLink="/home" class="white-text">
-          <i class="material-icons left white-text">dashboard</i>Dashboard</a>
-      </li>
-      <li>
-        <a routerLink="/customers" class="white-text">
-          <i class="material-icons left white-text">folder_shared</i>Clientes</a>
-      </li>
-      <li>
-        <a routerLink="/categories" class="white-text">
-          <i class="material-icons left white-text">assignment</i>Categorias</a>
-      </li>
-      <li>
-        <a routerLink="/projects" class="white-text">
-          <i class="material-icons left white-text">import_contacts</i>Projetos</a>
-      </li>
-      <!-- <li>
+<div class="navbar-fixed" *ngIf="mostrarMenu">
+  <nav class="teal">
+    <div class="nav-wrapper container">
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li>
+          <a routerLink="/home" class="white-text">
+            <i class="material-icons left white-text">dashboard</i>Dashboard</a>
+        </li>
+        <li>
+          <a routerLink="/customers" class="white-text">
+            <i class="material-icons left white-text">folder_shared</i>Clientes</a>
+        </li>
+        <li>
+          <a routerLink="/categories" class="white-text">
+            <i class="material-icons left white-text">assignment</i>Categorias</a>
+        </li>
+        <li>
+          <a routerLink="/projects" class="white-text">
+            <i class="material-icons left white-text">import_contacts</i>Projetos</a>
+        </li>
+        <li>
           <a routerLink="/reports" class="white-text">
             <i class="material-icons left white-text">filter_list</i>Relatórios</a>
-        </li> -->
-    </ul>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li>
-        <a class="nome-perfil" (click)="editProfile()">
-          {{ userProfileName }}
-        </a>
-      </li>
-      <li>
-        <a routerLink="" class="white-text" (click)="logout()">
-          <i class="material-icons">exit_to_app</i>
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+        </li>
+      </ul>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li>
+          <a class="nome-perfil" (click)="editProfile(); editProfileModal.open();">
+            {{ userProfileName }}
+          </a>
+        </li>
+        <li>
+          <a routerLink="" class="white-text" (click)="logout()">
+            <i class="material-icons">exit_to_app</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
 
 <!-- Editar Perfil -->
-<div id="modalPerfil" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarPerfil">
-  <form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
-    <div class="row modal-content">
-      <h4>Editar Perfil</h4>
+<form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
+  <mz-modal #editProfileModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Editar Perfil</h4>
       <p>Altere os campos e depois clique em salvar.</p>
-      <div class="row">
-        <div class="input-field col s6">
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row col s12 m12 l12">
+        <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">account_circle</i>
-          <input id="nomeCompleto" type="text" class="validate" name="Name" [value]="formName" required #Name ngModel>
-          <label for="nomeCompleto">Nome Completo</label>
+          <input id="editNomeCompleto" type="text" class="validate" name="EditName" [value]="formName" required #Name>
+          <label for="editNomeCompleto">Nome Completo</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">mail_outline</i>
-          <input id="email" type="text" class="validate" name="Email" [value]="formEmail" required #Email ngModel>
+          <input id="editEmail" type="text" class="validate" name="EditEmail" [value]="formEmail" required #Email>
           <label for="email">Email</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">lock</i>
-          <input id="senha" type="password" class="validate" name="Password" [value]="formPassword" required #Password ngModel>
+          <input id="editSenha" type="password" class="validate" name="EditPassword" [value]="formPassword" required #Password>
           <label for="senha">Senha</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">lock</i>
-          <input id="confirmarSenha" type="password" class="validate" name="ConfirmPassword" [value]="formPasswordConfirm" required
-            #ConfirmPassword ngModel>
+          <input id="editConfirmarSenha" type="password" class="validate" name="EditConfirmPassword" [value]="formPasswordConfirm" required
+            #ConfirmPassword>
           <label for="confirmarSenha">Confirmar Senha</label>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn teal waves-effect waves-light" type="submit" name="action">Alterar
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red waves-effect waves-light" type="button" (click)="closeModalPerfil()">Cancelar
+      <button class="btn red waves-effect waves-light" type="button" mz-modal-close>Cancelar
         <i class="material-icons right">cancel</i>
       </button>
-    </div>
-  </form>
-</div>
+    </mz-modal-footer>
+  </mz-modal>
+</form>

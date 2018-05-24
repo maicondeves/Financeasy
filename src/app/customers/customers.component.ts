@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
 import { Customer } from './models/customer';
 import { CustomerPost } from './models/customer-post';
 import { CustomerPut } from './models/customer-put';
@@ -7,13 +6,10 @@ import { ResponseModel } from './../utils/response-model';
 import { CustomerList } from './models/customer-list';
 import { CustomersService } from './services/customers.service';
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { MaterializeAction } from 'angular2-materialize';
 import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
 import { debug } from 'util';
-import { NgxSpinnerService } from 'ngx-spinner';
-
-declare var $: any;
-declare var jQuery: any;
+import { MzToastService } from 'ng2-materialize';
+import { Mask } from '@fagnerlima/ng-mask';
 
 @Component({
   selector: 'app-customers',
@@ -21,36 +17,30 @@ declare var jQuery: any;
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-  novaCliente = new EventEmitter<string | MaterializeAction>();
-  editarCliente = new EventEmitter<string | MaterializeAction>();
-  deletarCliente = new EventEmitter<string | MaterializeAction>();
-
-  customer: Customer;
   customers: CustomerList[];
   customerDetail: Customer = {
     Id: 0,
-    Name: '',
-    RG: '',
-    CPF: '',
-    CNPJ: '',
-    Email: '',
-    HomePhone: '',
-    CommercialPhone: '',
-    CellPhone: '',
-    CEP: '',
-    StreetAddress: '',
-    Complement: '',
-    District: '',
-    City: '',
-    State: ''
+    Name: ' ',
+    RG: ' ',
+    CPF: ' ',
+    CNPJ: ' ',
+    Email: ' ',
+    HomePhone: ' ',
+    CommercialPhone: ' ',
+    CellPhone: ' ',
+    CEP: ' ',
+    StreetAddress: ' ',
+    Complement: ' ',
+    District: ' ',
+    City: ' ',
+    State: ' '
   };
 
-  deleteId: Number;
+  deleteId: Number = 0;
 
   constructor(
     private customersService: CustomersService,
-    private toaster: ToastrService,
-    private spinner: NgxSpinnerService
+    private toaster: MzToastService
   ) {}
 
   ngOnInit() {
@@ -58,19 +48,10 @@ export class CustomersComponent implements OnInit {
   }
 
   getAll(): CustomerList[] {
-    this.spinner.show();
-    this.customers = new Array<CustomerList>();
-    this.customersService.getAll().subscribe((data: ResponseModel) => {
-      if (data.StatusCode === 200) {
-        Object.assign(this.customers, data.Content);
-      }
-    });
-    this.spinner.hide();
-    return this.customers;
+    return this.customersService.getAll();
   }
 
   getById(customerId: Number): Customer {
-    this.spinner.show();
     const customer = new Customer();
     this.customersService
       .getById(customerId)
@@ -79,14 +60,11 @@ export class CustomersComponent implements OnInit {
           Object.assign(customer, data.Content);
         }
       });
-    this.customer = this.customerDetail;
-    this.spinner.hide();
     return customer;
   }
 
   editCustomer(customerId: Number) {
     this.customerDetail = this.getById(customerId);
-    this.openModal2();
   }
 
   onSubmitEditForm(
@@ -106,19 +84,18 @@ export class CustomersComponent implements OnInit {
     city: String,
     state: String
   ) {
-
     // Validações do front-end
     let formIsValid: Boolean = true;
 
     if (this.IsNullOrWhiteSpace(name)) {
-      this.toaster.error('Nome inválido.');
+      this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       this.customerDetail.Name = '';
       formIsValid = false;
       return;
     }
 
     if (name.length < 2 || name.length > 30) {
-      this.toaster.error('Nome deve conter no mínimo 2 caracteres e no máximo 30.');
+      this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
       this.customerDetail.Name = '';
       formIsValid = false;
       return;
@@ -148,52 +125,46 @@ export class CustomersComponent implements OnInit {
   }
 
   edit(customerPut: CustomerPut) {
-    this.spinner.show();
     this.customersService.update(customerPut).subscribe(
       (data: ResponseModel) => {
         if (data.StatusCode === 200) {
           this.customers = this.getAll();
-          this.toaster.success(data.Content);
+          this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.error('Houve um erro ao conectar com o servidor.');
+            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
           } else {
-            this.toaster.error(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
       (err: HttpErrorResponse) => {
-        this.toaster.error('Houve um erro ao conectar com o servidor.');
+        this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
       }
     );
-    this.spinner.hide();
-    this.closeModal2();
   }
 
   deleteCustomer(customerId: Number) {
-    this.openModal3();
     this.deleteId = customerId;
   }
 
   delete() {
-    this.spinner.show();
     if (this.deleteId > 0) {
       this.customersService.delete(this.deleteId).subscribe(
         (data: ResponseModel) => {
           if (data.StatusCode === 200) {
             this.customers = this.getAll();
-            this.toaster.success(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-success');
           } else {
-            this.toaster.error(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         },
         (err: HttpErrorResponse) => {
-          this.toaster.error('Houve um erro ao conectar com o servidor.');
+          this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
         }
       );
+      this.deleteId = 0;
     }
-    this.spinner.hide();
-    this.closeModal3();
   }
 
   onSubmitAddForm(
@@ -216,15 +187,13 @@ export class CustomersComponent implements OnInit {
     let formIsValid: Boolean = true;
 
     if (this.IsNullOrWhiteSpace(name)) {
-      this.toaster.error('Nome inválido.');
-      this.customerDetail.Name = '';
+      this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       formIsValid = false;
       return;
     }
 
     if (name.length < 2 || name.length > 30) {
-      this.toaster.error('Nome deve conter no mínimo 2 caracteres e no máximo 30.');
-      this.customerDetail.Name = '';
+      this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
       formIsValid = false;
       return;
     }
@@ -235,7 +204,7 @@ export class CustomersComponent implements OnInit {
         RG: rg,
         CPF: cpf,
         CNPJ: cnpj,
-        Email: '',
+        Email: email,
         HomePhone: homePhone,
         CommercialPhone: commercialPhone,
         CellPhone: cellPhone,
@@ -251,54 +220,24 @@ export class CustomersComponent implements OnInit {
     }
   }
 
-   insert(customerPost: CustomerPost) {
-    this.spinner.show();
+  insert(customerPost: CustomerPost) {
     this.customersService.insert(customerPost).subscribe(
       (data: ResponseModel) => {
         if (data.StatusCode === 200) {
           this.customers = this.getAll();
-          this.toaster.success(data.Content);
+          this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.error('Houve um erro ao conectar com o servidor.');
+            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
           } else {
-            this.toaster.error(data.Content);
+            this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
       (err: HttpErrorResponse) => {
-        this.toaster.error('Houve um erro ao conectar com o servidor.');
+        this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
       }
     );
-    this.spinner.hide();
-    this.closeModal();
-   }
-
-  /* Modal Adicionar Cliente */
-  openModal() {
-    this.novaCliente.emit({ action: 'modal', params: ['open'] });
-  }
-
-  closeModal() {
-    this.novaCliente.emit({ action: 'modal', params: ['close'] });
-  }
-
-  /* Modal Editar Cliente */
-  openModal2() {
-    this.editarCliente.emit({ action: 'modal', params: ['open'] });
-  }
-
-  closeModal2() {
-    this.editarCliente.emit({ action: 'modal', params: ['close'] });
-  }
-
-  /* Modal Remover Cliente */
-  openModal3() {
-    this.deletarCliente.emit({ action: 'modal', params: ['open'] });
-  }
-
-  closeModal3() {
-    this.deletarCliente.emit({ action: 'modal', params: ['close'] });
   }
 
   IsNullOrWhiteSpace(str) {

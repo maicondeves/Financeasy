@@ -1,3 +1,4 @@
+import { ResponseModel } from './../../utils/response-model';
 import { CustomerPost } from './../models/customer-post';
 import { CustomerPut } from './../models/customer-put';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -13,17 +14,35 @@ export class CustomersService {
     private router: Router
   ) { }
 
-  getAll() {
-    const token = sessionStorage.getItem('token');
+  // getAll() {
+  //   const token = localStorage.getItem('token');
+  //   const reqHeaders = new HttpHeaders({
+  //     'Content-Type' : 'application/json',
+  //     'Authorization' : 'Basic ' + token
+  //   });
+  //   return this.http.get(this.rootUrl + '/customers', {headers : reqHeaders});
+  // }
+
+  getAll(): CustomerList[] {
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
     });
-    return this.http.get(this.rootUrl + '/customers', {headers : reqHeaders});
+
+    const customerList = new Array<CustomerList>();
+    this.http.get(this.rootUrl + '/customers', {headers : reqHeaders}).subscribe(
+      (data: ResponseModel) => {
+        if (data.StatusCode === 200) {
+          Object.assign(customerList, data.Content);
+        }
+      }
+    );
+    return customerList;
   }
 
   getById(id: Number) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
@@ -32,7 +51,7 @@ export class CustomersService {
   }
 
   delete(id: Number) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
@@ -41,7 +60,7 @@ export class CustomersService {
   }
 
   update(customerPut: CustomerPut) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
@@ -50,7 +69,7 @@ export class CustomersService {
   }
 
   insert(customerPost: CustomerPost) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token

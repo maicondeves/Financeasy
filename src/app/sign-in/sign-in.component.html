@@ -1,23 +1,22 @@
 <ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
 <div class="row">
-  <form #loginForm="ngForm" class="col s12 white" (ngSubmit)="onSubmit(Email.value, Password.value)">
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">account_circle</i>
-        <input id="email" type="text" class="validate" name="email" [value]="formEmail" maxlength="100" required #Email ngModel>
-        <label for="email">E-mail</label>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(SignInEmail.value, SignInPassword.value)">
+    <div class="row col s12 m12 l12">
+      <div class="input-field col s12 m12 l12">
+        <i mz-icon-mdi [icon]="'account-circle'" [size]="'24px'" class="prefix"></i>
+        <input id="signInEmail" type="text" class="validate" name="email" [value]="formEmail" maxlength="100" required #SignInEmail ngModel>
+        <label for="signInEmail">E-mail</label>
       </div>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">lock</i>
-        <input id="senha" type="password" class="validate" name="password" [value]="formPassword" maxlength="20" required #Password
-          ngModel>
-        <label for="senha">Senha</label>
+    <div class="row col s12 m12 l12">
+      <div class="input-field col s12 m12 l12">
+        <i mz-icon-mdi [icon]="'lock'" [size]="'24px'" class="prefix"></i>
+        <input id="signInSenha" type="password" class="validate" name="password" [value]="formPassword" maxlength="20" required #SignInPassword ngModel>
+        <label for="signInSenha">Senha</label>
       </div>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
+    <div class="row col s12 m12 l12">
+      <div class="input-field col s12 m12 l12">
         <button [disabled]="!loginForm.valid" class="right btn waves-effect waves-light" type="submit">Entrar
           <i class="material-icons right">send</i>
         </button>

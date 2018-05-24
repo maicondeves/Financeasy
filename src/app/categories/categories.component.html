@@ -1,45 +1,52 @@
-<app-nav-bar></app-nav-bar>
-
+<ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
 <div class="row">
   <div class="container">
     <div class="card col s12" style="padding: 0">
-      <div class="col s12 teal darken-2" id="imagem-titulo">
-      </div>
+      <div class="col s12 teal darken-2" id="imagem-titulo"></div>
       <div class="col s12">
-        <span class="card-title">Categorias</span>
-        <p>Crie categorias para serem usadas em projetos futuros, ex: Compra, Venda, Negociação.
-          <br> Caso queira visualizar, basta clicar em cima do nome do categoria.
-          <br> Clique no botão "+" para adicionar uma nova categoria</p>
+        <div class="card-title teal-text">Categorias</div>
+        <div>
+          <p>Crie categorias para serem usadas em projetos futuros, ex: Compra, Venda, Negociação.
+          <br>Caso queira visualizar, basta clicar em cima do nome do categoria.
+          <br>Clique no botão "+" para adicionar uma nova categoria</p>
+        </div>
       </div>
     </div>
     <div class="card col s12" style="padding: 0">
       <table class="striped">
         <thead>
           <tr>
-            <th class="espaco-esquerdo">Nome</th>
-            <th class="espaco-direito">Opções</th>
+            <th class="espaco-esquerdo teal-text">Nome</th>
+            <th class="espaco-esquerdo teal-text">Tipo</th>
+            <th class="espaco-direito teal-text">Opções</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="espaco-esquerdo modal-trigger editar">
-              <span (click)="openModal2()">Linha Rodoviária conexão itajaí / Brusque</span>
+          <tr *ngFor="let c of categories">
+            <td class="espaco-esquerdo editar">
+              <span (click)="editCategory(c.Id); editCategoryModal.open();">{{ c.Name }}</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editCategory(c.Id); editCategoryModal.open();">{{ getTypeDescription(c.Type) }}</span>
             </td>
             <td class="espaco-direito">
-              <a class="modal-trigger editar" (click)="openModal2()">
+              <a class="editar" (click)="editCategory(c.Id); editCategoryModal.open();">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
               </a>
-              <a class="modal-trigger editar" (click)="openModal3()">
+              <a class="editar" (click)="deleteCategory(c.Id); deleteCategoryModal.open();">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
+      <p class="espaco-esquerdo" *ngIf="categories.length == 0">
+        <b>Nenhuma categoria foi encontrada ou cadastrada.</b>
+      </p>
     </div>
     <div class="col s12">
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red right modal-trigger" (click)="openModal()">
+        <a class="btn-floating btn-large waves-effect waves-light red right" (click)="addCategoryModal.open()">
           <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
         </a>
       </div>
@@ -47,78 +54,91 @@
   </div>
 </div>
 
-  <!-- Nova Categoria -->
-  <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novaCategoria">
-    <div class="row modal-content">
-      <h4>Nova Categoria</h4>
-      <p>Preencha todos os campos para poder cadastrar uma nova categoria.</p>
-      <div class="row">
-        <div class="input-field col s6">
+<!-- Nova Categoria -->
+<form #addCategoryForm="ngForm" (ngSubmit)="onSubmitAddForm(addName.value, addType.value); addCategoryForm.reset();" >
+  <mz-modal #addCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
+    <mz-modal-header>
+      <h4 class="teal-text">Nova Categoria</h4>
+      <p>Preencha todos os campos para cadastrar uma nova categoria.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row col s12 m12 l12">
+        <div class="input-field col s12 m8 l8">
           <i class="material-icons prefix">assignment</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">Categoria</label>
+          <input id="addName" type="text" class="validate" name="addName" required #addName ngModel>
+          <label for="addName">Categoria</label>
         </div>
-        <div class="input-field col s6">
-          <div class="col s2">
-            <i class="material-icons">insert_chart</i>
-          </div>
-          <div class="col s10">
-            <select materialize="material_select">
-              <option id="select" value="" disabled selected>Escolha o Tipo</option>
-              <option value="1">Projeto</option>
-              <option value="2">Receita</option>
-              <option value="3">Despesa</option>
-            </select>
-          </div>
+        <div class="input-field col s12 m4 l4">
+          <select materialize="material_select" name="addType" required #addType ngModel>
+            <option id="addType" value="" disabled selected>Escolha o Tipo</option>
+            <option value="1">Projeto</option>
+            <option value="2">Receita</option>
+            <option value="3">Despesa</option>
+          </select>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
-      <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-    </div>
-  </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
 
-  <!-- Deletar Categoria -->
-  <div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCategoria">
-    <div class="modal-content">
-      <h4>Deletar Categoria</h4>
-      <p>Você realmente deseja deletar essa categoria? As catergorias deletadas não poderão ser recuperadas.</p>
-    </div>
-    <div class="modal-footer">
-      <a class="waves-effect waves-green btn-flat" (click)="closeModal3()">Cancelar</a>
-      <a class="modal-action modal-close waves-effect waves-green btn-flat">Sim</a>
-    </div>
-  </div>
+<!-- Deletar Categoria -->
+<mz-modal #deleteCategoryModal [fixedFooter]='false' [bottomSheet]='false' [fullscreen]='false'>
+  <mz-modal-header>
+    <h4 class="teal-text">Deletar Categoria</h4>
+  </mz-modal-header>
+  <mz-modal-content>
+    <p>As categorias deletadas não poderão ser recuperadas. Você realmente deseja deletar esta categoria?</p>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
+      <i class="material-icons right">done</i>
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>
 
-  <!-- Editar Categoria -->
-  <div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarCategoria">
-    <div class="row modal-content">
-      <h4>Editar Categoria</h4>
+<!-- Editar Categoria -->
+<form #editCategoryForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editType.value); editCategoryForm.reset();" >
+  <mz-modal #editCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
+    <mz-modal-header>
+      <h4 class="teal-text">Editar Categoria</h4>
       <p>Preencha os campos que você deseja alterar e clique em salvar.</p>
+    </mz-modal-header>
+    <mz-modal-content>
       <div class="row">
+        <input type="hidden" name="editId" [value]="this.categoryDetail.Id" #editId ngModel>
         <div class="input-field col s6">
           <i class="material-icons prefix">assignment</i>
-          <input id="icon_prefix" type="text" class="validate">
+          <input id="editName" type="text" class="validate" name="editName" [value]="this.categoryDetail.Name" required #editName ngModel>
           <label for="icon_prefix">Categoria</label>
         </div>
         <div class="input-field col s6">
-          <div class="col s2">
-            <i class="material-icons">insert_chart</i>
-          </div>
-          <div class="col s10">
-            <select materialize="material_select">
-              <option id="select" value="" disabled selected>Escolha o Tipo</option>
-              <option value="1">Projeto</option>
-              <option value="2">Receita</option>
-              <option value="3">Despesa</option>
+          <div class="col s12">
+            <select materialize="material_select" name="editType" [value]="this.categoryDetail.Type" required #editType ngModel>
+              <option *ngFor="let type of types" [value]="type.Id">{{ type.Description }}
+              </option>
             </select>
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Cancelar</a>
-      <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-    </div>
-  </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>

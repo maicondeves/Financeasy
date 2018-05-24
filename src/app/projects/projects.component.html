@@ -1,235 +1,176 @@
-<app-nav-bar></app-nav-bar>
-
 <div class="row">
   <div class="container">
     <div class="card col s12" style="padding: 0">
       <div class="col s12 teal darken-2" id="imagem-titulo">
       </div>
       <div class="col s12">
-        <span class="card-title">Projetos</span>
+        <span class="card-title teal-text">Projetos</span>
         <p>Cadastre seus projetos.
-          <br> Caso queira visualizar ou editar, basta clicar em cima do nome do projeto ou no ícone do lapis.
-          <br> Clique no botão "+" para adicionar um novo projeto
-          <br> Clique no icone da lixeira para deletar o projeto</p>
+          <br>Caso queira visualizar ou editar, basta clicar em cima do nome do projeto ou no ícone do lapis.
+          <br>Clique no botão "+" para adicionar um novo projeto
+          <br>Clique no icone da lixeira para deletar o projeto</p>
       </div>
     </div>
     <div class="card col s12" style="padding: 0">
       <table class="striped">
         <thead>
           <tr>
-            <th class="espaco-esquerdo">Nome</th>
-            <th class="espaco-direito">Opções</th>
+            <th class="espaco-esquerdo teal-text">Nome</th>
+            <th class="espaco-esquerdo teal-text">Status</th>
+            <th class="espaco-esquerdo teal-text">Categoria</th>
+            <th class="espaco-esquerdo teal-text">Início</th>
+            <th class="espaco-esquerdo teal-text">Conclusão</th>
+            <th class="espaco-direito teal-text">Opções</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="espaco-esquerdo modal-trigger editar">
-              <span (click)="openModal2()">Draga de Brusque</span>
+          <tr *ngFor="let p of projects">
+            <td class="espaco-esquerdo editar">
+              <span (click)="editProject(p.Id);">{{ p.Name }}</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editProject(p.Id);">{{ p.ProjectStatus }}</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editProject(p.Id);">{{ p.CategoryId }}</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editProject(p.Id);">{{ p.StartDate.toLocaleDateString() }}</span>
+            </td>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editProject(p.Id); ">{{ p.ConclusionDate.toLocaleDateString() }}</span>
             </td>
             <td class="espaco-direito">
-              <a class="modal-trigger editar" (click)="openModal2()">
+              <a class="editar" (click)="editProject(p.Id); editProjectModal.open();">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
               </a>
-              <a class="modal-trigger editar" (click)="openModal3()">
+              <a class="excluir" (click)="deleteProject(p.Id); deleteProjectModal.open()">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
+      <p class="espaco-esquerdo" *ngIf="projects.length == 0">
+        <b>Nenhum projeto foi encontrado ou cadastrado.</b>
+      </p>
     </div>
     <div class="col s12">
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red right modal-trigger" (click)="openModal()">
-          <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
+        <a class="btn-floating btn-large waves-effect waves-light red right" (click)="addProjectModal.open()">
+          <i class="material-icons tooltipped" data-position="top" data-tooltip="Novo Projeto">add</i>
         </a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Novo Cliente -->
-<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novoProjeto">
-  <div class="row modal-content">
-    <h4>Novo Projeto</h4>
+<!-- Novo Projeto -->
+<mz-modal #addProjectModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+  <mz-modal-header>
+    <h4 class="teal-text">Novo Projeto</h4>
+    <p>Preencha todos os campos para poder cadastrar um novo projeto.</p>
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row">
+      <div class="col s12 m8 l8">
+        <mz-input-container>
+          <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" [size]="'24px'"></i>
+          <input mz-input [label]="'Nome'" id="addName" type="text">
+        </mz-input-container>
+      </div>
+      <div class="col s12 m4 l4">
+        <mz-select-container>
+          <select mz-select id="options-select" [label]="'Categoria'">
+            <option>Aguardando Início</option>
+            <option>Em Andamento</option>
+            <option>Concluído</option>
+          </select>
+        </mz-select-container>
+      </div>
+      <div class="col s12 m4 l4">
+        <mz-datepicker-container>
+          <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+          <input mz-datepicker
+            [label]="'Data de Início'"
+            id="datepicker" type="text">
+        </mz-datepicker-container>
+      </div>
+      <div class="col s12 m4 l4">
+        <mz-datepicker-container>
+          <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+          <input mz-datepicker
+            [label]="'Data de Conclusão'"
+            id="datepicker" type="text">
+        </mz-datepicker-container>
+      </div>
+      <div class="col s12 m4 l4">
+        <mz-select-container>
+          <select mz-select id="options-select" [label]="'Status'">
+            <option>Aguardando Início</option>
+            <option>Em Andamento</option>
+            <option>Concluído</option>
+          </select>
+        </mz-select-container>
+      </div>
+      <div class="col s12 m12 l12">
+        <mz-input-container>
+          <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-account'" [size]="'24px'"></i>
+          <input mz-input [label]="'Cliente'" [autocomplete]="{ data: this.customers }" id="addCustomer" type="text">
+        </mz-input-container>
+      </div>
+      <div class="col s12 m12 l12">
+        <mz-textarea-container>
+          <i mz-icon-mdi mz-textarea-prefix [icon]="'comment-text'" [size]="'24px'">
+          </i>
+          <textarea mz-textarea [label]="'Descrição'" [placeholder]="'Descreva o seu projeto aqui.'" id="comment-textarea" maxlength="150" length="150">
+          </textarea>
+        </mz-textarea-container>
+      </div>
+    </div>
+
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
+      <i class="material-icons right">done</i>
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>
+
+<!-- Deletar Projeto -->
+<mz-modal #deleteProjectModal [fixedFooter]='false' [bottomSheet]='false' [fullscreen]='false'>
+  <mz-modal-header>
+    <h4 class="teal-text">Deletar Projeto</h4>
+  </mz-modal-header>
+  <mz-modal-content>
+    <p>Os projetos deletados não poderão ser recuperados. Você realmente deseja deletar esse projeto?</p>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
+      <i class="material-icons right">done</i>
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>
+
+<!-- Editar Projeto -->
+<mz-modal #editProjectModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+  <mz-modal-header>
+    <h4 class="teal-text">Editar Projeto</h4>
     <p>Preencha todos os campos para poder cadastrar um novo cliente.</p>
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">assignment_ind</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Nome Completo</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">RG</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CPF</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CNPJ</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Comercial</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Celular</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Residencial</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Endereço</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CEP</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Complemento</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Bairro</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select">
-          <option id="select" value="" disabled selected>Estado</option>
-          <option value="1">BA</option>
-          <option value="2">SC</option>
-          <option value="3">SP</option>
-        </select>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select">
-          <option id="select" value="" disabled selected>Cidade</option>
-          <option value="1">Itajai</option>
-          <option value="2">Joinville</option>
-          <option value="3">Brusque</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-  </div>
-</div>
-
-<!-- Deletar Cliente -->
-<div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarProjeto">
-  <div class="modal-content">
-    <h4>Deletar Projeto</h4>
-    <p>Você realmente deseja deletar esse Cliente? Os clientes deletadas não poderão ser recuperadas.</p>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal3()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Sim</a>
-  </div>
-</div>
-
-<!-- Editar Cliente -->
-<div id="modal3" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarProjeto">
-  <div class="row modal-content">
-    <h4>Editar Projeto</h4>
-    <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
-    <div class="row">
-      <div class="input-field col s12">
-        <i class="material-icons prefix">assignment_ind</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Nome Completo</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">RG</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CPF</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">content_paste</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CNPJ</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Comercial</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Celular</label>
-      </div>
-      <div class="input-field col s4">
-        <i class="material-icons prefix">phone</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Tel. Residencial</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Endereço</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">CEP</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Complemento</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <input id="icon_prefix" type="text" class="validate">
-        <label for="icon_prefix">Bairro</label>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select">
-          <option id="select" value="" disabled selected>Estado</option>
-          <option value="1">BA</option>
-          <option value="2">SC</option>
-          <option value="3">SP</option>
-        </select>
-      </div>
-      <div class="input-field col s6">
-        <i class="material-icons prefix">place</i>
-        <select materialize="material_select">
-          <option id="select" value="" disabled selected>Cidade</option>
-          <option value="1">Itajai</option>
-          <option value="2">Joinville</option>
-          <option value="3">Brusque</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Cancelar</a>
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Salvar</a>
-  </div>
-</div>
+  </mz-modal-header>
+  <mz-modal-content></mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
+      <i class="material-icons right">done</i>
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>

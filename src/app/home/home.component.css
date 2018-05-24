@@ -1,20 +1,7 @@
-.espaco-esquerdo{
-  padding-left: 1rem;
-}
-
-.espaco-direito{
-  padding-right: 15px;
-  float: right;
-}
-
 #imagem-titulo{
   background-image: url("../images/home.jpg");
   height: 10rem;
   width: 100%;
-}
-
-.editar {
-  cursor:pointer;
 }
 
 .numeros{
@@ -22,6 +9,7 @@
   left: 27%;
   top: 31%;
 }
+
 span a{
   color: white;
 }

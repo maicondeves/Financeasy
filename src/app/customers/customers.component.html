@@ -1,15 +1,14 @@
-<app-nav-bar></app-nav-bar>
 <ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
 <div class="row">
   <div class="container">
     <div class="card col s12" style="padding: 0">
       <div class="col s12 teal darken-2" id="imagem-titulo"></div>
       <div class="col s12">
-        <span class="card-title">Clientes</span>
+        <span class="card-title teal-text">Clientes</span>
         <p>Cadastre clientes para vinculá-los aos seus projetos.
-          <br> Caso queira visualizar ou editar, basta clicar em cima do nome do cliente ou no ícone do lápis.
-          <br> Clique no botão "+" para adicionar um novo cliente.
-          <br> Clique no icone da lixeira para deletar o cliente.</p>
+        <br>Caso queira visualizar ou editar, basta clicar em cima do nome do cliente ou no ícone do lápis.
+        <br>Clique no botão "+" para adicionar um novo cliente.
+        <br>Clique no icone da lixeira para deletar o cliente.</p>
       </div>
     </div>
     <div class="card col s12" style="padding: 0">
@@ -22,28 +21,28 @@
         </thead>
         <tbody>
           <tr *ngFor="let c of customers">
-            <td class="espaco-esquerdo modal-trigger editar">
-              <span (click)="editCustomer(c.Id)">{{ c.Name }}</span>
+            <td class="espaco-esquerdo editar">
+              <span (click)="editCustomer(c.Id); editCustomerModal.open();">{{ c.Name }}</span>
             </td>
             <td class="espaco-direito">
-              <a class="modal-trigger editar" href="#modal2" (click)="editCustomer(c.Id)">
+              <a class="editar" (click)="editCustomer(c.Id);  editCustomerModal.open();">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
               </a>
-              <a class="modal-trigger excluir" href="#modal3" (click)="deleteCustomer(c.Id)">
+              <a class="excluir" (click)="deleteCustomer(c.Id); deleteCustomerModal.open();">
                 <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
-      <p class="espaco-esquerdo" *ngIf="customers.length==0">
-        <b>Nenhum cliente foi encontrado.</b>
+      <p class="espaco-esquerdo" *ngIf="customers.length == 0">
+        <b>Nenhum cliente foi encontrado ou cadastrado.</b>
       </p>
     </div>
     <div class="col s12">
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red right modal-trigger" href="#modal1" (click)="openModal()">
-          <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
+        <a class="btn-floating btn-large waves-effect waves-light red right" (click)="addCustomerModal.open();">
+          <i class="material-icons tooltipped" data-position="top" data-tooltip="Novo Cliente">add</i>
         </a>
       </div>
     </div>
@@ -51,114 +50,210 @@
 </div>
 
 <!-- Novo Cliente -->
-<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="novaCliente">
-  <form #addCustomerForm="ngForm" (ngSubmit)="onSubmitAddForm(addName.value, addRG.value, addCPF.value, addCNPJ.value, addEmail.value, addHomePhone.value, addCommercialPhone.value, addCellPhone.value, addCEP.value, addStreetAddress.value, addComplement.value, addDistrict.value, addCity.value, addState.value)">
-    <div class="row modal-content">
-      <h4>Novo Cliente</h4>
+<form #addCustomerForm="ngForm" (ngSubmit)="onSubmitAddForm(addName.value, addRG.value, addCPF.value, addCNPJ.value, addEmail.value, addHomePhone.value, addCommercialPhone.value, addCellPhone.value, addCEP.value, addStreetAddress.value, addComplement.value, addDistrict.value, addCity.value, addState.value); addCustomerForm.reset();">
+  <mz-modal #addCustomerModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Novo Cliente</h4>
       <p>Preencha todos os campos para poder cadastrar um novo cliente.</p>
-      <div class="row">
-        <div class="input-field col s12">
-          <i class="material-icons prefix">assignment_ind</i>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row col s12 m12 l12">
+        <div class="input-field col s12 m12 l12">
+          <i mz-icon-mdi [icon]="'clipboard-account'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addName" required #addName ngModel>
           <label for="addName">Nome Completo</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">content_paste</i>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addRG" required #addRG ngModel>
           <label for="addRG">RG</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">content_paste</i>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCPF" required #addCPF ngModel>
           <label for="addCPF">CPF</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">content_paste</i>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCNPJ" required #addCNPJ ngModel>
           <label for="addCNPJ">CNPJ</label>
         </div>
-        <div class="input-field col s12">
-          <i class="material-icons prefix">email</i>
+        <div class="input-field col s12 m12 l6">
+          <i mz-icon-mdi [icon]="'email'" [size]="'24px'" class="prefix"></i>
           <input type="email" class="validate" name="addEmail" required #addEmail ngModel>
           <label for="addEmail">Email</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">phone</i>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCommercialPhone" required #addCommercialPhone ngModel>
           <label for="addCommercialPhone">Tel. Comercial</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">phone</i>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCellPhone" required #addCellPhone ngModel>
           <label for="addCellPhone">Tel. Celular</label>
         </div>
-        <div class="input-field col s4">
-          <i class="material-icons prefix">phone</i>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addHomePhone" required #addHomePhone ngModel>
           <label for="addHomePhone">Tel. Residencial</label>
         </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
-          <input type="text" class="validate" name="addStreetAddress" required #addStreetAddress ngModel>
-          <label for="addStreetAddress">Endereço</label>
-        </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCEP" required #addCEP ngModel>
           <label for="addCEP">CEP</label>
         </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="addStreetAddress" required #addStreetAddress ngModel>
+          <label for="addStreetAddress">Endereço</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addComplement" required #addComplement ngModel>
           <label for="addComplement">Complemento</label>
         </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addDistrict" required #addDistrict ngModel>
           <label for="addDistrict">Bairro</label>
         </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addCity" required #addCity ngModel>
           <label for="addCity">Cidade</label>
         </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="addState" required #addState ngModel>
           <label for="addState">Estado</label>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action">Salvar
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" (click)="closeModal()">Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
         <i class="material-icons right">cancel</i>
       </button>
-    </div>
-  </form>
-</div>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
 
 <!-- Deletar Cliente -->
-<div id="modal3" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="deletarCliente">
-  <div class="modal-content">
-    <h4>Deletar Cliente</h4>
+<mz-modal #deleteCustomerModal [fixedFooter]='false' [bottomSheet]='false' [fullscreen]='false'>
+  <mz-modal-header>
+    <h4 class="teal-text">Deletar Cliente</h4>
+  </mz-modal-header>
+  <mz-modal-content>
     <p>Os clientes deletados não poderão ser recuperados. Você realmente deseja deletar esse cliente?</p>
-  </div>
-  <div class="modal-footer">
-    <a class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()">Deletar
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
       <i class="material-icons right">done</i>
-    </a>
-    <a class="btn red white-text waves-effect waves-light" type="button" (click)="closeModal3()">Cancelar
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
       <i class="material-icons right">cancel</i>
-    </a>
-  </div>
-</div>
+    </button>
+  </mz-modal-footer>
+</mz-modal>
 
 <!-- Editar Cliente -->
+<form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editRG.value, editCPF.value, editCNPJ.value, editEmail.value, editHomePhone.value, editCommercialPhone.value, editCellPhone.value, editCEP.value, editStreetAddress.value, editComplement.value, editDistrict.value, editCity.value, editState.value); editCustomerForm.reset();">
+  <mz-modal #editCustomerModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Editar Cliente</h4>
+      <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row col s12 m12 l12">
+        <input type="hidden" name="editId" [value]="this.customerDetail.Id" #editId>
+        <div class="input-field col s12 m12 l12">
+          <i mz-icon-mdi [icon]="'clipboard-account'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editName" [value]="this.customerDetail.Name" required #editName>
+          <label for="editName">Nome Completo</label>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editRG" [value]="this.customerDetail.RG" required #editRG>
+          <label for="editRG">RG</label>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCPF" [value]="this.customerDetail.CPF" required #editCPF>
+          <label for="editCPF">CPF</label>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCNPJ" [value]="this.customerDetail.CNPJ" required #editCNPJ>
+          <label for="editCNPJ">CNPJ</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <i mz-icon-mdi [icon]="'email'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editEmail" [value]="this.customerDetail.Email" required #editEmail>
+          <label for="editEmail">Email</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCommercialPhone" [value]="this.customerDetail.CommercialPhone" required #editCommercialPhone>
+          <label for="editCommercialPhone">Tel. Comercial</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCellPhone" [value]="this.customerDetail.CellPhone" required #editCellPhone>
+          <label for="editCellPhone">Tel. Celular</label>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editHomePhone" [value]="this.customerDetail.HomePhone" required #editHomePhone>
+          <label for="editHomePhone">Tel. Residencial</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editStreetAddress" [value]="this.customerDetail.StreetAddress" required #editStreetAddress>
+          <label for="editStreetAddress">Endereço</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCEP" [value]="this.customerDetail.CEP" required #editCEP>
+          <label for="editCEP">CEP</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editComplement" [value]="this.customerDetail.Complement" required #editComplement>
+          <label for="editComplement">Complemento</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editDistrict" [value]="this.customerDetail.District" required #editDistrict>
+          <label for="editDistrict">Bairro</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editCity" [value]="this.customerDetail.City" required #editCity>
+          <label for="editCity">Cidade</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
+          <input type="text" class="validate" name="editState" [value]="this.customerDetail.State" required #editState>
+          <label for="editState">Estado</label>
+        </div>
+      </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
+<!--
 <div id="modal2" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="editarCliente">
-  <form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editRG.value, editCPF.value, editCNPJ.value, editEmail.value, editHomePhone.value, editCommercialPhone.value, editCellPhone.value, editCEP.value, editStreetAddress.value, editComplement.value, editDistrict.value, editCity.value, editState.value)">
+  <form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editRG.value, editCPF.value, editCNPJ.value, editEmail.value, editHomePhone.value, editCommercialPhone.value, editCellPhone.value, editCEP.value, editStreetAddress.value, editComplement.value, editDistrict.value, editCity.value, editState.value); editCustomerForm.reset();">
     <div class="row modal-content">
       <h4>Editar Cliente</h4>
       <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
@@ -208,34 +303,34 @@
           <label for="editHomePhone">Tel. Residencial</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editStreetAddress" [value]="this.customerDetail.StreetAddress" required #editStreetAddress
             ngModel>
           <label for="editStreetAddress">Endereço</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editCEP" [value]="this.customerDetail.CEP" required #editCEP ngModel>
           <label for="editCEP">CEP</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editComplement" [value]="this.customerDetail.Complement" required #editComplement
             ngModel>
           <label for="editComplement">Complemento</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editDistrict" [value]="this.customerDetail.District" required #editDistrict ngModel>
           <label for="editDistrict">Bairro</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editCity" [value]="this.customerDetail.City" required #editCity ngModel>
           <label for="editCity">Cidade</label>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">place</i>
+          <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
           <input type="text" class="validate" name="editState" [value]="this.customerDetail.State" required #editState ngModel>
           <label for="editState">Estado</label>
         </div>
@@ -250,4 +345,4 @@
       </button>
     </div>
   </form>
-</div>
+</div> -->

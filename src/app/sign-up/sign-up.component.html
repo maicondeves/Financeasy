@@ -1,32 +1,32 @@
 <ngx-spinner bdColor="rgba(255,255,255,0.5)" size="large" color="teal" type="ball-clip-rotate"></ngx-spinner>
 <div class="row">
-  <form #signupForm="ngForm" class="col s12 white" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)" >
+  <form #signupForm="ngForm" class="col s12 white" (ngSubmit)="onSubmit(SignUpName.value, SignUpEmail.value, SignUpPassword.value, SignUpConfirmPassword.value)" >
     <div class="row">
       <div class="input-field col s12">
-        <i class="material-icons prefix">assignment_ind</i>
-        <input id="nomeCompleto" type="text" class="validate" [value]="formName" required #Name ngModel>
-        <label for="nomeCompleto">Nome Completo</label>
+        <i mz-icon-mdi [icon]="'clipboard-account'" [size]="'24px'" class="prefix"></i>
+        <input id="signUpNomeCompleto" type="text" name="signUpNomeCompleto" class="validate" [value]="formName" required #SignUpName ngModel>
+        <label for="signUpNomeCompleto">Nome Completo</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <i class="material-icons prefix">mail_outline</i>
-        <input id="email" type="text" class="validate" [value]="formEmail" required #Email ngModel>
-        <label for="email">Email</label>
+        <i mz-icon-mdi [icon]="'email'" [size]="'24px'" class="prefix"></i>
+        <input id="signUpEmail" type="text" name="signUpEmail" class="validate" [value]="formEmail" required #SignUpEmail ngModel>
+        <label for="signUpEmail">Email</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <i class="material-icons prefix">lock</i>
-        <input id="senha" type="password" class="validate" [value]="formPassword" required #Password ngModel>
-        <label for="senha">Senha</label>
+        <i mz-icon-mdi [icon]="'lock'" [size]="'24px'" class="prefix"></i>
+        <input id="signUpSenha" type="password" name="signUpSenha" class="validate" [value]="formPassword" required #SignUpPassword ngModel>
+        <label for="signUpSenha">Senha</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
-        <i class="material-icons prefix">lock</i>
-        <input id="confirmarSenha" type="password" class="validate" [value]="formPasswordConfirm" required #ConfirmPassword ngModel>
-        <label for="confirmarSenha">Confirmar Senha</label>
+        <i mz-icon-mdi [icon]="'lock'" [size]="'24px'" class="prefix"></i>
+        <input id="signUpConfirmarSenha" type="password" name="signUpConfirmarSenha" class="validate" [value]="formPasswordConfirm" required #SignUpConfirmPassword ngModel>
+        <label for="signUpCconfirmarSenha">Confirmar Senha</label>
         <button [disabled]="!signupForm.valid" class="right btn waves-effect waves-light" type="submit" name="action">Cadastrar
           <i class="material-icons right">send</i>
         </button>
@@ -34,4 +34,3 @@
     </div>
   </form>
 </div>
-

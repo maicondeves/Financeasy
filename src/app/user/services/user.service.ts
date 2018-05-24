@@ -4,28 +4,33 @@ import { ResponseModel } from './../../utils/response-model';
 import { HttpClient } from '@angular/common/http';
 import { UserAuthenticate } from './../models/user-authenticate';
 import { UserRegister } from './../models/user-register';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable()
 export class UserService {
+
+  mostrarMenuEmitter = new EventEmitter<boolean>();
+
   readonly rootUrl = 'http://api.financeasy.com.br';
   constructor(
     private http: HttpClient,
     private router: Router
   ) {}
 
-  isLogged() {
-    if (sessionStorage.getItem('token') == null) {
+  isLoggedIn() {
+    if (localStorage.getItem('token') != null) {
+      this.mostrarMenuEmitter.emit(true);
       return true;
     } else {
-      return true;
+      this.mostrarMenuEmitter.emit(false);
+      return false;
     }
   }
 
   updateToken(user: UserAuthenticate) {
-    let userToken = sessionStorage.getItem('token');
+    let userToken = localStorage.getItem('token');
     let authString = atob(userToken);
     const index = authString.indexOf(':', 1);
     let email = authString.substring(0, index);
@@ -41,18 +46,21 @@ export class UserService {
 
     authString = email + ':' + password;
     userToken = btoa(authString);
-    sessionStorage.removeItem('token');
-    sessionStorage.setItem('token', userToken);
+    localStorage.removeItem('token');
+    localStorage.setItem('token', userToken);
   }
 
   createToken(user: UserAuthenticate) {
     const userToken = btoa(user.Email + ':' + user.Password);
-    sessionStorage.removeItem('token');
-    sessionStorage.setItem('token', userToken);
+    localStorage.removeItem('token');
+    localStorage.setItem('token', userToken);
+    this.mostrarMenuEmitter.emit(true);
+    this.router.navigate(['/home']);
   }
 
   logout() {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
+    this.mostrarMenuEmitter.emit(false);
     this.router.navigate(['/signin']);
   }
 
@@ -67,7 +75,7 @@ export class UserService {
   }
 
   userEditProfile(user: UserEditProfile) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
@@ -76,7 +84,7 @@ export class UserService {
   }
 
   getName() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
@@ -85,7 +93,7 @@ export class UserService {
   }
 
   getProfile() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token

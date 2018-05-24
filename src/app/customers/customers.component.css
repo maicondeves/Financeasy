@@ -1,22 +1,6 @@
-.espaco-esquerdo{
-  padding-left: 1rem;
-}
-
-.espaco-direito{
-  padding-right: 15px;
-  float: right;
-}
-
-a{
-  color: grey;
-}
-
 #imagem-titulo{
-  background-image: url("../images/clientes.png");
+  background-image: url("../../assets/background1.jpg");
   height: 10rem;
   width: 100%;
-}
-
-.editar {
-  cursor:pointer;
+  margin-bottom: 15px;
 }

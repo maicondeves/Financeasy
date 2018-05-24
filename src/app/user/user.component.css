@@ -1,9 +1,5 @@
-.posicaoLogin{
-  top: 10rem;
-  position: relative;
-}
-
 #background{
+  top: 0;
   height: 20rem;
   width: 100%;
   background-image: url("../images/login.jpg");
@@ -11,3 +7,6 @@
   position: absolute;
 }
 
+.centered {
+  margin-top: 3% !important;
+}
