@@ -14,15 +14,6 @@ export class CustomersService {
     private router: Router
   ) { }
 
-  // getAll() {
-  //   const token = localStorage.getItem('token');
-  //   const reqHeaders = new HttpHeaders({
-  //     'Content-Type' : 'application/json',
-  //     'Authorization' : 'Basic ' + token
-  //   });
-  //   return this.http.get(this.rootUrl + '/customers', {headers : reqHeaders});
-  // }
-
   getAll(): CustomerList[] {
     const token = localStorage.getItem('token');
     const reqHeaders = new HttpHeaders({

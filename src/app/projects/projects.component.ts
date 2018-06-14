@@ -1,17 +1,20 @@
+import { Router } from '@angular/router';
+import { CepDto } from './../shared/models/cep-dto';
+import { Cep } from './../shared/models/cep';
+import { CepService } from './../shared/services/cep.service';
+import { CategoriesService } from './../categories/services/categories.service';
+import { CategoryList } from './../categories/models/category-list';
 import { CustomerList } from './../customers/models/customer-list';
 import { CustomersService } from './../customers/services/customers.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ProjectsService } from './services/projects.service';
 import { ProjectList } from './models/project-list';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MzToastService } from 'ng2-materialize';
 import { Project } from './models/project';
 import { ProjectPut } from './models/project-put';
 import { ResponseModel } from '../utils/response-model';
 import { ProjectPost } from './models/project-post';
-
-declare var $: any;
-declare var jQuery: any;
+import { ProjectStatus } from './models/project-status';
 
 @Component({
   selector: 'app-projects',
@@ -19,36 +22,84 @@ declare var jQuery: any;
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
+
+  public DatePickerTraducaoBr: Pickadate.DateOptions = {
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'yyyy/mm/dd',
+    firstDay: 0,
+    showMonthsShort: false,
+    showWeekdaysFull: false,
+    closeOnClear: false,
+    closeOnSelect: true,
+    selectMonths: true,
+    selectYears: 10,
+    clear: 'Limpar',
+    close: 'Fechar',
+    today: 'Hoje',
+    monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+    weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+  };
+
+  status: ProjectStatus[] = [
+    { Id: 1, Description: 'Aguardando Início'},
+    { Id: 2, Description: 'Em Andamento'},
+    { Id: 3, Description: 'Concluído'}
+  ];
+
   customers: CustomerList[] = [];
+  categories: CategoryList[] = [];
   projects: ProjectList[] = [];
-  projectDetail: Project = {
+
+  project: Project = {
     Id: 0,
-    Name: ' ',
-    Description: ' ',
-    ProjectStatus: 0,
-    ConclusionDate: new Date(),
-    StartDate: new Date(),
-    CategoryId: 0,
-    CustomerId: 0,
-    CEP: ' ',
-    StreetAddress: ' ',
-    Complement: ' ',
-    District: ' ',
-    City: ' ',
-    State: ' '
+    Name: '',
+    Description: '',
+    Status: null,
+    ConclusionDate: null,
+    StartDate: null,
+    CategoryId: null,
+    CustomerId: null,
+    CEP: '',
+    StreetAddress: '',
+    Complement: '',
+    District: '',
+    City: '',
+    State: ''
   };
 
   deleteId: Number;
 
+  cep = new Cep();
+
   constructor(
     private projectsService: ProjectsService,
     private customersService: CustomersService,
+    private categoriesService: CategoriesService,
+    private cepService: CepService,
+    private router: Router,
     private toaster: MzToastService
   ) { }
 
   ngOnInit() {
     this.projects = this.getAll();
     this.customers = this.getCustomers();
+    this.categories = this.getCategories();
+  }
+
+  getCep() {
+    this.cepService.getCep(this.project.CEP).subscribe(
+      (data: CepDto) => {
+        this.project.CEP = data.cep;
+        this.project.StreetAddress = data.logradouro;
+        this.project.Complement = data.complemento;
+        this.project.District = data.bairro;
+        this.project.City = data.localidade;
+        this.project.State = data.uf;
+      }
+    );
   }
 
   getAll(): ProjectList[] {
@@ -63,54 +114,50 @@ export class ProjectsComponent implements OnInit {
     return this.customersService.getAll();
   }
 
-  onSubmitAddForm(
-    name: String,
-    descritption: String,
-    projectStatus: Number,
-    startDate: Date,
-    conclusionDate: Date,
-    categoryId: Number,
-    customerId: Number,
-    cep: String,
-    streetAddress: String,
-    complement: String,
-    district: String,
-    city: String,
-    state: String
-  ) {
+  getCategories() {
+    return this.categoriesService.getAllByType('project');
+  }
+
+  onSubmitAddForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.project.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       formIsValid = false;
-      return;
+
+    } else if (this.project.Name.length < 2 || this.project.Name.length > 30) {
+        this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
+        formIsValid = false;
     }
 
-    if (name.length < 2 || name.length > 30) {
-      this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
+    if (this.project.CustomerId == null || this.project.CustomerId === 0) {
+      this.toaster.show('Selecione um cliente para o projeto.', 4000, 'toast-danger');
       formIsValid = false;
-      return;
+    }
+
+    if (this.project.CategoryId == null || this.project.CategoryId === 0) {
+      this.toaster.show('Selecione uma categoria para o projeto.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.Status == null || this.project.Status === 0) {
+      this.toaster.show('Selecione um status para o projeto.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+
+    if (this.project.ConclusionDate != null && this.project.StartDate != null) {
+      this.project.ConclusionDate = new Date(this.project.ConclusionDate);
+      this.project.StartDate = new Date(this.project.StartDate);
+      if (this.project.StartDate > this.project.ConclusionDate) {
+        this.toaster.show('Data de Início do projeto não pode ser maior que a Data de Conclusão.', 4000, 'toast-danger');
+        formIsValid = false;
+      }
     }
 
     if (formIsValid) {
-      const projectPost: ProjectPost = {
-        Name: name,
-        Description: descritption,
-        ProjectStatus: projectStatus,
-        StartDate: startDate,
-        ConclusionDate: conclusionDate,
-        CategoryId: categoryId,
-        CustomerId: customerId,
-        CEP: cep,
-        StreetAddress: streetAddress,
-        Complement: complement,
-        District: district,
-        City: city,
-        State: state
-      };
-
-      this.insert(projectPost);
+      this.insert(this.project);
     }
   }
 
@@ -122,74 +169,65 @@ export class ProjectsComponent implements OnInit {
           this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+            this.toaster.show(
+              'Houve um erro ao conectar com o servidor.',
+              4000,
+              'toast-danger'
+            );
           } else {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
-      (err: HttpErrorResponse) => {
+      () => {
         this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
       }
     );
   }
 
   editProject(projectId: Number) {
-    this.projectDetail = this.getById(projectId);
+    this.project = this.getById(projectId);
   }
 
-  onSubmitEditForm(
-    id: Number,
-    name: String,
-    descritption: String,
-    projectStatus: Number,
-    startDate: Date,
-    conclusionDate: Date,
-    categoryId: Number,
-    customerId: Number,
-    cep: String,
-    streetAddress: String,
-    complement: String,
-    district: String,
-    city: String,
-    state: String
-  ) {
+  onSubmitEditForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.project.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
-      this.projectDetail.Name = '';
       formIsValid = false;
-      return;
+
+    } else if (this.project.Name.length < 2 || this.project.Name.length > 30) {
+        this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
+        formIsValid = false;
     }
 
-    if (name.length < 2 || name.length > 30) {
-      this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
-      this.projectDetail.Name = '';
+    if (this.project.CustomerId == null || this.project.CustomerId === 0) {
+      this.toaster.show('Selecione um cliente para o projeto.', 4000, 'toast-danger');
       formIsValid = false;
-      return;
+    }
+
+    if (this.project.CategoryId == null || this.project.CategoryId === 0) {
+      this.toaster.show('Selecione uma categoria para o projeto.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.Status == null || this.project.Status === 0) {
+      this.toaster.show('Selecione um status para o projeto.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.ConclusionDate != null && this.project.StartDate != null) {
+      this.project.ConclusionDate = new Date(this.project.ConclusionDate);
+      this.project.StartDate = new Date(this.project.StartDate);
+      if (this.project.StartDate > this.project.ConclusionDate) {
+        this.toaster.show('Data de Início do projeto não pode ser maior que a Data de Conclusão.', 4000, 'toast-danger');
+        formIsValid = false;
+      }
     }
 
     if (formIsValid) {
-      const projectPut: ProjectPut = {
-        Id: id,
-        Name: name,
-        Description: descritption,
-        ProjectStatus: projectStatus,
-        StartDate: startDate,
-        ConclusionDate: conclusionDate,
-        CategoryId: categoryId,
-        CustomerId: customerId,
-        CEP: cep,
-        StreetAddress: streetAddress,
-        Complement: complement,
-        District: district,
-        City: city,
-        State: state
-      };
-
-      this.edit(projectPut);
+      this.edit(this.project);
     }
   }
 
@@ -201,13 +239,17 @@ export class ProjectsComponent implements OnInit {
           this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+            this.toaster.show(
+              'Houve um erro ao conectar com o servidor.',
+              4000,
+              'toast-danger'
+            );
           } else {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
-      (err: HttpErrorResponse) => {
+      () => {
         this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-error');
       }
     );
@@ -228,12 +270,17 @@ export class ProjectsComponent implements OnInit {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         },
-        (err: HttpErrorResponse) => {
+        () => {
           this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
         }
       );
       this.deleteId = 0;
     }
+  }
+
+  detailProject(projectId: Number) {
+    console.log(projectId);
+    this.router.navigate(['/project-detail', projectId]);
   }
 
   IsNullOrWhiteSpace(str) {

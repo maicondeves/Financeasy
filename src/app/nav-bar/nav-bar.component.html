@@ -19,10 +19,10 @@
           <a routerLink="/projects" class="white-text">
             <i class="material-icons left white-text">import_contacts</i>Projetos</a>
         </li>
-        <li>
+        <!-- <li>
           <a routerLink="/reports" class="white-text">
             <i class="material-icons left white-text">filter_list</i>Relatórios</a>
-        </li>
+        </li> -->
       </ul>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li>
@@ -41,7 +41,7 @@
 </div>
 
 <!-- Editar Perfil -->
-<form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value)">
+<form #editProfileForm="ngForm" (ngSubmit)="onSubmit(Name.value, Email.value, Password.value, ConfirmPassword.value); editProfileForm.reset()">
   <mz-modal #editProfileModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Perfil</h4>
@@ -51,23 +51,22 @@
       <div class="row col s12 m12 l12">
         <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">account_circle</i>
-          <input id="editNomeCompleto" type="text" class="validate" name="EditName" [value]="formName" required #Name>
+          <input id="editNomeCompleto" type="text" class="validate" name="EditName" required #Name [(ngModel)]="formName">
           <label for="editNomeCompleto">Nome Completo</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">mail_outline</i>
-          <input id="editEmail" type="text" class="validate" name="EditEmail" [value]="formEmail" required #Email>
+          <input id="editEmail" type="text" class="validate" name="EditEmail" required #Email [(ngModel)]="formEmail">
           <label for="email">Email</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">lock</i>
-          <input id="editSenha" type="password" class="validate" name="EditPassword" [value]="formPassword" required #Password>
+          <input id="editSenha" type="password" class="validate" name="EditPassword" required #Password [(ngModel)]="formPassword">
           <label for="senha">Senha</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i class="material-icons prefix">lock</i>
-          <input id="editConfirmarSenha" type="password" class="validate" name="EditConfirmPassword" [value]="formPasswordConfirm" required
-            #ConfirmPassword>
+          <input id="editConfirmarSenha" type="password" class="validate" name="EditConfirmPassword" required #ConfirmPassword [(ngModel)]="formPasswordConfirm">
           <label for="confirmarSenha">Confirmar Senha</label>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { CepService } from './shared/services/cep.service';
 import { ProjectsService } from './projects/services/projects.service';
 import { CategoriesService } from './categories/services/categories.service';
 import { UserService } from './user/services/user.service';
@@ -7,8 +8,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import { NgMaskModule } from '@fagnerlima/ng-mask';
 
 import {
   MzButtonModule,
@@ -20,7 +19,9 @@ import {
   MzInputModule,
   MzSelectModule,
   MzTextareaModule,
-  MzDatepickerModule
+  MzDatepickerModule,
+  MzTooltipModule,
+  MzModalService
 } from 'ng2-materialize';
 
 import { MaterializeModule } from 'angular2-materialize';
@@ -33,7 +34,7 @@ import { UserComponent } from './user/user.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './auth/auth.guard';
 import { CustomersComponent } from './customers/customers.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -43,6 +44,7 @@ import { ExpensesComponent } from './expenses/expenses.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CustomersService } from './customers/services/customers.service';
 import { SpinnerIntercept } from './spinner/spinner-intercept';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { SpinnerIntercept } from './spinner/spinner-intercept';
     ProjectsComponent,
     RevenuesComponent,
     ExpensesComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    ProjectDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -77,13 +80,15 @@ import { SpinnerIntercept } from './spinner/spinner-intercept';
     MzTextareaModule,
     HttpClientModule,
     NgxSpinnerModule,
-    NgMaskModule,
+    MzTooltipModule,
     RouterModule.forRoot(APP_ROUTES)
   ],
   exports: [
     NgForm
   ],
   providers: [
+    MzModalService,
+    CepService,
     CustomersService,
     CategoriesService,
     UserService,

@@ -1,3 +1,6 @@
+body {
+  background-color: #eaeaea8c !important;
+}
 
 .indicator-item.active {
   background-color: teal !important;
@@ -33,12 +36,31 @@
   color: teal !important;
 }
 
+.detalhe {
+  cursor: pointer;
+  color: teal !important;
+}
+
 .espaco-esquerdo{
   padding-left: 1rem;
 }
 
 .espaco-direito{
   padding-right: 15px;
-  float: right;
 }
 
+.options-buttons a i {
+  color: teal !important;
+}
+
+.options-buttons a i:hover {
+  color: white !important;
+}
+
+.card .card-content .card-title button i {
+  line-height: 40px !important;
+}
+
+.card .card-content .card-title a i {
+  line-height: 40px !important;
+}

@@ -2,7 +2,7 @@ export class ProjectPut {
   Id: Number;
   Name: String;
   Description: String;
-  ProjectStatus: Number;
+  Status: Number;
   StartDate: Date;
   ConclusionDate: Date;
   CEP: String;

@@ -5,10 +5,12 @@ import { Injectable } from '@angular/core';
 import { Project } from '../models/project';
 import { ProjectPut } from '../models/project-put';
 import { ProjectPost } from '../models/project-post';
+import { ProjectDetail } from '../models/project-detail';
 
 @Injectable()
 export class ProjectsService {
   private readonly rootUrl = 'http://api.financeasy.com.br';
+
   constructor(
     private http: HttpClient
   ) { }
@@ -76,5 +78,24 @@ export class ProjectsService {
       'Authorization' : 'Basic ' + token
     });
     return this.http.post(this.rootUrl + '/projects/', projectPost, { headers : reqHeaders });
+  }
+
+  getProjectDetail(id: Number): ProjectDetail {
+    const token = localStorage.getItem('token');
+    const reqHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Authorization' : 'Basic ' + token
+    });
+
+    const projectDetail = new ProjectDetail();
+    this.http.get(this.rootUrl + '/projects/' + id.toString(), { headers : reqHeaders }).subscribe(
+      (data: ResponseModel) => {
+        if (data.StatusCode === 200) {
+          Object.assign(projectDetail, data.Content);
+        }
+      }
+    );
+
+    return projectDetail;
   }
 }

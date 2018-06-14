@@ -164,7 +164,7 @@
   <mz-modal #editCustomerModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Cliente</h4>
-      <p>Selecione o campo e altere o conteudo. Após isso, clique em salvar.</p>
+      <p>Faça as alterações necessárias e clique em salvar.</p>
     </mz-modal-header>
     <mz-modal-content>
       <div class="row col s12 m12 l12">
@@ -186,57 +186,57 @@
         </div>
         <div class="input-field col s12 m4 l2">
           <i mz-icon-mdi [icon]="'account-card-details'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editCNPJ" [value]="this.customerDetail.CNPJ" required #editCNPJ>
+          <input type="text" class="validate" name="editCNPJ" [(ngModel)]="this.customerDetail.CNPJ" required #editCNPJ>
           <label for="editCNPJ">CNPJ</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <i mz-icon-mdi [icon]="'email'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editEmail" [value]="this.customerDetail.Email" required #editEmail>
+          <input type="text" class="validate" name="editEmail" [(ngModel)]="this.customerDetail.Email" required #editEmail>
           <label for="editEmail">Email</label>
         </div>
         <div class="input-field col s12 m4 l4">
           <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editCommercialPhone" [value]="this.customerDetail.CommercialPhone" required #editCommercialPhone>
+          <input type="text" class="validate" name="editCommercialPhone" [(ngModel)]="this.customerDetail.CommercialPhone" required #editCommercialPhone>
           <label for="editCommercialPhone">Tel. Comercial</label>
         </div>
         <div class="input-field col s12 m4 l4">
           <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editCellPhone" [value]="this.customerDetail.CellPhone" required #editCellPhone>
+          <input type="text" class="validate" name="editCellPhone" [(ngModel)]="this.customerDetail.CellPhone" required #editCellPhone>
           <label for="editCellPhone">Tel. Celular</label>
         </div>
         <div class="input-field col s12 m4 l4">
           <i mz-icon-mdi [icon]="'phone'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editHomePhone" [value]="this.customerDetail.HomePhone" required #editHomePhone>
+          <input type="text" class="validate" name="editHomePhone" [(ngModel)]="this.customerDetail.HomePhone" required #editHomePhone>
           <label for="editHomePhone">Tel. Residencial</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editStreetAddress" [value]="this.customerDetail.StreetAddress" required #editStreetAddress>
+          <input type="text" class="validate" name="editStreetAddress" [(ngModel)]="this.customerDetail.StreetAddress" required #editStreetAddress>
           <label for="editStreetAddress">Endereço</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editCEP" [value]="this.customerDetail.CEP" required #editCEP>
+          <input type="text" class="validate" name="editCEP" [(ngModel)]="this.customerDetail.CEP" required #editCEP>
           <label for="editCEP">CEP</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editComplement" [value]="this.customerDetail.Complement" required #editComplement>
+          <input type="text" class="validate" name="editComplement" [(ngModel)]="this.customerDetail.Complement" required #editComplement>
           <label for="editComplement">Complemento</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editDistrict" [value]="this.customerDetail.District" required #editDistrict>
+          <input type="text" class="validate" name="editDistrict" [(ngModel)]="this.customerDetail.District" required #editDistrict>
           <label for="editDistrict">Bairro</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editCity" [value]="this.customerDetail.City" required #editCity>
+          <input type="text" class="validate" name="editCity" [(ngModel)]="this.customerDetail.City" required #editCity>
           <label for="editCity">Cidade</label>
         </div>
         <div class="input-field col s12 m6 l6">
           <i mz-icon-mdi [icon]="'map-marker'" [size]="'24px'" class="prefix"></i>
-          <input type="text" class="validate" name="editState" [value]="this.customerDetail.State" required #editState>
+          <input type="text" class="validate" name="editState" [(ngModel)]="this.customerDetail.State" required #editState>
           <label for="editState">Estado</label>
         </div>
       </div>

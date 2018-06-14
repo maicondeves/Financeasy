@@ -116,15 +116,15 @@
     </mz-modal-header>
     <mz-modal-content>
       <div class="row">
-        <input type="hidden" name="editId" [value]="this.categoryDetail.Id" #editId ngModel>
+        <input type="hidden" name="editId" #editId [(ngModel)]="this.categoryDetail.Id">
         <div class="input-field col s6">
           <i class="material-icons prefix">assignment</i>
-          <input id="editName" type="text" class="validate" name="editName" [value]="this.categoryDetail.Name" required #editName ngModel>
+          <input id="editName" type="text" class="validate" name="editName" required #editName [(ngModel)]="this.categoryDetail.Name">
           <label for="icon_prefix">Categoria</label>
         </div>
         <div class="input-field col s6">
           <div class="col s12">
-            <select materialize="material_select" name="editType" [value]="this.categoryDetail.Type" required #editType ngModel>
+            <select materialize="material_select" name="editType" required #editType [(ngModel)]="this.categoryDetail.Type">
               <option *ngFor="let type of types" [value]="type.Id">{{ type.Description }}
               </option>
             </select>

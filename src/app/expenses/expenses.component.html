@@ -1,3 +1,13 @@
-<p>
-  expenses works!
-</p>
+<mz-card>
+  <mz-card-title>
+    Despesas
+    <button mz-button [float]="true" class="right">
+      <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
+    </button>
+  </mz-card-title>
+  <mz-card-content>
+    <p>ProjectId: {{ this.projectId }}</p>
+    <p>MonthWork: {{ this.monthWork }}</p>
+    <p>YearWork: {{ this.yearWork }}</p>
+  </mz-card-content>
+</mz-card>

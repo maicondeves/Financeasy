@@ -1,0 +1,71 @@
+<div class="row container col s12">
+  <div class="col s12">
+    <mz-card>
+      <mz-card-title>
+        Detalhe do Projeto
+      </mz-card-title>
+      <mz-card-content>
+        <div class="row" style="margin-bottom: -10px;">
+          <div class="col s12">Nome: {{ this.projectDetail.Name }}</div>
+          <!-- <div class="col s12">Cliente: {{ this.projectDetail.Customer.Name }}</div> -->
+          <!-- <div class="col s12">Categoria: {{ this.projectDetail.Category.Name }}</div> -->
+          <div class="col s12">Data de Início: {{ this.projectDetail.StartDate | date: 'dd/MM/yyyy' }}</div>
+          <div class="col s12">Data de Conclusão: {{ this.projectDetail.ConclusionDate | date: 'dd/MM/yyyy' }}</div>
+          <div class="col s12">Status: {{ this.projectDetail.Status }}</div>
+        </div>
+      </mz-card-content>
+    </mz-card>
+  </div>
+  <div class="col s12">
+    <mz-card>
+      <mz-card-content>
+        <div class="row" style="margin-bottom: -15px;">
+          <div class="col s12 m6 l6">
+            <mz-select-container>
+              <select mz-select id="monthWork" [label]="'Mês de Trabalho'" [placeholder]="'Selecione o mês de trabalho'" [(ngModel)]="this.monthWork">
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+              </select>
+            </mz-select-container>
+          </div>
+          <div class="col s12 m6 l6">
+            <mz-select-container>
+              <select mz-select id="yearWork" [label]="'Ano de Trabalho'" [placeholder]="'Selecione o ano de trabalho'" [(ngModel)]="this.yearWork"
+                (change)="this.createYearSelect()">
+                <option *ngFor="let year of yearsOfWork" value="{{ year }}">{{ year }}</option>
+              </select>
+            </mz-select-container>
+          </div>
+        </div>
+      </mz-card-content>
+    </mz-card>
+  </div>
+  <div class="col s12 m6 l6">
+    <app-expenses [projectId]="this.projectId" [monthWork]="this.monthWork" [yearWork]="this.yearWork"></app-expenses>
+  </div>
+  <div class="col s12 m6 l6">
+    <app-revenues [projectId]="this.projectId" [monthWork]="this.monthWork" [yearWork]="this.yearWork"></app-revenues>
+  </div>
+</div>
+
+
+
+<!-- <button mz-button [float]="true" (click)="subtractYear()">
+          <i mz-icon [icon]="'keyboard_arrow_left'" [size]="'tiny'"></i>
+        </button>
+        <mz-input-container class="col s2">
+          <input mz-input type="number" [(ngModel)]="this.yearWork">
+        </mz-input-container>
+        <button mz-button [float]="true" (click)="addYear()">
+          <i mz-icon [icon]="'keyboard_arrow_right'" [size]="'tiny'"></i>
+        </button> -->

@@ -16,18 +16,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent implements OnInit {
-  types: CategoryType[] = [{
-    Id: 1,
-    Description: 'Projeto'
-  },
-  {
-    Id: 2,
-    Description: 'Receita'
-  },
-  {
-    Id: 3,
-    Description: 'Despesa'
-  }];
+  types: CategoryType[] = [];
 
   category: Category;
   categories: CategoryList[];
@@ -46,6 +35,11 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit() {
     this.categories = this.getAll();
+    this.types = this.getTypes();
+  }
+
+  getTypes() {
+    return this.categoriesService.getTypes();
   }
 
   getTypeDescription(typeId: Number): String {

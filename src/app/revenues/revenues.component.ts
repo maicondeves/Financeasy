@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-revenues',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./revenues.component.css']
 })
 export class RevenuesComponent implements OnInit {
+  @Input() projectId: Number;
+  @Input() monthWork: Number;
+  @Input() yearWork: Number;
 
   constructor() { }
 

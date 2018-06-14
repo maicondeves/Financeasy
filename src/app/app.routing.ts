@@ -9,6 +9,7 @@ import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { CustomersComponent } from './customers/customers.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
 
 export const APP_ROUTES: Routes = [
   { path: '', component: LandingPageComponent },
@@ -23,5 +24,6 @@ export const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'categories', component: CategoriesComponent, canActivate: [AuthGuard] },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard] },
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+  { path: 'project-detail/:id', component: ProjectDetailComponent, canActivate: [AuthGuard] }
 ];

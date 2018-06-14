@@ -1,3 +1,27 @@
-<p>
-  revenues works!
-</p>
+<mz-card>
+  <mz-card-title>
+    Receitas
+    <button mz-button [float]="true" class="right" (click)="teste.open()">
+      <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
+    </button>
+  </mz-card-title>
+  <mz-card-content>
+    <p>ProjectId: {{ this.projectId }}</p>
+    <p>MonthWork: {{ this.monthWork }}</p>
+    <p>YearWork: {{ this.yearWork }}</p>
+  </mz-card-content>
+</mz-card>
+
+<mz-modal #teste>
+  <mz-modal-header>
+    Teste
+  </mz-modal-header>
+  <mz-modal-content>
+    Teste
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>
