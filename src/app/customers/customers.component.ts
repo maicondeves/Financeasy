@@ -1,15 +1,13 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { CepService } from './../shared/services/cep.service';
 import { Customer } from './models/customer';
 import { CustomerPost } from './models/customer-post';
 import { CustomerPut } from './models/customer-put';
 import { ResponseModel } from './../utils/response-model';
 import { CustomerList } from './models/customer-list';
 import { CustomersService } from './services/customers.service';
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
-import { debug } from 'util';
+import { Component, OnInit } from '@angular/core';
 import { MzToastService } from 'ng2-materialize';
-import { Mask } from '@fagnerlima/ng-mask';
+import { CepDto } from '../shared/models/cep-dto';
 
 @Component({
   selector: 'app-customers',
@@ -18,33 +16,47 @@ import { Mask } from '@fagnerlima/ng-mask';
 })
 export class CustomersComponent implements OnInit {
   customers: CustomerList[];
-  customerDetail: Customer = {
+  customer: Customer = {
     Id: 0,
-    Name: ' ',
-    RG: ' ',
-    CPF: ' ',
-    CNPJ: ' ',
-    Email: ' ',
-    HomePhone: ' ',
-    CommercialPhone: ' ',
-    CellPhone: ' ',
-    CEP: ' ',
-    StreetAddress: ' ',
-    Complement: ' ',
-    District: ' ',
-    City: ' ',
-    State: ' '
+    Name: '',
+    RG: '',
+    CPF: '',
+    CNPJ: '',
+    Email: '',
+    HomePhone: '',
+    CommercialPhone: '',
+    CellPhone: '',
+    CEP: '',
+    StreetAddress: '',
+    Complement: '',
+    District: '',
+    City: '',
+    State: ''
   };
 
-  deleteId: Number = 0;
+  deleteId: Number;
 
   constructor(
     private customersService: CustomersService,
+    private cepService: CepService,
     private toaster: MzToastService
   ) {}
 
   ngOnInit() {
     this.customers = this.getAll();
+  }
+
+  getCep() {
+    this.cepService.getCep(this.customer.CEP).subscribe(
+      (data: CepDto) => {
+        this.customer.CEP = data.cep;
+        this.customer.StreetAddress = data.logradouro;
+        this.customer.Complement = data.complemento;
+        this.customer.District = data.bairro;
+        this.customer.City = data.localidade;
+        this.customer.State = data.uf;
+      }
+    );
   }
 
   getAll(): CustomerList[] {
@@ -64,63 +76,85 @@ export class CustomersComponent implements OnInit {
   }
 
   editCustomer(customerId: Number) {
-    this.customerDetail = this.getById(customerId);
+    this.customer = this.getById(customerId);
   }
 
-  onSubmitEditForm(
-    id: Number,
-    name: String,
-    rg: String,
-    cpf: String,
-    cnpj: String,
-    email: String,
-    homePhone: String,
-    commercialPhone: String,
-    cellPhone: String,
-    cep: String,
-    streetAddress: String,
-    complement: String,
-    district: String,
-    city: String,
-    state: String
-  ) {
+  onSubmitEditForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.customer.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
-      this.customerDetail.Name = '';
       formIsValid = false;
-      return;
     }
 
-    if (name.length < 2 || name.length > 30) {
+    if (this.customer.Name.length < 2 || this.customer.Name.length > 30) {
       this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
-      this.customerDetail.Name = '';
       formIsValid = false;
-      return;
+    }
+
+    if (this.customer.Email.length > 200) {
+      this.toaster.show('Email deve conter no máximo 200 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.RG.length > 14) {
+      this.toaster.show('RG deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CPF.length > 14) {
+      this.toaster.show('CPF deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CNPJ.length > 18) {
+      this.toaster.show('CNPJ deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.HomePhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CellPhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CommercialPhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CEP.length > 14) {
+      this.toaster.show('CEP devem conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.StreetAddress.length > 50) {
+      this.toaster.show('Endereço devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.Complement.length > 20) {
+      this.toaster.show('Complemento devem conter no máximo 20 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.District.length > 50) {
+      this.toaster.show('Bairro devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.City.length > 50) {
+      this.toaster.show('Cidade devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
     }
 
     if (formIsValid) {
-      const customerPut: CustomerPut = {
-        Id: id,
-        Name: name,
-        RG: rg,
-        CPF: cpf,
-        CNPJ: cnpj,
-        Email: '',
-        HomePhone: homePhone,
-        CommercialPhone: commercialPhone,
-        CellPhone: cellPhone,
-        CEP: cep,
-        StreetAddress: streetAddress,
-        Complement: complement,
-        District: district,
-        City: city,
-        State: state
-      };
-
-      this.edit(customerPut);
+      this.edit(this.customer);
     }
   }
 
@@ -132,13 +166,13 @@ export class CustomersComponent implements OnInit {
           this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+            this.toaster.show('Houve um erro ao atualizar o registro.', 4000, 'toast-danger');
           } else {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
-      (err: HttpErrorResponse) => {
+      () => {
         this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
       }
     );
@@ -156,10 +190,14 @@ export class CustomersComponent implements OnInit {
             this.customers = this.getAll();
             this.toaster.show(data.Content, 4000, 'toast-success');
           } else {
-            this.toaster.show(data.Content, 4000, 'toast-danger');
+            if (data.StatusCode === 500) {
+              this.toaster.show('Houve um erro ao deletar o registro.', 4000, 'toast-danger');
+            } else {
+              this.toaster.show(data.Content, 4000, 'toast-danger');
+            }
           }
         },
-        (err: HttpErrorResponse) => {
+        () => {
           this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
         }
       );
@@ -167,56 +205,82 @@ export class CustomersComponent implements OnInit {
     }
   }
 
-  onSubmitAddForm(
-    name: String,
-    rg: String,
-    cpf: String,
-    cnpj: String,
-    email: String,
-    homePhone: String,
-    commercialPhone: String,
-    cellPhone: String,
-    cep: String,
-    streetAddress: String,
-    complement: String,
-    district: String,
-    city: String,
-    state: String
-  ) {
+  onSubmitAddForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.customer.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       formIsValid = false;
-      return;
     }
 
-    if (name.length < 2 || name.length > 30) {
+    if (this.customer.Name.length < 2 || this.customer.Name.length > 30) {
       this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
       formIsValid = false;
-      return;
+    }
+
+    if (this.customer.Email.length > 200) {
+      this.toaster.show('Email deve conter no máximo 200 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.RG.length > 14) {
+      this.toaster.show('RG deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CPF.length > 14) {
+      this.toaster.show('CPF deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CNPJ.length > 18) {
+      this.toaster.show('CNPJ deve conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.HomePhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CellPhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CommercialPhone.length > 15) {
+      this.toaster.show('Telefones devem conter no máximo 15 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.CEP.length > 14) {
+      this.toaster.show('CEP devem conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.StreetAddress.length > 50) {
+      this.toaster.show('Endereço devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.Complement.length > 20) {
+      this.toaster.show('Complemento devem conter no máximo 20 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.District.length > 50) {
+      this.toaster.show('Bairro devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.customer.City.length > 50) {
+      this.toaster.show('Cidade devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
     }
 
     if (formIsValid) {
-      const customerPost: CustomerPost = {
-        Name: name,
-        RG: rg,
-        CPF: cpf,
-        CNPJ: cnpj,
-        Email: email,
-        HomePhone: homePhone,
-        CommercialPhone: commercialPhone,
-        CellPhone: cellPhone,
-        CEP: cep,
-        StreetAddress: streetAddress,
-        Complement: complement,
-        District: district,
-        City: city,
-        State: state
-      };
-
-      this.insert(customerPost);
+      this.insert(this.customer);
     }
   }
 
@@ -228,13 +292,13 @@ export class CustomersComponent implements OnInit {
           this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+            this.toaster.show('Houve um erro ao inserir o registro.', 4000, 'toast-danger');
           } else {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }
         }
       },
-      (err: HttpErrorResponse) => {
+      () => {
         this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
       }
     );

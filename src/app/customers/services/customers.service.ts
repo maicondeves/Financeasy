@@ -4,14 +4,12 @@ import { CustomerPut } from './../models/customer-put';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomerList } from './../models/customer-list';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class CustomersService {
   readonly rootUrl = 'http://api.financeasy.com.br';
   constructor(
-    private http: HttpClient,
-    private router: Router
+    private http: HttpClient
   ) { }
 
   getAll(): CustomerList[] {

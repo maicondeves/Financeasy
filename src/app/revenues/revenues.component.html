@@ -1,25 +1,173 @@
 <mz-card>
-  <mz-card-title>
+  <mz-card-title class="teal-text">
     Receitas
-    <button mz-button [float]="true" class="right" (click)="teste.open()">
+    <button mz-button [float]="true" class="green right" (click)="addRevenueModal.open()">
       <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
     </button>
   </mz-card-title>
   <mz-card-content>
-    <p>ProjectId: {{ this.projectId }}</p>
-    <p>MonthWork: {{ this.monthWork }}</p>
-    <p>YearWork: {{ this.yearWork }}</p>
+    <table class="striped" style="padding: 0" *ngIf="revenues.length > 0">
+      <thead>
+        <tr>
+          <th class="espaco-esquerdo teal-text"></th>
+          <th class="espaco-esquerdo teal-text">Descrição</th>
+          <th class="espaco-esquerdo teal-text">Categoria</th>
+          <th class="espaco-esquerdo teal-text">Valor</th>
+          <th class="espaco-direito teal-text right">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of revenues">
+          <td class="espaco-esquerdo editar" mz-tooltip [tooltip]="'Status da Receita'" [position]="'top'" [delay]="500" [html]="true">
+            <i mz-icon-mdi class="{{getStatusColor(e.Status)}}-text" [icon]="'checkbox-blank-circle'" [size]="'12px'" [align]="'center'"></i>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span class="truncate">{{ e.Description }}</span>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span class="truncate">{{ e.Category.Name }}</span>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span>{{ e.ReceivableAmount | currency:'BRL':true }}</span>
+          </td>
+          <td class="options-buttons right">
+            <a mz-button mz-tooltip [tooltip]="'Editar Receita'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+              (click)="editRevenue(e.Id); editRevenueModal.open();">
+              <i mz-icon-mdi [icon]="'pencil'" [size]="'24px'"></i>
+            </a>
+            <a mz-button mz-tooltip [tooltip]="'Excluir Receita'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+              (click)="deleteRevenue(e.Id); deleteRevenueModal.open()">
+              <i mz-icon-mdi [icon]="'delete'" [size]="'24px'"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row" *ngIf="revenues.length == 0">
+      <div class="col s12" style="margin-top: 15px;">
+        <b>Nenhuma receita foi encontrada ou cadastrada.</b>
+      </div>
+    </div>
   </mz-card-content>
 </mz-card>
 
-<mz-modal #teste>
+<form #addRevenueForm="ngForm" (ngSubmit)="onSubmitAddForm(); addRevenueForm.reset();" >
+  <mz-modal #addRevenueModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Nova Receita</h4>
+      <p>Preencha todos os campos para cadastrar uma nova receita.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Descrição'" id="addRevenueDescription" name="addRevenueDescription" type="text" required [(ngModel)]="revenue.Description">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="addRevenueCategoryId" name="addRevenueCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'" required [(ngModel)]="revenue.CategoryId">
+              <option *ngFor="let revenueCategory of revenueCategories" value="{{ revenueCategory.Id }}">{{ revenueCategory.Name }}</option>
+              <option *ngIf="revenueCategories.length == 0" disabled>Nenhuma categoria de receita foi cadastrada.</option>
+            </select>
+          </mz-select-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" [label]="'Valor'" id="addReceivableAmount" name="addReceivableAmount" type="tel" required [(ngModel)]="revenue.ReceivableAmount">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Recebimento'" id="addReceivedDate" name="addReceivedDate" type="date" required [(ngModel)]="revenue.ReceivedDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" (focus)="copyValue()" [label]="'Valor Recebido'" id="addReceivedAmount" name="addReceivedAmount" type="tel" required [(ngModel)]="revenue.ReceivedAmount">
+          </mz-input-container>
+        </div>
+      </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
+
+<form #editRevenueForm="ngForm" (ngSubmit)="onSubmitEditForm(); editRevenueForm.reset();" >
+  <mz-modal #editRevenueModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Editar Receita</h4>
+      <p>Faça as alterações necessárias e clique em salvar.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Descrição'" id="editRevenueDescription" name="editRevenueDescription" type="text" required [(ngModel)]="revenue.Description">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="editRevenueCategoryId" name="editRevenueCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'" required [(ngModel)]="revenue.CategoryId">
+              <option *ngFor="let revenueCategory of revenueCategories" value="{{ revenueCategory.Id }}">{{ revenueCategory.Name }}</option>
+              <option *ngIf="revenueCategories.length == 0" disabled>Nenhuma categoria de receita foi cadastrada.</option>
+            </select>
+          </mz-select-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" [label]="'Valor'" id="editReceivableAmount" name="editReceivableAmount" type="tel" required [(ngModel)]="revenue.ReceivableAmount">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Recebimento'" id="editReceivedDate" name="editReceivedDate" type="date" required [(ngModel)]="revenue.ReceivedDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" (focus)="copyValue()" [label]="'Valor Recebido'" id="editReceivedAmount" name="editReceivedAmount" type="tel" required [(ngModel)]="revenue.ReceivedAmount">
+          </mz-input-container>
+        </div>
+      </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
+
+<mz-modal #deleteRevenueModal>
   <mz-modal-header>
-    Teste
+    <h4 class="teal-text">Deletar Receita</h4>
   </mz-modal-header>
   <mz-modal-content>
-    Teste
+    <p>As receitas deletadas não poderão ser recuperadas. Você realmente deseja deletar essa receita?</p>
   </mz-modal-content>
   <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
+      <i class="material-icons right">done</i>
+    </button>
     <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
       <i class="material-icons right">cancel</i>
     </button>

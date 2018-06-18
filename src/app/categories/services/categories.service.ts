@@ -3,15 +3,12 @@ import { CategoryType } from './../models/category-type';
 import { CategoryPost } from './../models/category-post';
 import { CategoryPut } from './../models/category-put';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ResponseModel } from '../../utils/response-model';
 
 @Injectable()
 export class CategoriesService {
   private readonly rootUrl = 'http://api.financeasy.com.br';
-
-  private categoriesList: CategoryList[] = [];
 
   private types: CategoryType[] = [{
     Id: 1,
@@ -54,14 +51,16 @@ export class CategoriesService {
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
     });
+
+    const categoriesList = new Array<CategoryList>();
     this.http.get(this.rootUrl + '/categories/types/' + type.toString(), {headers : reqHeaders}).subscribe(
       (data: ResponseModel) => {
         if (data.StatusCode === 200) {
-          Object.assign(this.categoriesList, data.Content);
+          Object.assign(categoriesList, data.Content);
         }
       }
     );
-    return this.categoriesList;
+    return categoriesList;
   }
 
   getTypes(): CategoryType[] {

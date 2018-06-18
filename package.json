@@ -30,6 +30,7 @@
     "linqts": "^1.11.0",
     "materialize-css": "^0.100.2",
     "mdi": "^2.2.43",
+    "ng2-currency-mask": "^5.3.1",
     "ng2-materialize": "^1.8.1",
     "ng2-toastr": "^4.1.2",
     "ngx-mask": "^2.9.3",

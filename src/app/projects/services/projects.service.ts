@@ -77,7 +77,7 @@ export class ProjectsService {
       'Content-Type' : 'application/json',
       'Authorization' : 'Basic ' + token
     });
-    return this.http.post(this.rootUrl + '/projects/', projectPost, { headers : reqHeaders });
+    return this.http.post(this.rootUrl + '/projects', projectPost, { headers : reqHeaders });
   }
 
   getProjectDetail(id: Number): ProjectDetail {

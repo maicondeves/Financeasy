@@ -2,7 +2,7 @@ import { Customer } from "../../customers/models/customer";
 import { Category } from "../../categories/models/category";
 
 export class ProjectDetail {
-  Id: Number;
+  Id: number;
   Name: String;
   Description: String;
   Status: Number;

@@ -146,7 +146,6 @@ export class ProjectsComponent implements OnInit {
       formIsValid = false;
     }
 
-
     if (this.project.ConclusionDate != null && this.project.StartDate != null) {
       this.project.ConclusionDate = new Date(this.project.ConclusionDate);
       this.project.StartDate = new Date(this.project.StartDate);
@@ -154,6 +153,36 @@ export class ProjectsComponent implements OnInit {
         this.toaster.show('Data de Início do projeto não pode ser maior que a Data de Conclusão.', 4000, 'toast-danger');
         formIsValid = false;
       }
+    }
+
+    if (this.project.Description.length > 100) {
+      this.toaster.show('Descrição deve possuir no máximo 100 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.CEP.length > 14) {
+      this.toaster.show('CEP devem conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.StreetAddress.length > 50) {
+      this.toaster.show('Endereço devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.Complement.length > 20) {
+      this.toaster.show('Complemento devem conter no máximo 20 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.District.length > 50) {
+      this.toaster.show('Bairro devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.City.length > 50) {
+      this.toaster.show('Cidade devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
     }
 
     if (formIsValid) {
@@ -226,6 +255,36 @@ export class ProjectsComponent implements OnInit {
       }
     }
 
+    if (this.project.Description.length > 100) {
+      this.toaster.show('Descrição deve possuir no máximo 100 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.CEP.length > 14) {
+      this.toaster.show('CEP devem conter no máximo 14 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.StreetAddress.length > 50) {
+      this.toaster.show('Endereço devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.Complement.length > 20) {
+      this.toaster.show('Complemento devem conter no máximo 20 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.District.length > 50) {
+      this.toaster.show('Bairro devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
+    if (this.project.City.length > 50) {
+      this.toaster.show('Cidade devem conter no máximo 50 caracteres.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
+
     if (formIsValid) {
       this.edit(this.project);
     }
@@ -279,7 +338,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   detailProject(projectId: Number) {
-    console.log(projectId);
     this.router.navigate(['/project-detail', projectId]);
   }
 

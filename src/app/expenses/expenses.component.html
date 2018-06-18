@@ -1,13 +1,191 @@
 <mz-card>
-  <mz-card-title>
+  <mz-card-title class="teal-text">
     Despesas
-    <button mz-button [float]="true" class="right">
+    <button mz-button [float]="true" class="red right" (click)="addExpenseModal.open()">
       <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
     </button>
   </mz-card-title>
   <mz-card-content>
-    <p>ProjectId: {{ this.projectId }}</p>
-    <p>MonthWork: {{ this.monthWork }}</p>
-    <p>YearWork: {{ this.yearWork }}</p>
+    <table class="striped" style="padding: 0" *ngIf="expenses.length > 0">
+      <thead>
+        <tr>
+          <th class="espaco-esquerdo teal-text"></th>
+          <th class="espaco-esquerdo teal-text">Descrição</th>
+          <th class="espaco-esquerdo teal-text">Categoria</th>
+          <th class="espaco-esquerdo teal-text">Valor</th>
+          <th class="espaco-esquerdo teal-text">Venc.</th>
+          <th class="espaco-direito teal-text right">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of expenses">
+          <td class="espaco-esquerdo editar" mz-tooltip [tooltip]="'Status da Despesa'" [position]="'top'" [delay]="500" [html]="true">
+            <i mz-icon-mdi class="{{getStatusColor(e.Status)}}-text" [icon]="'checkbox-blank-circle'" [size]="'12px'" [align]="'center'"></i>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span class="truncate">{{ e.Description }}</span>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span class="truncate">{{ e.Category.Name }}</span>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span>{{ e.Amount | currency:'BRL':true }}</span>
+          </td>
+          <td class="espaco-esquerdo editar">
+            <span>{{ e.ExpirationDate | date: 'dd/MM/yyyy' }}</span>
+          </td>
+          <td class="options-buttons right">
+            <a mz-button mz-tooltip [tooltip]="'Editar Despesa'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+              (click)="editExpense(e.Id); editExpenseModal.open();">
+              <i mz-icon-mdi [icon]="'pencil'" [size]="'24px'"></i>
+            </a>
+            <a mz-button mz-tooltip [tooltip]="'Excluir Despesa'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+              (click)="deleteExpense(e.Id); deleteExpenseModal.open()">
+              <i mz-icon-mdi [icon]="'delete'" [size]="'24px'"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row" *ngIf="expenses.length == 0">
+      <div class="col s12" style="margin-top: 15px;">
+        <b>Nenhuma despesa foi encontrada ou cadastrada.</b>
+      </div>
+    </div>
   </mz-card-content>
 </mz-card>
+
+<form #addExpenseForm="ngForm" (ngSubmit)="onSubmitAddForm(); addExpenseForm.reset();" >
+  <mz-modal #addExpenseModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Nova Despesa</h4>
+      <p>Preencha todos os campos para cadastrar uma nova despesa.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Descrição'" id="addExpenseDescription" name="addExpenseDescription" type="text" required [(ngModel)]="expense.Description">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="addExpenseCategoryId" name="addExpenseCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'" required [(ngModel)]="expense.CategoryId">
+              <option *ngFor="let expenseCategory of expenseCategories" value="{{ expenseCategory.Id }}">{{ expenseCategory.Name }}</option>
+              <option *ngIf="expenseCategories.length == 0" disabled>Nenhuma categoria de despesa foi cadastrada.</option>
+            </select>
+          </mz-select-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Vencimento'" id="addExpirationDate" name="addExpirationDate" type="date" required [(ngModel)]="expense.ExpirationDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" [label]="'Valor'" id="addAmount" name="addAmount" type="tel" required [(ngModel)]="expense.Amount">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Pagamento'" id="addPaymentDate" name="addPaymentDate" type="date" required [(ngModel)]="expense.PaymentDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" (focus)="copyValue()" [label]="'Valor Pago'" id="addPaymentAmount" name="addPaymentAmount" type="tel" required [(ngModel)]="expense.PaymentAmount">
+          </mz-input-container>
+        </div>
+      </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
+
+<form #editExpenseForm="ngForm" (ngSubmit)="onSubmitEditForm(); editExpenseForm.reset();" >
+  <mz-modal #editExpenseModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
+    <mz-modal-header>
+      <h4 class="teal-text">Editar Despesa</h4>
+      <p>Faça as alterações necessárias e clique em salvar.</p>
+    </mz-modal-header>
+    <mz-modal-content>
+      <div class="row">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Descrição'" id="editDescription" name="editDescription" type="text" required [(ngModel)]="expense.Description">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="editCategoryId" name="editCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'" required [(ngModel)]="expense.CategoryId">
+              <option *ngFor="let expenseCategory of expenseCategories" value="{{ expenseCategory.Id }}">{{ expenseCategory.Name }}</option>
+              <option *ngIf="expenseCategories.length == 0" disabled>Nenhuma categoria de despesa foi cadastrada.</option>
+            </select>
+          </mz-select-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Vencimento'" id="editExpirationDate" name="editExpirationDate" type="date" required [(ngModel)]="expense.ExpirationDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" [label]="'Valor'" id="editAmount" name="editAmount" type="tel" required [(ngModel)]="expense.Amount">
+          </mz-input-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-datepicker-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
+            <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Pagamento'" id="editPaymentDate" name="editPaymentDate" type="date" required [(ngModel)]="expense.PaymentDate">
+          </mz-datepicker-container>
+        </div>
+        <div class="col s12 m6 l3">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'currency-usd'" [size]="'24px'"></i>
+            <input mz-input currencyMask autocomplete="off" (focus)="copyValue()" [label]="'Valor Pago'" id="editPaymentAmount" name="editPaymentAmount" type="tel" required [(ngModel)]="expense.PaymentAmount">
+          </mz-input-container>
+        </div>
+      </div>
+    </mz-modal-content>
+    <mz-modal-footer>
+      <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
+        <i class="material-icons right">done</i>
+      </button>
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+        <i class="material-icons right">cancel</i>
+      </button>
+    </mz-modal-footer>
+  </mz-modal>
+</form>
+
+<mz-modal #deleteExpenseModal>
+  <mz-modal-header>
+    <h4 class="teal-text">Deletar Despesa</h4>
+  </mz-modal-header>
+  <mz-modal-content>
+    <p>As despesas deletadas não poderão ser recuperadas. Você realmente deseja deletar essa despesa?</p>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
+      <i class="material-icons right">done</i>
+    </button>
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+      <i class="material-icons right">cancel</i>
+    </button>
+  </mz-modal-footer>
+</mz-modal>

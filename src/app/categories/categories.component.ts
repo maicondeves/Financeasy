@@ -17,13 +17,11 @@ import { FormGroup } from '@angular/forms';
 })
 export class CategoriesComponent implements OnInit {
   types: CategoryType[] = [];
-
-  category: Category;
   categories: CategoryList[];
-  categoryDetail: Category = {
+  category: Category = {
     Id: 0,
-    Name: ' ',
-    Type: ' '
+    Name: '',
+    Type: ''
   };
 
   deleteId: Number;
@@ -72,39 +70,30 @@ export class CategoriesComponent implements OnInit {
   }
 
   editCategory(categoryId: Number) {
-    this.categoryDetail = this.getById(categoryId);
+    this.category = this.getById(categoryId);
   }
 
-  onSubmitEditForm(
-    id: Number,
-    name: String,
-    type: String
-  ) {
+  onSubmitEditForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.category.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
-      this.categoryDetail.Name = '';
       formIsValid = false;
-      return;
     }
 
-    if (name.length < 2 || name.length > 30) {
+    if (this.category.Name.length < 2 || this.category.Name.length > 30) {
       this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
-      this.categoryDetail.Name = '';
       formIsValid = false;
-      return;
+    }
+
+    if (this.IsNullOrWhiteSpace(this.category.Type.toString())) {
+      this.toaster.show('Selecione um tipo para a categoria.', 4000, 'toast-danger');
+      formIsValid = false;
     }
 
     if (formIsValid) {
-      const categoryPut: CategoryPut = {
-        Id: id,
-        Name: name,
-        Type: type
-      };
-
-      this.edit(categoryPut);
+      this.edit(this.category);
     }
   }
 
@@ -116,13 +105,13 @@ export class CategoriesComponent implements OnInit {
         this.toaster.show(data.Content, 4000, 'toast-success');
       } else {
         if (data.StatusCode === 500) {
-          this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+          this.toaster.show('Houve um erro ao tentar atualizar o registro.', 4000, 'toast-danger');
         } else {
           this.toaster.show(data.Content, 4000, 'toast-danger');
         }
       }
     },
-    (err: HttpErrorResponse) => {
+    () => {
       this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
     });
   }
@@ -139,7 +128,11 @@ export class CategoriesComponent implements OnInit {
             this.categories = this.getAll();
             this.toaster.show(data.Content, 4000, 'toast-success');
           } else {
-            this.toaster.show(data.Content, 4000, 'toast-danger');
+            if (data.StatusCode === 500) {
+              this.toaster.show('Houve um erro ao tentar inserir o registro.', 4000, 'toast-danger');
+            } else {
+              this.toaster.show(data.Content, 4000, 'toast-danger');
+            }
           }
         },
         (err: HttpErrorResponse) => {
@@ -149,31 +142,28 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
-  onSubmitAddForm(
-    name: String,
-    type: String,
-  ) {
+  onSubmitAddForm() {
     let formIsValid: Boolean = true;
 
-    if (this.IsNullOrWhiteSpace(name)) {
+    if (this.IsNullOrWhiteSpace(this.category.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       formIsValid = false;
       return;
     }
 
-    if (name.length < 2 || name.length > 30) {
+    if (this.category.Name.length < 2 || this.category.Name.length > 30) {
       this.toaster.show('Nome deve conter no mínimo 2 caracteres e no máximo 30.', 4000, 'toast-danger');
       formIsValid = false;
       return;
     }
 
-    if (formIsValid) {
-      const categoryPost: CategoryPost = {
-        Name: name,
-        Type: type
-      };
+    if (this.IsNullOrWhiteSpace(this.category.Type.toString())) {
+      this.toaster.show('Selecione um tipo para a categoria.', 4000, 'toast-danger');
+      formIsValid = false;
+    }
 
-      this.insert(categoryPost);
+    if (formIsValid) {
+      this.insert(this.category);
     }
   }
 
@@ -185,7 +175,7 @@ export class CategoriesComponent implements OnInit {
           this.toaster.show(data.Content, 4000, 'toast-success');
         } else {
           if (data.StatusCode === 500) {
-            this.toaster.show('Houve um erro ao conectar com o servidor.', 4000, 'toast-danger');
+            this.toaster.show('Houve um erro ao deletar o registro.', 4000, 'toast-danger');
           } else {
             this.toaster.show(data.Content, 4000, 'toast-danger');
           }

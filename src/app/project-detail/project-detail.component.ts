@@ -1,12 +1,12 @@
+import { MzToastService } from 'ng2-materialize';
 import { ProjectsService } from './../projects/services/projects.service';
 import { RevenueList } from './../revenues/models/revenue-list';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseList } from '../expenses/models/expense-list';
 import { ProjectDetail } from '../projects/models/project-detail';
 import { ProjectStatus } from '../projects/models/project-status';
-import { Category } from '../categories/models/category';
-import { Customer } from '../customers/models/customer';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-project-detail',
@@ -15,30 +15,10 @@ import { Customer } from '../customers/models/customer';
 })
 export class ProjectDetailComponent implements OnInit {
   projectId: Number;
-
-  projectDetail: ProjectDetail = {
-    Id: 0,
-    Name: ' ',
-    Description: ' ',
-    Status: null,
-    ConclusionDate: null,
-    StartDate: null,
-    Category: new Category(),
-    Customer: new Customer(),
-    CEP: ' ',
-    StreetAddress: ' ',
-    Complement: ' ',
-    District: ' ',
-    City: ' ',
-    State: ' '
-  };
-
-  revenues: RevenueList[];
-  expenses: ExpenseList[];
+  projectDetail: ProjectDetail;
 
   monthWork: number = new Date().getMonth() + 1;
   yearWork: number = new Date().getFullYear();
-
   yearsOfWork: number[] = [];
 
   dateMask: Pickadate.DateOptions = {
@@ -53,6 +33,7 @@ export class ProjectDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    public router: Router,
     private projectService: ProjectsService
   ) { }
 
@@ -63,9 +44,9 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   createYearSelect() {
-    let yearAux = this.yearWork - 5;
+    let yearAux = this.yearWork - 6;
     this.yearsOfWork = [];
-    for (let index = 0; index < 5; index++) {
+    for (let index = 0; index < 6; index++) {
       yearAux++;
       this.yearsOfWork.push(yearAux);
     }
@@ -78,5 +59,9 @@ export class ProjectDetailComponent implements OnInit {
 
   getProjectDetail() {
     return this.projectService.getProjectDetail(this.projectId);
+  }
+
+  getStatusDescription(statusId: Number) {
+    return this.status.find(x => x.Id === statusId).Description;
   }
 }

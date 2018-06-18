@@ -3,7 +3,11 @@
     <div class="card col s12" style="padding: 0">
       <div class="col s12 teal darken-2" id="imagem-titulo"></div>
       <div class="col s12">
-        <span class="card-title teal-text">Projetos</span>
+        <span class="card-title teal-text">Projetos
+          <button mz-button [float]="true" class="right" (click)="addProjectModal.open()">
+            <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
+          </button>
+        </span>
         <p>Cadastre seus projetos.
           <br>Caso queira visualizar ou editar, basta clicar em cima do nome do projeto ou no ícone do lapis.
           <br>Clique no botão "+" para adicionar um novo projeto
@@ -28,10 +32,10 @@
               <span>{{ p.Name }}</span>
             </td>
             <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
-              <span>{{ p.Customer.Name }}</span>
+              <span>{{ p.Customer?.Name }}</span>
             </td>
             <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
-              <span>{{ p.Category.Name }}</span>
+              <span>{{ p.Category?.Name }}</span>
             </td>
             <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
               <span>{{ p.StartDate | date: 'dd/MM/yyyy'}}</span>
@@ -79,13 +83,13 @@
         <div class="col s12 m4 l4">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" [size]="'24px'"></i>
-            <input mz-input [label]="'Nome'" id="addName" name="addName" type="text" required #addName [(ngModel)]="project.Name">
+            <input mz-input [label]="'Nome'" id="addName" name="addName" type="text" required [(ngModel)]="project.Name">
           </mz-input-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-select-container>
             <select mz-select id="addCustomerId" name="addCustomerId" [label]="'Cliente'" [placeholder]="'Selecione o Cliente'" required
-              #addCustomerId [(ngModel)]="project.CustomerId">
+             [(ngModel)]="project.CustomerId">
               <option *ngFor="let customer of customers" value="{{ customer.Id }}">{{ customer.Name }}</option>
               <option *ngIf="customers.length == 0" disabled>Nenhum cliente foi cadastrado.</option>
             </select>
@@ -94,7 +98,7 @@
         <div class="col s12 m4 l4">
           <mz-select-container>
             <select mz-select id="addCategoryId" name="addCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'" required
-              #addCategoryId [(ngModel)]="project.CategoryId">
+               [(ngModel)]="project.CategoryId">
               <option *ngFor="let category of categories" value="{{ category.Id }}">{{ category.Name }}</option>
               <option *ngIf="categories.length == 0" disabled>Nenhuma categoria de projeto foi cadastrada.</option>
             </select>
@@ -104,19 +108,19 @@
           <mz-datepicker-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
             <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Início'" id="addStartDate" name="addStartDate" type="date"
-              required #addStartDate [(ngModel)]="project.StartDate">
+              required  [(ngModel)]="project.StartDate">
           </mz-datepicker-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-datepicker-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
             <input mz-datepicker [options]="DatePickerTraducaoBr" [label]="'Data de Conclusão'" id="addConclusionDate" name="addConclusionDate"
-              type="date" required #addConclusionDate [(ngModel)]="project.ConclusionDate">
+              type="date" required  [(ngModel)]="project.ConclusionDate">
           </mz-datepicker-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-select-container>
-            <select mz-select id="addStatus" name="addStatus" [label]="'Status'" [placeholder]="'Selecione o Status'" required #addStatus
+            <select mz-select id="addStatus" name="addStatus" [label]="'Status'" [placeholder]="'Selecione o Status'" required
               [(ngModel)]="project.Status">
               <option *ngFor="let s of status" value="{{ s.Id }}">{{ s.Description }}</option>
             </select>
@@ -125,44 +129,44 @@
         <div class="col s12 m12 l12">
           <mz-textarea-container>
             <i mz-icon-mdi mz-textarea-prefix [icon]="'comment-text'" [size]="'24px'"></i>
-            <textarea mz-textarea [label]="'Descrição'" [placeholder]="'Descreva o seu projeto aqui.'" length="150" id="addDescription"
-              name="addDescription" required #addDescription [(ngModel)]="project.Description"></textarea>
+            <textarea mz-textarea [label]="'Descrição'" [placeholder]="'Descreva o seu projeto aqui.'" length="100" maxlength="100" id="addDescription"
+              name="addDescription" required [(ngModel)]="project.Description"></textarea>
           </mz-textarea-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input (change)="getCep()" data-mask="00/00/0000" [label]="'CEP'" id="addCEP" name="addCEP" type="text" required #addCEP [(ngModel)]="project.CEP">
+            <input mz-input (change)="getCep()" data-mask="00/00/0000" [label]="'CEP'" id="addCEP" name="addCEP" type="text" required [(ngModel)]="project.CEP">
           </mz-input-container>
         </div>
         <div class="col s12 m6 l6">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Endereço'" id="addStreetAddress" name="addStreetAddress" type="text" required #addStreetAddress
+            <input mz-input [label]="'Endereço'" id="addStreetAddress" name="addStreetAddress" type="text" required
               [(ngModel)]="project.StreetAddress">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Complemento'" id="addComplement" name="addComplement" type="text" required #addComplement [(ngModel)]="project.Complement">
+            <input mz-input [label]="'Complemento'" id="addComplement" name="addComplement" type="text" required [(ngModel)]="project.Complement">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Bairro'" id="addDistrict" name="addDistrict" type="text" required #addDistrict [(ngModel)]="project.District">
+            <input mz-input [label]="'Bairro'" id="addDistrict" name="addDistrict" type="text" required [(ngModel)]="project.District">
           </mz-input-container>
         </div>
         <div class="col s12 m6 l6">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Cidade'" id="addCity" name="addCity" type="text" required #addCity [(ngModel)]="project.City">
+            <input mz-input [label]="'Cidade'" id="addCity" name="addCity" type="text" required [(ngModel)]="project.City">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-select-container>
-            <select mz-select [label]="'Estado'" [placeholder]="'Selecione o Estado'" id="addState" name="addState" required #addState
+            <select mz-select [label]="'Estado'" [placeholder]="'Selecione o Estado'" id="addState" name="addState" required
               [(ngModel)]="project.State">
               <option value="AC">Acre</option>
               <option value="AL">Alagoas</option>
@@ -234,17 +238,17 @@
     </mz-modal-header>
     <mz-modal-content>
       <div class="row">
-        <input type="hidden" id="editId" name="editId" #editId [(ngModel)]="project.Id">
+        <input type="hidden" id="editId" name="editId"  [(ngModel)]="project.Id">
         <div class="col s12 m4 l4">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" [size]="'24px'"></i>
-            <input mz-input [label]="'Nome'" id="editName" name="editName" type="text" required #editName [(ngModel)]="project.Name">
+            <input mz-input [label]="'Nome'" id="editName" name="editName" type="text" required [(ngModel)]="project.Name">
           </mz-input-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-select-container>
             <select mz-select id="editCustomerId" name="editCustomerId" [label]="'Cliente'" [placeholder]="'Selecione o Cliente'" required
-              #editCustomerId [(ngModel)]="project.CustomerId">
+              [(ngModel)]="project.CustomerId">
               <option *ngFor="let customer of customers" value="{{ customer.Id }}">{{ customer.Name }}</option>
               <option *ngIf="customers.length == 0" disabled>Nenhum cliente foi cadastrado.</option>
             </select>
@@ -253,7 +257,7 @@
         <div class="col s12 m4 l4">
           <mz-select-container>
             <select mz-select id="editCategoryId" name="editCategoryId" [label]="'Categoria'" [placeholder]="'Selecione a Categoria'"
-              required #editCategoryId [(ngModel)]="project.CategoryId">
+              required [(ngModel)]="project.CategoryId">
               <option *ngFor="let category of categories" value="{{ category.Id }}">{{ category.Name }}</option>
               <option *ngIf="categories.length == 0" disabled>Nenhuma categoria de projeto foi cadastrada.</option>
             </select>
@@ -263,19 +267,19 @@
           <mz-datepicker-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
             <input mz-datepicker [label]="'Data de Início'" [options]="DatePickerTraducaoBr" id="editStartDate" name="editStartDate"
-              type="date" required #editStartDate [(ngModel)]="project.StartDate">
+              type="date" required [(ngModel)]="project.StartDate">
           </mz-datepicker-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-datepicker-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'calendar'" [size]="'24px'"></i>
             <input mz-datepicker [label]="'Data de Conclusão'" [options]="DatePickerTraducaoBr" id="editConclusionDate" name="editConclusionDate"
-              type="date" required #editConclusionDate [(ngModel)]="project.ConclusionDate">
+              type="date" required [(ngModel)]="project.ConclusionDate">
           </mz-datepicker-container>
         </div>
         <div class="col s12 m4 l4">
           <mz-select-container>
-            <select mz-select id="editStatus" name="editStatus" [label]="'Status'" [placeholder]="'Selecione o Status'" required #editStatus
+            <select mz-select id="editStatus" name="editStatus" [label]="'Status'" [placeholder]="'Selecione o Status'" required
               [(ngModel)]="project.Status">
               <option *ngFor="let s of status" value="{{ s.Id }}">{{ s.Description }}</option>
             </select>
@@ -284,44 +288,44 @@
         <div class="col s12 m12 l12">
           <mz-textarea-container>
             <i mz-icon-mdi mz-textarea-prefix [icon]="'comment-text'" [size]="'24px'"></i>
-            <textarea mz-textarea [label]="'Descrição'" [placeholder]="'Descreva o seu projeto aqui.'" length="150" id="editDescription"
-              name="editDescription" required #editDescription [(ngModel)]="project.Description"></textarea>
+            <textarea mz-textarea [label]="'Descrição'" [placeholder]="'Descreva o seu projeto aqui.'" length="100" maxlength="100" id="editDescription"
+              name="editDescription" required  [(ngModel)]="project.Description"></textarea>
           </mz-textarea-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input (change)="getCep()" [label]="'CEP'" id="editCEP" name="editCEP" type="text" required #editCEP [(ngModel)]="project.CEP">
+            <input mz-input (change)="getCep()" [label]="'CEP'" id="editCEP" name="editCEP" type="text" required  [(ngModel)]="project.CEP">
           </mz-input-container>
         </div>
         <div class="col s12 m6 l6">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Endereço'" id="editStreetAddress" name="editStreetAddress" type="text" required #editStreetAddress
+            <input mz-input [label]="'Endereço'" id="editStreetAddress" name="editStreetAddress" type="text" required
               [(ngModel)]="project.StreetAddress">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Complemento'" id="editComplement" name="editComplement" type="text" required #editComplement [(ngModel)]="project.Complement">
+            <input mz-input [label]="'Complemento'" id="editComplement" name="editComplement" type="text" required  [(ngModel)]="project.Complement">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Bairro'" id="editDistrict" name="editDistrict" type="text" required #editDistrict [(ngModel)]="project.District">
+            <input mz-input [label]="'Bairro'" id="editDistrict" name="editDistrict" type="text" required  [(ngModel)]="project.District">
           </mz-input-container>
         </div>
         <div class="col s12 m6 l6">
           <mz-input-container>
             <i mz-icon-mdi mz-input-prefix [icon]="'map-marker'" [size]="'24px'"></i>
-            <input mz-input [label]="'Cidade'" id="editCity" name="editCity" type="text" required #editCity [(ngModel)]="project.City">
+            <input mz-input [label]="'Cidade'" id="editCity" name="editCity" type="text" required  [(ngModel)]="project.City">
           </mz-input-container>
         </div>
         <div class="col s12 m3 l3">
           <mz-select-container>
-            <select mz-select [label]="'Estado'" [placeholder]="'Selecione o Estado'" id="editState" name="editState" required #editState
+            <select mz-select [label]="'Estado'" [placeholder]="'Selecione o Estado'" id="editState" name="editState" required
               [(ngModel)]="project.State">
               <option value="AC">Acre</option>
               <option value="AL">Alagoas</option>

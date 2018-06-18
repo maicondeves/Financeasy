@@ -4,12 +4,15 @@
     <div class="card col s12" style="padding: 0">
       <div class="col s12 teal darken-2" id="imagem-titulo"></div>
       <div class="col s12">
-        <div class="card-title teal-text">Categorias</div>
-        <div>
-          <p>Crie categorias para serem usadas em projetos futuros, ex: Compra, Venda, Negociação.
-          <br>Caso queira visualizar, basta clicar em cima do nome do categoria.
-          <br>Clique no botão "+" para adicionar uma nova categoria</p>
-        </div>
+        <span class="card-title teal-text">Categorias
+          <button mz-button [float]="true" class="right" (click)="addCategoryModal.open()">
+            <i mz-icon [icon]="'add'" [size]="'tiny'" [align]="'center'"></i>
+          </button>
+        </span>
+        <p>Crie categorias para serem usadas em projetos futuros, ex: Compra, Venda, Negociação..
+        <br>Caso queira visualizar, basta clicar em cima do nome do categoria.
+        <br>Clique no botão "+" para adicionar uma nova categoria.
+        <br>Clique no icone da lixeira para deletar a categoria.</p>
       </div>
     </div>
     <div class="card col s12" style="padding: 0">
@@ -18,7 +21,7 @@
           <tr>
             <th class="espaco-esquerdo teal-text">Nome</th>
             <th class="espaco-esquerdo teal-text">Tipo</th>
-            <th class="espaco-direito teal-text">Opções</th>
+            <th class="espaco-direito teal-text right">Opções</th>
           </tr>
         </thead>
         <tbody>
@@ -29,12 +32,14 @@
             <td class="espaco-esquerdo editar">
               <span (click)="editCategory(c.Id); editCategoryModal.open();">{{ getTypeDescription(c.Type) }}</span>
             </td>
-            <td class="espaco-direito">
-              <a class="editar" (click)="editCategory(c.Id); editCategoryModal.open();">
-                <i class="material-icons tooltipped" data-position="top" data-tooltip="Editar">create</i>
+            <td class="options-buttons right">
+              <a mz-button mz-tooltip [tooltip]="'Editar Categoria'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+                (click)="editCategory(c.Id); editCategoryModal.open();">
+                <i mz-icon-mdi [icon]="'pencil'" [size]="'24px'"></i>
               </a>
-              <a class="editar" (click)="deleteCategory(c.Id); deleteCategoryModal.open();">
-                <i class="material-icons tooltipped" data-position="top" data-tooltip="Excluir">delete</i>
+              <a mz-button mz-tooltip [tooltip]="'Excluir Categoria'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true"
+                (click)="deleteCategory(c.Id); deleteCategoryModal.open()">
+                <i mz-icon-mdi [icon]="'delete'" [size]="'24px'"></i>
               </a>
             </td>
           </tr>
@@ -44,37 +49,30 @@
         <b>Nenhuma categoria foi encontrada ou cadastrada.</b>
       </p>
     </div>
-    <div class="col s12">
-      <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red right" (click)="addCategoryModal.open()">
-          <i class="material-icons tooltipped" data-position="top" data-tooltip="Nova Categoria">add</i>
-        </a>
-      </div>
-    </div>
   </div>
 </div>
 
 <!-- Nova Categoria -->
-<form #addCategoryForm="ngForm" (ngSubmit)="onSubmitAddForm(addName.value, addType.value); addCategoryForm.reset();" >
+<form #addCategoryForm="ngForm" (ngSubmit)="onSubmitAddForm(); addCategoryForm.reset();" >
   <mz-modal #addCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
     <mz-modal-header>
       <h4 class="teal-text">Nova Categoria</h4>
       <p>Preencha todos os campos para cadastrar uma nova categoria.</p>
     </mz-modal-header>
     <mz-modal-content>
-      <div class="row col s12 m12 l12">
-        <div class="input-field col s12 m8 l8">
-          <i class="material-icons prefix">assignment</i>
-          <input id="addName" type="text" class="validate" name="addName" required #addName ngModel>
-          <label for="addName">Categoria</label>
+      <div class="row">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Categoria'" id="addName" name="addName" type="text" required [(ngModel)]="category.Name">
+          </mz-input-container>
         </div>
-        <div class="input-field col s12 m4 l4">
-          <select materialize="material_select" name="addType" required #addType ngModel>
-            <option id="addType" value="" disabled selected>Escolha o Tipo</option>
-            <option value="1">Projeto</option>
-            <option value="2">Receita</option>
-            <option value="3">Despesa</option>
-          </select>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="addType" name="addType" [label]="'Tipo de Categoria'" [placeholder]="'Selecione o Tipo'" required [(ngModel)]="category.Type">
+              <option *ngFor="let type of types" value="{{ type.Id }}">{{ type.Description }}</option>
+            </select>
+          </mz-select-container>
         </div>
       </div>
     </mz-modal-content>
@@ -101,14 +99,14 @@
     <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
       <i class="material-icons right">done</i>
     </button>
-    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close (click)="editCategoryForm.reset();">Cancelar
       <i class="material-icons right">cancel</i>
     </button>
   </mz-modal-footer>
 </mz-modal>
 
 <!-- Editar Categoria -->
-<form #editCategoryForm="ngForm" (ngSubmit)="onSubmitEditForm(editId.value, editName.value, editType.value); editCategoryForm.reset();" >
+<form #editCategoryForm="ngForm" (ngSubmit)="onSubmitEditForm(); editCategoryForm.reset();" >
   <mz-modal #editCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Categoria</h4>
@@ -116,19 +114,19 @@
     </mz-modal-header>
     <mz-modal-content>
       <div class="row">
-        <input type="hidden" name="editId" #editId [(ngModel)]="this.categoryDetail.Id">
-        <div class="input-field col s6">
-          <i class="material-icons prefix">assignment</i>
-          <input id="editName" type="text" class="validate" name="editName" required #editName [(ngModel)]="this.categoryDetail.Name">
-          <label for="icon_prefix">Categoria</label>
+        <input type="hidden" name="editId" [(ngModel)]="this.category.Id">
+        <div class="col s12 m8 l8">
+          <mz-input-container>
+            <i mz-icon-mdi mz-input-prefix [icon]="'clipboard-text'" size="'24px'"></i>
+            <input mz-input [label]="'Categoria'" id="editName" name="editName" type="text" required [(ngModel)]="category.Name">
+          </mz-input-container>
         </div>
-        <div class="input-field col s6">
-          <div class="col s12">
-            <select materialize="material_select" name="editType" required #editType [(ngModel)]="this.categoryDetail.Type">
-              <option *ngFor="let type of types" [value]="type.Id">{{ type.Description }}
-              </option>
+        <div class="col s12 m4 l4">
+          <mz-select-container>
+            <select mz-select id="editType" name="editType" [label]="'Tipo de Categoria'" [placeholder]="'Selecione o Tipo'" required [(ngModel)]="category.Type">
+              <option *ngFor="let type of types" value="{{ type.Id }}">{{ type.Description }}</option>
             </select>
-          </div>
+          </mz-select-container>
         </div>
       </div>
     </mz-modal-content>
@@ -136,7 +134,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close (click)="editCategoryForm.reset();">Cancelar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>
