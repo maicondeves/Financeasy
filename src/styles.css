@@ -2,6 +2,15 @@ body {
   background-color: #eaeaea8c !important;
 }
 
+.item-menu:hover {
+  cursor: pointer;
+  background-color: #00808003;
+}
+
+div .separator {
+  box-shadow: 1px 0px 1px 1px #f3f3f3;
+}
+
 .indicator-item.active {
   background-color: teal !important;
 }

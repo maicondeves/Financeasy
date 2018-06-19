@@ -1,3 +1,4 @@
+import { DashboardService } from './home/services/dashboard.service';
 import { RevenueService } from './revenues/services/revenue.service';
 import { ExpenseService } from "./expenses/services/expense.service";
 import { CepService } from "./shared/services/cep.service";
@@ -66,6 +67,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   thousands: "."
 };
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,6 +106,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     HttpClientModule,
     NgxSpinnerModule,
     CurrencyMaskModule,
+    ChartsModule,
     RouterModule.forRoot(APP_ROUTES)
   ],
   exports: [NgForm],
@@ -115,6 +119,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ProjectsService,
     ExpenseService,
     RevenueService,
+    DashboardService,
     {
       provide: CURRENCY_MASK_CONFIG,
       useValue: CustomCurrencyMaskConfig

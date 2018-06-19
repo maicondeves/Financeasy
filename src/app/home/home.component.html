@@ -1,143 +1,162 @@
 <div class="row">
   <div class="container">
-    <div class="card col s12" style="padding: 0">
-      <div class="col s12 teal darken-2" id="imagem-titulo">
-      </div>
+    <div class="row">
       <div class="col s12">
-        <span class="card-title">Início</span>
-        <p>Com o Financeasy, você pode controlar e planejar o seu negócio!
-          <br> Caso queira visualizar suas rendas ou receitas, basta clicar nas respectivas palavras.
-      </div>
-    </div>
-    <div class="row">
-      <div class="col s6 m4">
-        <div class="card green pointer-hover" (click)="openModal()">
-          <div class="card-content white-text">
-            <span class="card-title">
-              Receitas
+        <mz-card>
+          <mz-card-content>
+            <span class="card-title teal-text">
+              Resumo do Mês Atual
             </span>
-            <span class="numero">
-                <b>RS4.500,00</b>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="col s6 m4">
-        <div class="card red pointer-hover" (click)="openModal2()">
-          <div class="card-content white-text">
-            <span class="card-title">
-              Despesas
-            </span>
-            <span class="numero">
-                <b>RS3.500,00</b>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="col s6 m4">
-          <div class="card blue">
-            <div class="card-content white-text">
-              <span class="card-title">
-                Saldo
-              </span>
-              <span class="numero">
-                  <b>RS1.000,00</b>
-              </span>
+            <div class="row">
+              <div class="col s12 m4 l4">
+                <div class="card green pointer-hover">
+                  <div class="card-content white-text">
+                    <span class="card-title">
+                      Receitas
+                    </span>
+                    <span class="numero">
+                      <b>{{ this.dashboard?.TotalRevenue | currency:'BRL' }}</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m4 l4">
+                <div class="card red pointer-hover">
+                  <div class="card-content white-text">
+                    <span class="card-title">
+                      Despesas
+                    </span>
+                    <span class="numero">
+                      <b>{{ this.dashboard?.TotalExpense | currency:'BRL' }}</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m4 l4">
+                <div class="card blue">
+                  <div class="card-content white-text">
+                    <span class="card-title">
+                      Saldo
+                    </span>
+                    <span class="numero">
+                      <b>{{ this.dashboard?.Balance | currency:'BRL' }}</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </mz-card-content>
+        </mz-card>
       </div>
-  </div>
-</div>
-
-<!-- Despesas -->
-<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="verDespesas">
-  <div class="row modal-content">
-    <h4>Despesas</h4>
-    <p>Os valores abaixos, são referente as despesas dos seus projetos.</p>
-    <div class="row">
-      <table class="striped">
-        <thead>
-          <tr>
-            <th class="espaco-esquerdo">Projeto</th>
-            <th class="espaco-esquerdo">Vencimento</th>
-            <th class="espaco-direito">Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="espaco-esquerdo editar">
-              <span>Pizza em Portugal</span>
-            </td>
-            <td class="espaco-esquerdo editar">
-              <span>10/04/2019</span>
-            </td>
-            <td class="espaco-direito">
-              <span>2.567,00</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="espaco-esquerdo editar">
-              <span>Focus Bebedor de Gas</span>
-            </td>
-            <td class="espaco-esquerdo editar">
-              <span>10/04/2019</span>
-            </td>
-            <td class="espaco-direito">
-              <span>1.267,00</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Fechar</a>
-  </div>
-</div>
-
-<!-- Receitas -->
-<div id="modal1" class="modal modal-fixed-footer" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="verReceita">
-  <div class="row modal-content">
-    <h4>Receitas</h4>
-    <p>Os valores abaixos são referente as receitas dos seus projetos.</p>
     <div class="row">
-      <table class="striped">
-        <thead>
-          <tr>
-            <th class="espaco-esquerdo">Projeto</th>
-            <th class="espaco-esquerdo">Vencimento</th>
-            <th class="espaco-direito">Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="espaco-esquerdo editar">
-              <span>Pizza em Portugal</span>
-            </td>
-            <td class="espaco-esquerdo editar">
-              <span>10/04/2019</span>
-            </td>
-            <td class="espaco-direito">
-              <span>2.567,00</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="espaco-esquerdo editar">
-              <span>Focus Bebedor de Gas</span>
-            </td>
-            <td class="espaco-esquerdo editar">
-              <span>10/04/2019</span>
-            </td>
-            <td class="espaco-direito">
-              <span>1.267,00</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col s12">
+        <mz-card>
+          <mz-card-content>
+            <span class="card-title teal-text">
+              Despesas com vencimento nos próximos 7 dias
+            </span>
+            <div class="row">
+              <table class="striped" style="padding: 0" *ngIf="dashboard?.ExpensesCloseToExpiration?.length > 0">
+                <thead>
+                  <tr>
+                    <th class="espaco-esquerdo teal-text">Descrição</th>
+                    <th class="espaco-esquerdo teal-text">Valor</th>
+                    <th class="espaco-esquerdo teal-text">Venc.</th>
+                    <th class="espaco-direito teal-text right">Opções</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let e of dashboard?.ExpensesCloseToExpiration">
+                    <td class="espaco-esquerdo editar">
+                      <span class="truncate">{{ e.Description }}</span>
+                    </td>
+                    <td class="espaco-esquerdo editar">
+                      <span>{{ e.Amount | currency:'BRL':true }}</span>
+                    </td>
+                    <td class="espaco-esquerdo editar">
+                      <span>{{ e.ExpirationDate | date: 'dd/MM/yyyy' }}</span>
+                    </td>
+                    <td class="options-buttons right">
+                      <a mz-button mz-tooltip [tooltip]="'Detalhe do Projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true"
+                        [flat]="true" [float]="true" (click)="detailProject(e.ProjectId);">
+                        <i mz-icon-mdi [icon]="'swap-vertical'" [size]="'24px'"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row" *ngIf="!(dashboard?.ExpensesCloseToExpiration?.length > 0)">
+                <div class="col s12" style="margin-top: 15px;">
+                  <b>Nenhuma despesa com vencimento próximo foi encontrada. :)</b>
+                </div>
+              </div>
+            </div>
+          </mz-card-content>
+        </mz-card>
+      </div>
+      <div class="col s12 m12 l6">
+        <mz-card>
+          <mz-card-content>
+            <span class="card-title teal-text">
+              Total de Receitas por Categoria
+            </span>
+            <div class="row">
+              <div style="display: block">
+                <canvas baseChart *ngIf="this.dashboard?.TotalRevenuePerCategory?.Labels?.length > 0" [colors]="colors" [data]="this.dashboard?.TotalRevenuePerCategory?.Values"
+                  [labels]="this.dashboard?.TotalRevenuePerCategory?.Labels" [chartType]="'doughnut'"></canvas>
+              </div>
+            </div>
+            <div class="row" *ngIf="!(this.dashboard?.TotalRevenuePerCategory?.Labels?.length > 0)">
+              <div class="col s12" style="margin-top: 15px;">
+                <b>Nenhuma informação está disponível no momento.</b>
+              </div>
+            </div>
+          </mz-card-content>
+        </mz-card>
+      </div>
+      <div class="col s12 m12 l6">
+        <mz-card>
+          <mz-card-content>
+            <span class="card-title teal-text">
+              Total de Despesas por Categoria
+            </span>
+            <div class="row">
+              <div style="display: block">
+                <canvas baseChart *ngIf="this.dashboard?.TotalExpensePerCategory?.Labels?.length > 0" [colors]="colors" [data]="this.dashboard?.TotalExpensePerCategory?.Values"
+                  [labels]="this.dashboard?.TotalExpensePerCategory?.Labels" [chartType]="'doughnut'"></canvas>
+              </div>
+            </div>
+            <div class="row" *ngIf="!(this.dashboard?.TotalExpensePerCategory?.Labels?.length > 0)">
+              <div class="col s12" style="margin-top: 15px;">
+                <b>Nenhuma informação está disponível no momento.</b>
+              </div>
+            </div>
+          </mz-card-content>
+        </mz-card>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Fechar</a>
+    <div class="row">
+      <div class="col s12">
+        <mz-card>
+          <mz-card-content>
+            <span class="card-title teal-text">
+              Total de Projetos por Categoria
+            </span>
+            <div class="row">
+              <div style="display: block">
+                <canvas baseChart *ngIf="this.dashboard?.TotalProjectPerCategory?.Labels?.length > 0" [colors]="colors" [data]="this.dashboard?.TotalProjectPerCategory?.Values"
+                  [labels]="this.dashboard?.TotalProjectPerCategory?.Labels" [chartType]="'doughnut'"></canvas>
+              </div>
+            </div>
+            <div class="row" *ngIf="!(this.dashboard?.TotalProjectPerCategory?.Labels?.length > 0)">
+              <div class="col s12" style="margin-top: 15px;">
+                <b>Nenhuma informação está disponível no momento.</b>
+              </div>
+            </div>
+          </mz-card-content>
+        </mz-card>
+      </div>
+    </div>
   </div>
 </div>

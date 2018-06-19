@@ -17,3 +17,7 @@ span a{
 .pointer-hover:hover {
   cursor: pointer;
 }
+
+.row {
+  margin: 0 !important;
+}

@@ -53,7 +53,7 @@
 </div>
 
 <!-- Nova Categoria -->
-<form #addCategoryForm="ngForm" (ngSubmit)="onSubmitAddForm(); addCategoryForm.reset();" >
+<form #addCategoryForm="ngForm" (ngSubmit)="onSubmitAddForm();" >
   <mz-modal #addCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
     <mz-modal-header>
       <h4 class="teal-text">Nova Categoria</h4>
@@ -80,7 +80,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela();" mz-modal-close>Cancelar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>
@@ -99,14 +99,14 @@
     <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
       <i class="material-icons right">done</i>
     </button>
-    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close (click)="editCategoryForm.reset();">Cancelar
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
       <i class="material-icons right">cancel</i>
     </button>
   </mz-modal-footer>
 </mz-modal>
 
 <!-- Editar Categoria -->
-<form #editCategoryForm="ngForm" (ngSubmit)="onSubmitEditForm(); editCategoryForm.reset();" >
+<form #editCategoryForm="ngForm" (ngSubmit)="onSubmitEditForm();">
   <mz-modal #editCategoryModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='false'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Categoria</h4>
@@ -134,7 +134,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close (click)="editCategoryForm.reset();">Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close (click)="limpaTela();">Cancelar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>

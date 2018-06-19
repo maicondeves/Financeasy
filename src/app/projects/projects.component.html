@@ -21,8 +21,6 @@
             <th class="espaco-esquerdo teal-text">Nome</th>
             <th class="espaco-esquerdo teal-text">Cliente</th>
             <th class="espaco-esquerdo teal-text">Categoria</th>
-            <th class="espaco-esquerdo teal-text">Início</th>
-            <th class="espaco-esquerdo teal-text">Conclusão</th>
             <th class="espaco-direito teal-text right">Opções</th>
           </tr>
         </thead>
@@ -36,12 +34,6 @@
             </td>
             <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
               <span>{{ p.Category?.Name }}</span>
-            </td>
-            <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
-              <span>{{ p.StartDate | date: 'dd/MM/yyyy'}}</span>
-            </td>
-            <td (click)="detailProject(p.Id);" mz-tooltip [tooltip]="'Clique na linha para exibir os detalhes do projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" class="espaco-esquerdo editar">
-              <span>{{ p.ConclusionDate | date: 'dd/MM/yyyy'}}</span>
             </td>
             <td class="options-buttons right">
               <a mz-button mz-tooltip [tooltip]="'Detalhe do Projeto (Receitas/Despesas)'" [position]="'top'" [delay]="500" [html]="true" [flat]="true" [float]="true" (click)="detailProject(p.Id);">
@@ -65,7 +57,7 @@
 </div>
 
 <!-- Novo Projeto -->
-<form #addProjectForm="ngForm" (ngSubmit)="onSubmitAddForm(); addProjectForm.reset();">
+<form #addProjectForm="ngForm" (ngSubmit)="onSubmitAddForm();">
   <mz-modal #addProjectModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Novo Projeto</h4>
@@ -197,7 +189,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela();" mz-modal-close>Fechar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>
@@ -216,14 +208,14 @@
     <button class="btn teal white-text waves-effect waves-light" type="button" (click)="delete()" mz-modal-close>Deletar
       <i class="material-icons right">done</i>
     </button>
-    <button class="btn red white-text waves-effect waves-light" type="button" (click)="addProjectForm.reset();" mz-modal-close>Fechar
+    <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
       <i class="material-icons right">cancel</i>
     </button>
   </mz-modal-footer>
 </mz-modal>
 
 <!-- Editar Projeto -->
-<form #editProjectForm="ngForm" (ngSubmit)="onSubmitEditForm(); editProjectForm.reset();">
+<form #editProjectForm="ngForm" (ngSubmit)="onSubmitEditForm();">
   <mz-modal #editProjectModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Projeto</h4>
@@ -356,7 +348,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
         <i class="material-icons right">done</i>
       </button>
-      <button #add class="btn red white-text waves-effect waves-light" type="button" (click)="editProjectForm.reset();" mz-modal-close>Fechar
+      <button #add class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela()" mz-modal-close>Fechar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>

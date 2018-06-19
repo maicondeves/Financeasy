@@ -55,7 +55,7 @@
   </mz-card-content>
 </mz-card>
 
-<form #addExpenseForm="ngForm" (ngSubmit)="onSubmitAddForm(); addExpenseForm.reset();" >
+<form #addExpenseForm="ngForm" (ngSubmit)="onSubmitAddForm(); ">
   <mz-modal #addExpenseModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Nova Despesa</h4>
@@ -107,14 +107,14 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela()" mz-modal-close>Fechar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>
   </mz-modal>
 </form>
 
-<form #editExpenseForm="ngForm" (ngSubmit)="onSubmitEditForm(); editExpenseForm.reset();" >
+<form #editExpenseForm="ngForm" (ngSubmit)="onSubmitEditForm();">
   <mz-modal #editExpenseModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Despesa</h4>
@@ -166,7 +166,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Fechar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela()" mz-modal-close>Fechar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>

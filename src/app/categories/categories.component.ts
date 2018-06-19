@@ -36,6 +36,14 @@ export class CategoriesComponent implements OnInit {
     this.types = this.getTypes();
   }
 
+  limpaTela() {
+    this.category = {
+      Id: 0,
+      Name: '',
+      Type: ''
+    };
+  }
+
   getTypes() {
     return this.categoriesService.getTypes();
   }
@@ -94,6 +102,7 @@ export class CategoriesComponent implements OnInit {
 
     if (formIsValid) {
       this.edit(this.category);
+      this.limpaTela();
     }
   }
 
@@ -164,6 +173,7 @@ export class CategoriesComponent implements OnInit {
 
     if (formIsValid) {
       this.insert(this.category);
+      this.limpaTela();
     }
   }
 

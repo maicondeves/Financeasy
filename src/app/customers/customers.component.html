@@ -49,7 +49,7 @@
 </div>
 
 <!-- Novo Cliente -->
-<form #addCustomerForm="ngForm" (ngSubmit)="onSubmitAddForm(); addCustomerForm.reset();">
+<form #addCustomerForm="ngForm" (ngSubmit)="onSubmitAddForm();">
   <mz-modal #addCustomerModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Novo Cliente</h4>
@@ -175,7 +175,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Salvar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela();" mz-modal-close>Cancelar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>
@@ -201,7 +201,7 @@
 </mz-modal>
 
 <!-- Editar Cliente -->
-<form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(); editCustomerForm.reset();">
+<form #editCustomerForm="ngForm" (ngSubmit)="onSubmitEditForm(); ">
   <mz-modal #editCustomerModal [fixedFooter]='true' [bottomSheet]='false' [fullscreen]='true'>
     <mz-modal-header>
       <h4 class="teal-text">Editar Cliente</h4>
@@ -327,7 +327,7 @@
       <button class="btn teal white-text waves-effect waves-light" type="submit" name="action" mz-modal-close>Alterar
         <i class="material-icons right">done</i>
       </button>
-      <button class="btn red white-text waves-effect waves-light" type="button" mz-modal-close>Cancelar
+      <button class="btn red white-text waves-effect waves-light" type="button" (click)="limpaTela();" mz-modal-close>Cancelar
         <i class="material-icons right">cancel</i>
       </button>
     </mz-modal-footer>

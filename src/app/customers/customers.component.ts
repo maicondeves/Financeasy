@@ -46,6 +46,26 @@ export class CustomersComponent implements OnInit {
     this.customers = this.getAll();
   }
 
+  limpaTela() {
+    this.customer = {
+      Id: 0,
+      Name: '',
+      RG: '',
+      CPF: '',
+      CNPJ: '',
+      Email: '',
+      HomePhone: '',
+      CommercialPhone: '',
+      CellPhone: '',
+      CEP: '',
+      StreetAddress: '',
+      Complement: '',
+      District: '',
+      City: '',
+      State: ''
+    };
+  }
+
   getCep() {
     this.cepService.getCep(this.customer.CEP).subscribe(
       (data: CepDto) => {
@@ -155,6 +175,7 @@ export class CustomersComponent implements OnInit {
 
     if (formIsValid) {
       this.edit(this.customer);
+      this.limpaTela();
     }
   }
 
@@ -281,6 +302,7 @@ export class CustomersComponent implements OnInit {
 
     if (formIsValid) {
       this.insert(this.customer);
+      this.limpaTela();
     }
   }
 

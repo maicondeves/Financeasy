@@ -2,8 +2,7 @@ import { RevenuePost } from './models/revenue-post';
 import { RevenuePut } from './models/revenue-put';
 import { RevenueList } from './models/revenue-list';
 import { CategoryList } from './../categories/models/category-list';
-import { CategoriesService } from './../categories/services/categories.service';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { MzToastService } from 'ng2-materialize';
 import { RevenueService } from './services/revenue.service';
 import { Revenue } from './models/revenue';
@@ -77,6 +76,21 @@ export class RevenuesComponent implements OnInit, OnChanges {
     this.revenueCategories = this.getCategories();
   }
 
+  limpaTela() {
+    this.revenue = {
+      Id: 0,
+      Description: '',
+      Status: null,
+      ReceivableAmount: null,
+      ReceivedAmount: null,
+      ReceivedDate: null,
+      MonthPeriod: null,
+      YearPeriod: null,
+      ProjectId: null,
+      CategoryId: null
+    };
+  }
+
   getById(id: Number) {
     return this.revenueService.getById(id);
   }
@@ -135,6 +149,7 @@ export class RevenuesComponent implements OnInit, OnChanges {
       this.revenue.MonthPeriod = this.monthWork;
       this.revenue.YearPeriod = this.yearWork;
       this.insert(this.revenue);
+      this.limpaTela();
     }
   }
 
@@ -196,6 +211,7 @@ export class RevenuesComponent implements OnInit, OnChanges {
       this.revenue.MonthPeriod = this.monthWork;
       this.revenue.YearPeriod = this.yearWork;
       this.edit(this.revenue);
+      this.limpaTela();
     }
   }
 

@@ -55,7 +55,7 @@ export class UserService {
     localStorage.removeItem('token');
     localStorage.setItem('token', userToken);
     this.mostrarMenuEmitter.emit(true);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/dashboard']);
   }
 
   logout() {

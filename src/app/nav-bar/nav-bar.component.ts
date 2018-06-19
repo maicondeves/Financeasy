@@ -2,12 +2,10 @@ import { MzToastService } from 'ng2-materialize';
 import { UserAuthenticate } from './../user/models/user-authenticate';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserEditProfile } from './../user/models/user-edit-profile';
-import { UserRegister } from './../user/models/user-register';
 import { UserViewProfile } from './../user/models/user-view-profile';
 import { ResponseModel } from './../utils/response-model';
 import { UserService } from './../user/services/user.service';
-import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,8 +31,8 @@ export class NavBarComponent implements OnInit {
   };
 
   constructor(
-    private router: Router,
     private userService: UserService,
+    private router: Router,
     private toaster: MzToastService
   ) {  }
 
@@ -47,6 +45,10 @@ export class NavBarComponent implements OnInit {
         }
       }
     );
+  }
+
+  abrirTela(route: string) {
+    this.router.navigate([route]);
   }
 
   getName() {

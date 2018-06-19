@@ -15,6 +15,7 @@ import { ProjectPut } from './models/project-put';
 import { ResponseModel } from '../utils/response-model';
 import { ProjectPost } from './models/project-post';
 import { ProjectStatus } from './models/project-status';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-projects',
@@ -118,10 +119,28 @@ export class ProjectsComponent implements OnInit {
     return this.categoriesService.getAllByType('project');
   }
 
+  limpaTela() {
+    this.project = {
+      Id: 0,
+      Name: '',
+      Description: '',
+      Status: null,
+      ConclusionDate: null,
+      StartDate: null,
+      CategoryId: null,
+      CustomerId: null,
+      CEP: '',
+      StreetAddress: '',
+      Complement: '',
+      District: '',
+      City: '',
+      State: ''
+    };
+  }
+
   onSubmitAddForm() {
     // Validações do front-end
     let formIsValid: Boolean = true;
-
     if (this.IsNullOrWhiteSpace(this.project.Name)) {
       this.toaster.show('Nome inválido.', 4000, 'toast-danger');
       formIsValid = false;
@@ -187,6 +206,7 @@ export class ProjectsComponent implements OnInit {
 
     if (formIsValid) {
       this.insert(this.project);
+      this.limpaTela();
     }
   }
 
@@ -287,6 +307,7 @@ export class ProjectsComponent implements OnInit {
 
     if (formIsValid) {
       this.edit(this.project);
+      this.limpaTela();
     }
   }
 

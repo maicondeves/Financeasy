@@ -1,9 +1,11 @@
 <div class="row center" style="margin-top: 5%; font-size: 18px;" *ngIf="this.projectDetail?.Id === 0 || this.projectDetail?.Id === undefined || this.projectDetail?.Id === null">
   <p>O projeto que você tentou acessar não existe ou é inválido.</p>
-  <p><button mz-button (click)="this.router.navigate(['/projects']);">RETORNAR PARA PROJETOS</button></p>
+  <p>
+    <button mz-button (click)="this.router.navigate(['/projects']);">RETORNAR PARA PROJETOS</button>
+  </p>
 </div>
 
-<div class="row" *ngIf="this.projectDetail?.Id > 0">
+<div class="row container" *ngIf="this.projectDetail?.Id > 0">
   <div class="col s12">
     <mz-card>
       <mz-card-title class="teal-text">
@@ -11,18 +13,22 @@
       </mz-card-title>
       <mz-card-content>
         <div class="row" style="margin-bottom: -15px;">
-          <div class="col s12"><b>Descrição:</b> {{ this.projectDetail?.Description }}</div>
-          <div class="col s12 m12 l4"><b>Nome:</b> {{ this.projectDetail?.Name }}</div>
-          <div class="col s12 m6 l4"><b>Cliente:</b> {{ this.projectDetail?.Customer?.Name }}</div>
-          <div class="col s12 m6 l4"><b>Categoria:</b> {{ this.projectDetail?.Category?.Name }}</div>
-          <div class="col s12 m6 l4"><b>Data de Início:</b> {{ this.projectDetail?.StartDate | date: 'dd/MM/yyyy' }}</div>
-          <div class="col s12 m6 l4"><b>Data de Conclusão:</b> {{ this.projectDetail?.ConclusionDate | date: 'dd/MM/yyyy' }}</div>
-          <div class="col s12 m6 l4"><b>CEP:</b> {{ this.projectDetail?.CEP }}</div>
-          <div class="col s12 m6 l8"><b>Endereço:</b> {{ this.projectDetail?.StreetAddress }}</div>
-          <div class="col s12 m6 l4"><b>Complemento:</b> {{ this.projectDetail?.Complement }}</div>
-          <div class="col s12 m6 l4"><b>Bairro:</b> {{ this.projectDetail?.District }}</div>
-          <div class="col s12 m6 l4"><b>Cidade:</b> {{ this.projectDetail?.City }}</div>
-          <div class="col s12 m6 l4"><b>Estado:</b> {{ this.projectDetail?.State }}</div>
+          <div class="col s12 m4 l4">
+            <b class="teal-text">Nome</b>
+            <p>{{ this.projectDetail?.Name }}</p>
+          </div>
+          <div class="col s12 m4 l4">
+            <b class="teal-text">Cliente</b>
+            <p>{{ this.projectDetail?.Customer?.Name }}</p>
+          </div>
+          <div class="col s12 m4 l4">
+            <b class="teal-text">Categoria</b>
+            <p>{{ this.projectDetail?.Category?.Name }}</p>
+          </div>
+          <div class="col s12" style="margin-top: 5px;">
+            <b class="teal-text">Descrição</b>
+            <p>{{ this.projectDetail?.Description }}</p>
+          </div>
         </div>
       </mz-card-content>
     </mz-card>
@@ -52,7 +58,7 @@
               </select>
             </mz-select-container>
           </div>
-          <div class="col s12 m6 l6">
+          <div class="col s12 s6 m6">
             <mz-select-container>
               <select mz-select id="yearWork" [label]="'Ano'" [placeholder]="'Selecione o ano de trabalho:'" [(ngModel)]="this.yearWork"
                 (change)="this.createYearSelect()">
@@ -64,10 +70,11 @@
       </mz-card-content>
     </mz-card>
   </div>
-  <div class="col s12 m12 l6">
+
+  <div class="col s12">
     <app-expenses [projectId]="this.projectId" [monthWork]="this.monthWork" [yearWork]="this.yearWork"></app-expenses>
   </div>
-  <div class="col s12 m12 l6">
+  <div class="col s12">
     <app-revenues [projectId]="this.projectId" [monthWork]="this.monthWork" [yearWork]="this.yearWork"></app-revenues>
   </div>
 </div>

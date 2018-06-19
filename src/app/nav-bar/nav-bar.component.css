@@ -12,3 +12,16 @@
 .nome-perfil{
   font-style: bold;
 }
+
+#logo {
+  max-height: 50px !important;
+  padding: 1% !important;
+}
+
+.brand-logo {
+  padding: 1% !important;
+}
+
+.row {
+  margin: 0 !important;
+}

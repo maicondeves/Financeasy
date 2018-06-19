@@ -1,12 +1,12 @@
-import { MzToastService } from 'ng2-materialize';
+import { ResponseModel } from './../utils/response-model';
+import { Project } from './../projects/models/project';
+import { RevenueService } from './../revenues/services/revenue.service';
+import { ExpenseService } from './../expenses/services/expense.service';
 import { ProjectsService } from './../projects/services/projects.service';
-import { RevenueList } from './../revenues/models/revenue-list';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ExpenseList } from '../expenses/models/expense-list';
 import { ProjectDetail } from '../projects/models/project-detail';
 import { ProjectStatus } from '../projects/models/project-status';
-import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-project-detail',

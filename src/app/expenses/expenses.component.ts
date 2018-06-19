@@ -2,7 +2,7 @@ import { ExpensePut } from './models/expense-put';
 import { CategoriesService } from './../categories/services/categories.service';
 import { MzToastService } from 'ng2-materialize';
 import { ExpenseList } from './models/expense-list';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ExpenseService } from './services/expense.service';
 import { Expense } from './models/expense';
 import { ExpenseStatus } from './models/expense-status';
@@ -78,6 +78,22 @@ export class ExpensesComponent implements OnInit, OnChanges {
     this.expenseCategories = this.getCategories();
   }
 
+  limpaTela() {
+    this.expense = {
+      Id: 0,
+      Description: '',
+      Status: null,
+      ExpirationDate: null,
+      Amount: null,
+      PaymentAmount: null,
+      PaymentDate: null,
+      MonthPeriod: null,
+      YearPeriod: null,
+      ProjectId: null,
+      CategoryId: null
+    };
+  }
+
   getById(id: Number) {
     return this.expenseService.getById(id);
   }
@@ -139,6 +155,7 @@ export class ExpensesComponent implements OnInit, OnChanges {
     if (formIsValid) {
       this.expense.ProjectId = this.projectId;
       this.insert(this.expense);
+      this.limpaTela();
     }
   }
 
@@ -203,6 +220,7 @@ export class ExpensesComponent implements OnInit, OnChanges {
     if (formIsValid) {
       this.expense.ProjectId = this.projectId;
       this.edit(this.expense);
+      this.limpaTela();
     }
   }
 
