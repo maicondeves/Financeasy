@@ -19,7 +19,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let e of expenses">
-          <td class="espaco-esquerdo editar" mz-tooltip [tooltip]="'Status da Despesa'" [position]="'top'" [delay]="500" [html]="true">
+          <td class="espaco-esquerdo editar" mz-tooltip [position]="'top'" [delay]="500" [html]="true">
             <i mz-icon-mdi class="{{getStatusColor(e.Status)}}-text" [icon]="'checkbox-blank-circle'" [size]="'12px'" [align]="'center'"></i>
           </td>
           <td class="espaco-esquerdo editar">

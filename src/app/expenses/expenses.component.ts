@@ -154,6 +154,8 @@ export class ExpensesComponent implements OnInit, OnChanges {
 
     if (formIsValid) {
       this.expense.ProjectId = this.projectId;
+      this.expense.MonthPeriod = this.monthWork;
+      this.expense.YearPeriod = this.yearWork;
       this.insert(this.expense);
       this.limpaTela();
     }
@@ -219,6 +221,8 @@ export class ExpensesComponent implements OnInit, OnChanges {
 
     if (formIsValid) {
       this.expense.ProjectId = this.projectId;
+      this.expense.MonthPeriod = this.monthWork;
+      this.expense.YearPeriod = this.yearWork;
       this.edit(this.expense);
       this.limpaTela();
     }
